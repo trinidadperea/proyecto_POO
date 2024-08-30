@@ -1,5 +1,5 @@
 package Banco.Cliente.Inversiones;
 
-public class Inversion {
+public  abstract class Inversion {
     
 }
