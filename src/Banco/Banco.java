@@ -1,4 +1,5 @@
 package Banco;
+import Banco.Cliente.Cliente;
 
 public class Banco{
     private int cantEmpleados;

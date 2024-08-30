@@ -1,4 +1,5 @@
 package Banco.Empleado.Transaccion;
+import Banco.Empleado.Empleado;
 
 public abstract class Transaccion {
     protected double monto;

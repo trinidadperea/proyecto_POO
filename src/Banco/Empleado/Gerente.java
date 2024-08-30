@@ -1,7 +1,7 @@
 package Banco.Empleado;
 //clases para usar diccionario en java
-import java.util.HashMap;
 import java.util.Map;
+import Banco.Cliente.Cliente;
 
 public class Gerente extends Empleado{
     private Map<String,Integer> dineroNoRegistrado;

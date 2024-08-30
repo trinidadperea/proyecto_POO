@@ -1,4 +1,6 @@
 package Banco.Empleado.Transaccion;
+import Banco.Empleado.Empleado;
+import Banco.Cliente.Cliente;
 
 public class TransaccionCliente extends Transaccion{
     private Cliente cliente;

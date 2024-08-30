@@ -9,8 +9,7 @@ public abstract class Empleado {
     protected String email;
 
     //constructor clase absttracta empleado
-    public Empleado(String nombre, String apellido, int legajo, double salario,
-                    int nroTelefono, String email) {
+    public Empleado(String nombre, String apellido, int legajo, double salario,int nroTelefono, String email) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.legajo = legajo;

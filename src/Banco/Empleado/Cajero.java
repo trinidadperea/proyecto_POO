@@ -1,5 +1,5 @@
 package Banco.Empleado;
-
+import Banco.Cliente.Cliente;
 public class Cajero extends Empleado{
     //constructor
 
@@ -17,7 +17,7 @@ public class Cajero extends Empleado{
     public boolean realizarDeposito(double dineroDepositar){
         //realizar metodo
     }
-    public boolean realizarPrestamoCliente(Cliente cliente,doule dineroPrestamo){
+    public boolean realizarPrestamoCliente(Cliente cliente,double dineroPrestamo){
         //realizar metodo
     }
 }
