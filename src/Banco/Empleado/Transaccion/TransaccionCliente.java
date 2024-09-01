@@ -24,14 +24,18 @@ public class TransaccionCliente extends Transaccion{
     //metodos de transacciones
     public boolean realizarDeposito(double dineroDeposito){
         //realizar metodo
+        return true;
     }
     public boolean realizarRetiro(double dineroRetirar){
         //realizar metodo
+        return true;
     }
     public boolean realizarTransferencia(double dineroTransferir){
         //realizar metodo
+        return true;
     }
     public boolean solicitarPrestamo(double dineroPrestamo){
         //realizar metodo
+        return true;
     }
 }

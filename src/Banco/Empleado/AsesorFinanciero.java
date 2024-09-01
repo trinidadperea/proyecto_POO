@@ -7,7 +7,6 @@ public class AsesorFinanciero extends Empleado{
         super(nombre, apellido, legajo, salario, nroTelefono, email);
     }
 
-    
     public String consejoFinanciero(Cliente cliente){
         //devuelvo un consejo
         return "Hola " + cliente.getNombre() + " te recomiendo que ahorres un poco mas";

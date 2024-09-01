@@ -8,7 +8,7 @@ public abstract class Empleado {
     protected int nroTelefono;
     protected String email;
 
-    //constructor clase absttracta empleado
+    //constructor clase abstracta empleado
     public Empleado(String nombre, String apellido, int legajo, double salario,int nroTelefono, String email) {
         this.nombre = nombre;
         this.apellido = apellido;

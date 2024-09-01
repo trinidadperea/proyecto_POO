@@ -32,6 +32,7 @@ public class Banco{
     //metodos del banco
     public String realizarCopiaDeSeguridad(Cliente cliente){
         //realizar metodo
+        return "";
     }
     public String mostrarCantClientes(){
         return "La cantidad de clientes que tiene el Banco La Familia son: "+cantClientes;

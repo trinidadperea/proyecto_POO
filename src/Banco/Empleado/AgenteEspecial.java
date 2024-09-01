@@ -9,9 +9,11 @@ public class AgenteEspecial extends Empleado{
     //hace el pedido al gerente de las transacciones ilegales
     //hay que ver despeus como lo implemntamos
     public boolean solicitarTransferenciaNoRastreable(Gerente gerente, double dineroSucio){
+        return true;
         //realizar metodo
     }
     public boolean solicitarTransaccionNoRastreable(Gerente gerente, double dineroSucio){
         //realizar metodo
+        return true;
     }
 }

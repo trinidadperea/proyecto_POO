@@ -25,15 +25,19 @@ public class Gerente extends Empleado{
     //metodo clase gerente, pedidos por el cliente
     public boolean aprobarTransaccionCliente(Cliente cliente,double dinero){
         //realizar metodo
+        return true;
     }
     public boolean aprobarTransferenciaNoRastreable(Cliente cliente, double dinero){
         //realizar metodo
+        return true;
     }
     public boolean aprobarPrestamo(Cliente cliente, double dinero){
         //realizar metodo
+        return true;
     }
     //este metodo me dice si el cliente tiene dinero sucio (ver como hacerlo)
     public double dineroNoRastreable(Cliente cliente){
         //realizar metodo
+        return 0;
     }
 }
