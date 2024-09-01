@@ -1,4 +1,4 @@
-package Banco.Cliente;
+package Banco.Empleado;
 
 public class Prestamo {
     double montoPorPagar;
