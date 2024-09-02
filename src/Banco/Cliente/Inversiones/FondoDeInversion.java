@@ -19,4 +19,30 @@ public class FondoDeInversion extends Inversion{
         // Calcula los rendimientos del fondo de inversion
         return 0;
     }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public LocalDate getFechaInicio() {
+        return fechaInicio;
+    }
+
+    public void setFechaInicio(LocalDate fechaInicio) {
+        this.fechaInicio = fechaInicio;
+    }
+
+    public int getPlazoMinimoPermanencia() {
+        return plazoMinimoPermanencia;
+    }
+
+    public void setPlazoMinimoPermanencia(int plazoMinimoPermanencia) {
+        this.plazoMinimoPermanencia = plazoMinimoPermanencia;
+    }
+
+    
 }

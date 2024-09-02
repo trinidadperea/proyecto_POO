@@ -1,4 +1,5 @@
 package Banco.Empleado;
+import Banco.Cliente.Cliente;
 
 public class Prestamo {
 
@@ -6,14 +7,16 @@ public class Prestamo {
     private double valorCuotas;
     private int cuotasPagadas;
     private double montoPorPagar;
+    private Cliente cliente;
     //para todos los clientes el interes anual va a ser del 60%
     final private double interesAnual = 0.6; 
 
     
-    public Prestamo(double valorCuotas, int cuotasPagadas, double montoPorPagar) {
+    public Prestamo(double valorCuotas, int cuotasPagadas, double montoPorPagar, Cliente cliente) {
         this.valorCuotas = valorCuotas;
         this.cuotasPagadas = cuotasPagadas;
         this.montoPorPagar = montoPorPagar;
+        this.cliente = cliente;
     }
     public double getInteresAnual(){
         return interesAnual;

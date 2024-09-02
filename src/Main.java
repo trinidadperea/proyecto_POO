@@ -11,7 +11,7 @@ public class Main {
     //creo un cliente
     public static void main(String[] args){
 
-        AgenteDeBolsa agente = new AgenteDeBolsa();
+        AgenteDeBolsa agente = new AgenteDeBolsa("Raul");
         Cliente cliente = new Cliente(45448520,"Trinidad","Perea", 10000, agente,null,null);
         Cajero cajero = new Cajero("juan","des",123,12444,345,"trrh");
         //pruebo el asesor financiero
@@ -77,5 +77,8 @@ public class Main {
         banco.realizarCopiaDeSeguridad(cliente3);
         banco.realizarCopiaDeSeguridad(cliente);
 
+        //pruebo inversiones(aun no terminadas)
+        cliente.comprarActivo(5000);
+        
     }
 }

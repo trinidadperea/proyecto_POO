@@ -1,8 +1,9 @@
 package Banco.Cliente;
 
-import Banco.Cliente.Inversiones.Inversion;
+import Banco.Cliente.Inversiones.*;
 import Banco.AgenteDeBolsa;
 import Banco.Empleado.*;
+import java.util.Scanner;
 
 public class Cliente implements CompraVentaActivos{
     private int dni;
@@ -14,9 +15,17 @@ public class Cliente implements CompraVentaActivos{
     private Gerente gerente;
 
 
-    public void comprarActivo(Inversion inversion, double monto){
+    public void comprarActivo(double monto){
+        System.out.println("Seleccione el tipo de inversion que desea realizar: ");
+        System.out.println("1. Fondo de inversion");
+        System.out.println("2. Acciones");
+        System.out.println("3. Propiedades");
+        System.out.println("4. Criptomonedas");
+        Scanner sc = new Scanner(System.in);
+        int tipoInversion = sc.nextInt();
+
         if (this.saldo >= monto) {
-            agente.realizarInversion(inversion, monto);
+            agente.realizarInversion(tipoInversion, monto, this);
             this.saldo -= monto;
         } else {
             System.out.println("Saldo insuficiente para realizar la inversión.");
@@ -33,6 +42,7 @@ public class Cliente implements CompraVentaActivos{
         System.out.println(agente.mostrarInversiones());
         return;
     }
+
 
     public void solicitarRetiro(double dineroRetirar){    // Solicita un retiro
         boolean solicitud = cajero.realizarRetiro(dineroRetirar,this);

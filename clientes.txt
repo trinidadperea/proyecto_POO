@@ -20,3 +20,21 @@ Saldo: 276000.0
 CLiente: Trinidad Perea
 DNI: 45448520
 Saldo: 9710.0
+CLiente: Jose Manzano
+DNI: 23234344
+Saldo: 276000.0
+CLiente: Trinidad Perea
+DNI: 45448520
+Saldo: 9710.0
+CLiente: Jose Manzano
+DNI: 23234344
+Saldo: 276000.0
+CLiente: Trinidad Perea
+DNI: 45448520
+Saldo: 9710.0
+CLiente: Jose Manzano
+DNI: 23234344
+Saldo: 276000.0
+CLiente: Trinidad Perea
+DNI: 45448520
+Saldo: 9710.0

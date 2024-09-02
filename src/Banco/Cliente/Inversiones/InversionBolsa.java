@@ -6,18 +6,50 @@ public class InversionBolsa extends Inversion {
     private float cantidadAcciones;
     private double precioCompra;
     private double precioActual;
-    private String sectorEconomico;
-    public InversionBolsa(String accion, float cantidadAcciones, double precioCompra, double precioActual, String sectorEconomico, double monto, Cliente cliente) {
+
+    public InversionBolsa(String accion, float cantidadAcciones, double precioCompra, double precioActual, double monto, Cliente cliente) {
         super(monto, cliente);
         this.accion = accion;
         this.cantidadAcciones = cantidadAcciones;
         this.precioCompra = precioCompra;
         this.precioActual = precioActual;
-        this.sectorEconomico = sectorEconomico;
     }
-    
+
     public double calcularRendimientos(){
         return (precioActual - precioCompra) * cantidadAcciones;
     }
+
+    public String getAccion() {
+        return accion;
+    }
+
+    public void setAccion(String accion) {
+        this.accion = accion;
+    }
+
+    public float getCantidadAcciones() {
+        return cantidadAcciones;
+    }
+
+    public void setCantidadAcciones(float cantidadAcciones) {
+        this.cantidadAcciones = cantidadAcciones;
+    }
+
+    public double getPrecioCompra() {
+        return precioCompra;
+    }
+
+    public void setPrecioCompra(double precioCompra) {
+        this.precioCompra = precioCompra;
+    }
+
+    public double getPrecioActual() {
+        return precioActual;
+    }
+
+    public void setPrecioActual(double precioActual) {
+        this.precioActual = precioActual;
+    }
+
 
 }

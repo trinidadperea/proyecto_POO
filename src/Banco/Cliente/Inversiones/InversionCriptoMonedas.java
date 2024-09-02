@@ -21,4 +21,45 @@ public class InversionCriptoMonedas extends Inversion {
         return (precioActual - precioCompra) * cantidad;
     }
 
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public double getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(double cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public double getVolatilidad() {
+        return volatilidad;
+    }
+
+    public void setVolatilidad(double volatilidad) {
+        this.volatilidad = volatilidad;
+    }
+
+    public double getPrecioCompra() {
+        return precioCompra;
+    }
+
+    public void setPrecioCompra(double precioCompra) {
+        this.precioCompra = precioCompra;
+    }
+
+    public double getPrecioActual() {
+        return precioActual;
+    }
+
+    public void setPrecioActual(double precioActual) {
+        this.precioActual = precioActual;
+    }
+
+    
 }
