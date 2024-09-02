@@ -4,9 +4,9 @@ import Banco.Cliente.Cliente;
 
 public class FondoDeInversion extends Inversion{
     
-    String nombre;
-    LocalDate fechaInicio;
-    int plazoMinimoPermanencia;
+    private String nombre;
+    private LocalDate fechaInicio;
+    private int plazoMinimoPermanencia;
 
     public FondoDeInversion(String nombre, LocalDate fechaInicio, int plazoMinimoPermanencia, double monto, Cliente cliente){
         super(monto, cliente);

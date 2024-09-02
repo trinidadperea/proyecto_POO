@@ -1,6 +1,7 @@
 package Banco.Empleado;
 import Banco.Cliente.Cliente;
 public class Cajero extends Empleado{
+    
 
     //constructor
     public Cajero(String nombre, String apellido, int legajo, double salario,
@@ -31,17 +32,31 @@ public class Cajero extends Empleado{
         //transferencia de cliente 1 a cliente 2
         //primero verifico si el cliente tiene esa plata para transferir
         if (cliente1.getSaldo() < dineroTransferir){
-            System.out.println("Cliente "+cliente1.getNombre()+" "+cliente1.getApellido()+" no puede transferir ese monto");
+            System.out.println("Sr/Sra "+cliente1.getNombre()+" "+cliente1.getApellido()+" no puede transferir ese monto");
             return false;
         } else{
             //le aumento ese dinero al cliente 2
             cliente2.setSaldo(cliente2.getSaldo() + dineroTransferir);
+            //le resto al cliente 1
+            cliente1.setSaldo(cliente1.getSaldo() - dineroTransferir);
             return true;
         }
     }
 
-    public boolean realizarPrestamoCliente(Cliente cliente,double dineroPrestamo){
-        //realizar metodo
-        return true;
+    public void realizarPrestamoCliente(Cliente cliente,double dineroPrestamo){
+        //le depositamos el dinero solicitado a su cuenta
+        cliente.setSaldo(cliente.getSaldo() + dineroPrestamo);
+        //valor de las cuotas a pagar 
+        int cuotas = 12;
+        double interesAnual = 0.6;
+        //valor de las cuotas a pagar segun la fórmula de amortización para pagos iguales
+        double precioCuotas;
+        double tasaMensual = (interesAnual)/cuotas;
+        double factorPotencia = Math.pow(1 + tasaMensual,cuotas);
+        precioCuotas = (dineroPrestamo * tasaMensual * factorPotencia)/(factorPotencia - 1);
+
+        //le sumo el prestamo al saldo del cliente
+        cliente.setSaldo(cliente.getSaldo() + dineroPrestamo);
+        System.out.println( "El prestamo se ha estructurado en "+cuotas+" cuotas con un valor de $"+precioCuotas+" mensuales");
     }
 }

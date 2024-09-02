@@ -11,7 +11,28 @@ public class Cliente implements CompraVentaActivos{
     private double saldo;
     private AgenteDeBolsa agente;
     private Cajero cajero;
+    private Gerente gerente;
 
+
+    public void comprarActivo(Inversion inversion, double monto){
+        if (this.saldo >= monto) {
+            agente.realizarInversion(inversion, monto);
+            this.saldo -= monto;
+        } else {
+            System.out.println("Saldo insuficiente para realizar la inversión.");
+        }
+    }
+
+    public void venderActivo(Inversion inversion){
+        this.saldo += agente.venderActivo(inversion);
+        System.out.println("El saldo actual es: " + this.saldo);
+        return;
+    }
+
+    public void consultarActivos(){
+        System.out.println(agente.mostrarInversiones());
+        return;
+    }
 
     public void solicitarRetiro(double dineroRetirar){    // Solicita un retiro
         boolean solicitud = cajero.realizarRetiro(dineroRetirar,this);
@@ -43,8 +64,15 @@ public class Cliente implements CompraVentaActivos{
             System.out.println("Transferencia cancelada");
         }
     }
-    public void solicitarPrestamo(){
-        // Solicita un prestamo
+    public void solicitarPrestamo(Cliente cliente, double dineroPrestamo, String deuda){
+        // Solicita permiso de un prestamo al gerente
+        boolean solicitud = gerente.aprobarPrestamo(this, dineroPrestamo, deuda);
+        if (solicitud){
+            //si el gerente lo aprueba lo realiza el cajero
+            cajero.realizarPrestamoCliente(this, dineroPrestamo);
+        } else {
+            System.out.println("Prestamo cancelado");
+        }
     }
     public void pagarCuotaPrestamo(){
         // Paga una cuota de un prestamo
@@ -56,33 +84,19 @@ public class Cliente implements CompraVentaActivos{
         return saldo;
     }
     
-    public Cliente(int dni, String nombre,String apellido, double saldo, AgenteDeBolsa agente, Cajero cajero) {
+    public Cliente(int dni, String nombre,String apellido, double saldo, 
+    AgenteDeBolsa agente, Cajero cajero, Gerente gerente) {
         this.dni = dni;
         this.nombre = nombre;
         this.apellido = apellido;
         this.saldo = saldo;
         this.agente = agente;
         this.cajero = cajero;
+        this.gerente = gerente;
     }
 
-    public void comprarActivo(Inversion inversion, double monto){
-        if (this.saldo >= monto) {
-            agente.realizarInversion(inversion, monto);
-            this.saldo -= monto;
-        } else {
-            System.out.println("Saldo insuficiente para realizar la inversión.");
-        }
-    }
-
-    public void venderActivo(Inversion inversion){
-        this.saldo += agente.venderActivo(inversion);
-        System.out.println("El saldo actual es: " + this.saldo);
-        return;
-    }
-
-    public void consultarActivos(){
-        System.out.println(agente.mostrarInversiones());
-        return;
+    public void setGerente(Gerente gerente){
+        this.gerente = gerente;
     }
     
     public int getDni() {
@@ -114,5 +128,9 @@ public class Cliente implements CompraVentaActivos{
         this.cajero = cajero;
     }
 
+    @Override
+    public String toString(){
+        return "CLiente: "+nombre+" "+apellido+"\nDNI: "+dni+"\nSaldo: "+saldo;
+    }
 
 }

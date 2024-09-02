@@ -2,11 +2,11 @@ package Banco.Cliente.Inversiones;
 import Banco.Cliente.Cliente;
 
 public class InversionCriptoMonedas extends Inversion {
-    String nombre;
-    double cantidad;
-    double volatilidad;
-    double precioCompra;
-    double precioActual;
+    private String nombre;
+    private double cantidad;
+    private double volatilidad;
+    private double precioCompra;
+    private double precioActual;
 
     public InversionCriptoMonedas(String nombre, double cantidad, double volatilidad, double precioCompra, double precioActual, double monto, Cliente cliente) {
         super(monto, cliente);

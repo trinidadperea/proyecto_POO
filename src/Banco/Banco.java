@@ -1,9 +1,14 @@
 package Banco;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import Banco.Cliente.Cliente;
 
 public class Banco{
     private int cantEmpleados;
     private int cantClientes;
+    private static final String archivoClientes = "clientes.txt";
 
     //contructor
 
@@ -30,10 +35,17 @@ public class Banco{
     }
 
     //metodos del banco
-    public String realizarCopiaDeSeguridad(Cliente cliente){
-        //realizar metodo
-        return "";
+    public void realizarCopiaDeSeguridad(Cliente cliente){
+        //guardo los datos en un archvio de texto
+        try (BufferedWriter guardar = new BufferedWriter(new FileWriter(archivoClientes,true))){
+            guardar.write(cliente.toString());
+            guardar.newLine();
+            System.out.println("Cliente "+cliente.getNombre()+" guardado en archivos");
+        } catch(IOException e){
+            System.out.println("Error al guardar al cliente en archivos "+ e.getMessage());
+        }
     }
+    
     public String mostrarCantClientes(){
         return "La cantidad de clientes que tiene el Banco La Familia son: "+cantClientes;
     }
