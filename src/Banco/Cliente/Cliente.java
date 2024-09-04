@@ -4,6 +4,9 @@ import Banco.Cliente.Inversiones.*;
 import Banco.AgenteDeBolsa;
 import Banco.Empleado.*;
 import java.util.Scanner;
+import java.util.Map;
+import java.util.HashMap;
+
 
 public class Cliente implements CompraVentaActivos{
     private int dni;
@@ -13,6 +16,8 @@ public class Cliente implements CompraVentaActivos{
     private AgenteDeBolsa agente;
     private Cajero cajero;
     private Gerente gerente;
+    private AsesorDivisas asesorDivisas;
+    private Map<String,Double> divisasCompradas;
 
 
     public void comprarActivo(double monto){
@@ -30,6 +35,7 @@ public class Cliente implements CompraVentaActivos{
         } else {
             System.out.println("Saldo insuficiente para realizar la inversión.");
         }
+        sc.close();
     }
 
     public void venderActivo(Inversion inversion){
@@ -74,8 +80,15 @@ public class Cliente implements CompraVentaActivos{
             System.out.println("Transferencia cancelada");
         }
     }
-    public void solicitarPrestamo(Cliente cliente, double dineroPrestamo, String deuda){
+    public void solicitarPrestamo(Cliente cliente, double dineroPrestamo){
         // Solicita permiso de un prestamo al gerente
+        String deuda; 
+        Scanner sc = new Scanner(System.in);
+        do { //si no tiene deudas se le realizara el prestamo
+        System.out.println("Sr/Sra.  "+cliente.getNombre()+" tiene usted alguna deuda? (S/N)");
+        deuda = sc.nextLine().trim().toUpperCase(); //paso a mayuscula
+        } while (!deuda.equals("N") && !deuda.equals("S"));
+
         boolean solicitud = gerente.aprobarPrestamo(this, dineroPrestamo, deuda);
         if (solicitud){
             //si el gerente lo aprueba lo realiza el cajero
@@ -83,7 +96,23 @@ public class Cliente implements CompraVentaActivos{
         } else {
             System.out.println("Prestamo cancelado");
         }
+        sc.close();
     }
+    public void venderDivisas(String monedaVender, double montoVender){
+        //le vendo al banco las monedas y le sumo el precio en pesos al saldo
+    }
+
+    public void consultarPrecioCompraDivisas(){
+        //llamo a la clase AsesorDivisas, que ahi es donde se actualizan
+        //me muestra los precios y si quiero comprar
+        asesorDivisas.valorDivisasCompra(this);
+    }
+
+    public void consultarPrecioVentaDivisas(){
+        asesorDivisas.valorDivisasVenta(this);
+
+    }
+
     public void pagarCuotaPrestamo(){
         // Paga una cuota de un prestamo
     }
@@ -95,7 +124,7 @@ public class Cliente implements CompraVentaActivos{
     }
     
     public Cliente(int dni, String nombre,String apellido, double saldo, 
-    AgenteDeBolsa agente, Cajero cajero, Gerente gerente) {
+    AgenteDeBolsa agente, Cajero cajero, Gerente gerente, AsesorDivisas asesorDivisas, Map<String,Double> divisasCompradas) {
         this.dni = dni;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -103,12 +132,28 @@ public class Cliente implements CompraVentaActivos{
         this.agente = agente;
         this.cajero = cajero;
         this.gerente = gerente;
+        this.asesorDivisas = asesorDivisas;
+        this.divisasCompradas = new HashMap<>();
+  
+    }
+    public void registrarDivisas(String nombreDivisa, double valor){
+        divisasCompradas.put(nombreDivisa, divisasCompradas.getOrDefault(nombreDivisa, 0.0) + valor);
     }
 
+    public void mostrarDivisasCompradas(){
+        System.out.println("Divisas compradas de la/el Sr/Sra: "+ this.getNombre());
+        System.out.println(" ");
+        for (Map.Entry<String, Double> entry : divisasCompradas.entrySet()) {
+            System.out.println("Divisa: " + entry.getKey() + " - Valor: $" + entry.getValue());
+        }
+    }
+
+    public void setAsesorDivisas(AsesorDivisas asesorDivisas){
+        this.asesorDivisas = asesorDivisas;
+    }
     public void setGerente(Gerente gerente){
         this.gerente = gerente;
     }
-    
     public int getDni() {
         return dni;
     }

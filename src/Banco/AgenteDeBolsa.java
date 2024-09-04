@@ -41,11 +41,11 @@ public class AgenteDeBolsa {
                 int index = 0;
                 String[] companyArray = companies.keySet().toArray(new String[0]);
                 for (String company : companyArray) {
-                    System.out.println(index + ". " + company + " - $" + companies.get(company));
+                    System.out.println(index + 1 + ". " + company + " - $" + companies.get(company));
                     index++;
                 }
 
-                int opcion = sc.nextInt();
+                int opcion = sc.nextInt() - 1;
 
                 // Validar la opción seleccionada
                 if (opcion >= 0 && opcion < companyArray.length) {
@@ -86,11 +86,11 @@ public class AgenteDeBolsa {
                 int index2 = 0;
                 String[] criptosArray = criptos.keySet().toArray(new String[0]);
                 for (String cripto : criptosArray) {
-                    System.out.println(index2 + ". " + cripto + " - $" + criptos.get(cripto));
+                    System.out.println(index2 + 1 + ". " + cripto + " - $" + criptos.get(cripto));
                     index2++;
                 }
 
-                int opcion2 = sc.nextInt();
+                int opcion2 = sc.nextInt() - 1;
 
                 // Validar la opción seleccionada
                 if (opcion2 >= 0 && opcion2 < criptosArray.length) {

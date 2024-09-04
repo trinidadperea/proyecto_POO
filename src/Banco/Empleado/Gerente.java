@@ -20,7 +20,7 @@ public class Gerente extends Empleado{
         double porcentajeSalario = (10 * cliente.getSaldo()) / 100;
         //si el cliente tiene alguna deuda actual no se le realiza el prestamo
         //apruebo el prestamo si este es menor o igual al 10% de su salario
-        if (deuda.toLowerCase() == "no" && (dineroPrestamo <= porcentajeSalario) ){
+        if (deuda.equals("N") && (dineroPrestamo <= porcentajeSalario) ){
             //prestamo aprobado
             return true;
         } else {
