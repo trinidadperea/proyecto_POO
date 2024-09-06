@@ -98,8 +98,10 @@ public class Main {
         //METODO POLIMORFICO CLIENTE EMPLEADO
         //creo cliente
         Gerente gerente = new Gerente(null,"Martin", "Gonzalez", 1441, 120000, 132445566, "mail");
+        Cajero cajero = new Cajero("juan","des",123,12444,345,"trrh");
         Map<String,Empleado> map = new HashMap<>();
         map.put("gerente",gerente);
+        map.put("cajero",cajero);
         Cliente cliente = new Cliente(23234344, "Jose", "Manzano", 230000,null, map);
         cliente.solicitarPrestamo(cliente, 30);
         

@@ -19,9 +19,10 @@ public abstract class Empleado {
         this.email = email;
     }
     //metodo abstacto
-    public void atenderCliente(Cliente cliente);
+    //public void atenderCliente(Cliente cliente);
    
-
+    public abstract boolean aprobarPrestamo(Cliente cliente, double dineroPrestamo, String deuda);
+    public abstract void realizarPrestamoCliente(Cliente cliente, double dinero); 
     //getters y setters
 
     public String getNombre() {

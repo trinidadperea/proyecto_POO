@@ -97,6 +97,7 @@ public class Cliente {
         boolean solicitud = empleados.get("gerente").aprobarPrestamo(this, dineroPrestamo, deuda);
         if (solicitud){
             //si el gerente lo aprueba lo realiza el cajero
+            System.out.println((empleados.get("cajero")).getClass().getName());
             empleados.get("cajero").realizarPrestamoCliente(this, dineroPrestamo);
         } else {
             System.out.println("Prestamo cancelado");
@@ -139,24 +140,16 @@ public class Cliente {
         }
     }
     */
-    public Cliente(int dni, String nombre,String apellido, double saldo, Map<String,Double> divisasCompradas, Map<String,Empleado> empleados) {
-        //AgenteDeBolsa agente, Cajero cajero, Gerente gerente, AsesorDivisas asesorDivisas,
+    public Cliente(int dni, String nombre, String apellido, double saldo, Map<String, Double> divisasCompradas, Map<String, Empleado> empleados) {
         this.dni = dni;
         this.nombre = nombre;
         this.apellido = apellido;
         this.saldo = saldo;
-        this.empleados = new HashMap<>();
-        this.empleados.put("gerente",empleados.get("gerente"));
-        this.empleados.put("cajero",empleados.get("cajero"));
-        /*
-        this.agente = agente;
-        this.cajero = cajero;
-        this.gerente = gerente;
-        this.asesorDivisas = asesorDivisas; */
-        this.divisasCompradas = new HashMap<>();
-  
+        
+        this.empleados = empleados != null ? empleados : new HashMap<>();
+        this.divisasCompradas = divisasCompradas != null ? divisasCompradas : new HashMap<>();
     }
-
+    
     /* 
     public void setAsesorDivisas(AsesorDivisas asesorDivisas){
         this.asesorDivisas = asesorDivisas;
