@@ -169,7 +169,7 @@ public class Cliente {
         this.divisasCompradas = new HashMap<>();
   
     }
-
+    
     /* 
     public void setAsesorDivisas(AsesorDivisas asesorDivisas){
         this.asesorDivisas = asesorDivisas;

@@ -18,6 +18,9 @@ public abstract class Empleado {
         this.nroTelefono = nroTelefono;
         this.email = email;
     }
+    //metodo abstacto
+    public void atenderCliente(Cliente cliente);
+   
 
     //getters y setters
     public String getNombre() {
