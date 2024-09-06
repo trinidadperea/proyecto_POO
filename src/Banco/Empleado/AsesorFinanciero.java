@@ -12,10 +12,5 @@ public class AsesorFinanciero extends Empleado{
         return "Hola " + cliente.getNombre() + " te recomiendo que ahorres un poco mas";
     }
 
-    //meotodo atender cliente
-    @Override
-    public void atenderCliente(Cliente cliente){
-        System.out.println("El cliente "+cliente.getNombre()+" es atendido por el Asesor Financiero "+get.nombre());
-    }
 
 }

@@ -3,10 +3,7 @@ import Banco.Cliente.Cliente;
 public class Cajero extends Empleado{
     
     //meotodo atender cliente
-    @Override
-    public void atenderCliente(Cliente cliente){
-        System.out.println("El cliente "+cliente.getNombre()+" es atendido por el cajero "+get.nombre());
-    }
+   
     //constructor
     public Cajero(String nombre, String apellido, int legajo, double salario,
                   int nroTelefono, String email) {
@@ -14,7 +11,7 @@ public class Cajero extends Empleado{
     }
 
     //metodos que realiza el cajero
-
+    
     public boolean realizarRetiro(double dineroRetirar, Cliente cliente){
         if (dineroRetirar > cliente.getSaldo()){
             System.out.println("Saldo insuficiente");
@@ -24,12 +21,6 @@ public class Cajero extends Empleado{
             cliente.setSaldo(cliente.getSaldo() - dineroRetirar);
             return true;
         }
-    }
-
-    public boolean realizarDeposito(double dineroDepositar, Cliente cliente){
-        //le sumo el deposito al saldo del cliente
-        cliente.setSaldo(cliente.getSaldo() + dineroDepositar);
-        return true;
     }
 
     public boolean realizarTransferencia(double dineroTransferir,Cliente cliente1, Cliente cliente2){
@@ -46,7 +37,12 @@ public class Cajero extends Empleado{
             return true;
         }
     }
-
+    /* 
+    public boolean realizarDeposito(double dineroDepositar, Cliente cliente){
+        //le sumo el deposito al saldo del cliente
+        cliente.setSaldo(cliente.getSaldo() + dineroDepositar);
+        return true;
+    }
     public void realizarPrestamoCliente(Cliente cliente,double dineroPrestamo){
         //le depositamos el dinero solicitado a su cuenta
         cliente.setSaldo(cliente.getSaldo() + dineroPrestamo);
@@ -63,4 +59,5 @@ public class Cajero extends Empleado{
         cliente.setSaldo(cliente.getSaldo() + dineroPrestamo);
         System.out.println( "El prestamo se ha estructurado en "+cuotas+" cuotas con un valor de $"+precioCuotas+" mensuales");
     }
+        */
 }

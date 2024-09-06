@@ -14,14 +14,24 @@ public class Cliente {
     private String apellido;
     private double saldo;
     private Map<String,Double> divisasCompradas;
-    private Map<String,Empleado> empleados;
+    private Empleado empleado;
+    //private Map<String,Empleado> empleados;
    
     /* 
     private AgenteDeBolsa agente;
     private Cajero cajero;
     private Gerente gerente;
     private AsesorDivisas asesorDivisas; */
-    
+    public void solicitarTransferencia(double dineroTransferir, Cliente clienteDestino){
+        if (empleado instanceof Cajero){
+            boolean solicitud = ((Cajero) empleado).realizarTransferencia(dineroTransferir, this, clienteDestino);
+            if (solicitud){
+                System.out.println("La transferencia se solicito con exito ");
+            } else{
+                System.out.println("Transferencia cancelada");
+            }
+        }
+    }
 
 /* 
     public void comprarActivo(double monto){
@@ -84,7 +94,7 @@ public class Cliente {
             System.out.println("Transferencia cancelada");
         }
     }
-        */
+        
     public void solicitarPrestamo(Cliente cliente, double dineroPrestamo){
         // Solicita permiso de un prestamo al gerente
         String deuda; 
@@ -94,10 +104,11 @@ public class Cliente {
         deuda = sc.nextLine().trim().toUpperCase(); //paso a mayuscula
         } while (!deuda.equals("N") && !deuda.equals("S"));
 
-        boolean solicitud = empleados.get("gerente").aprobarPrestamo(this, dineroPrestamo, deuda);
+        boolean solicitud = empleado.atenderCliente(this, dineroPrestamo);
         if (solicitud){
             //si el gerente lo aprueba lo realiza el cajero
-            empleados.get("cajero").realizarPrestamoCliente(this, dineroPrestamo);
+            System.out.println("Hecho");
+            //empleado.realizarPrestamoCliente(this, dineroPrestamo);
         } else {
             System.out.println("Prestamo cancelado");
         }
@@ -139,12 +150,14 @@ public class Cliente {
         }
     }
     */
-    public Cliente(int dni, String nombre,String apellido, double saldo, Map<String,Double> divisasCompradas, Map<String,Empleado> empleados) {
+    public Cliente(int dni, String nombre,String apellido, double saldo, Map<String,Double> divisasCompradas, Empleado empleado) {
         //AgenteDeBolsa agente, Cajero cajero, Gerente gerente, AsesorDivisas asesorDivisas,
         this.dni = dni;
         this.nombre = nombre;
         this.apellido = apellido;
         this.saldo = saldo;
+        this.empleado = empleado;
+        /* 
         this.empleados = new HashMap<>();
         this.empleados.put("gerente",empleados.get("gerente"));
         this.empleados.put("cajero",empleados.get("cajero"));
