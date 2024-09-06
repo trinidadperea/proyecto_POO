@@ -2,7 +2,11 @@ package Banco.Empleado;
 import Banco.Cliente.Cliente;
 public class Cajero extends Empleado{
     
-
+    //meotodo atender cliente
+    @Override
+    public void atenderCliente(Cliente cliente){
+        System.out.println("El cliente "+cliente.getNombre()+" es atendido por el cajero "+get.nombre());
+    }
     //constructor
     public Cajero(String nombre, String apellido, int legajo, double salario,
                   int nroTelefono, String email) {

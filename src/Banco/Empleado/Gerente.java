@@ -4,10 +4,13 @@ import java.util.Map;
 import Banco.Cliente.Cliente;
 
 public class Gerente extends Empleado{
-    
-
     private Map<String,Integer> dineroNoRegistrado;
 
+    //meotodo atender cliente
+    @Override
+    public void atenderCliente(Cliente cliente){
+        System.out.println("El cliente "+cliente.getNombre()+" es atendido por el gerente "+get.nombre());
+    } 
     //constructor
     public Gerente(Map<String, Integer> dineroNoRegistrado,String nombre,
                    String apellido, int legajo, double salario,

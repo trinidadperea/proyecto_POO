@@ -16,4 +16,10 @@ public class AgenteEspecial extends Empleado{
         //realizar metodo
         return true;
     }
+    //meotodo atender cliente
+    @Override
+    public void atenderCliente(Cliente cliente){
+        System.out.println("El cliente "+cliente.getNombre()+" es atendido por el agente "+get.nombre());
+    }
+
 }

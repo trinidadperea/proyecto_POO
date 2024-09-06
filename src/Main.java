@@ -4,13 +4,15 @@ import Banco.AgenteDeBolsa;
 import Banco.Cliente.Cliente;
 import Banco.Empleado.*;
 import Banco.Banco;
-import java.util.Scanner;
+
+import java.util.*;
+
 
 public class Main {
     //voy a probar el asesor financiero
     //creo un cliente
     public static void main(String[] args){
-
+        /* 
         AgenteDeBolsa agente = new AgenteDeBolsa("Raul");
         Cliente cliente = new Cliente(45448520,"Trinidad","Perea", 10000, agente,null,null,null,null);
         Cajero cajero = new Cajero("juan","des",123,12444,345,"trrh");
@@ -70,7 +72,8 @@ public class Main {
         double saldo3 = cliente3.getSaldo();
         System.out.println(saldo3); */
 
-        System.out.println(" ");
+        /* 
+        System.out.println(" "); 
         /* 
         //pido copia de seguridad del cliente 3
         Banco banco = new Banco(30,30);
@@ -82,6 +85,7 @@ public class Main {
 
         //cliente solicita el valor de las monedas de cambio
         //creo el objeto asesor
+        /* 
         Scanner sc = new Scanner(System.in);
         AsesorDivisas asesorDivisas = new AsesorDivisas("Martina", "Gonzalez", 1440, 120000, 132445566, "mail",sc);
         Cliente cliente4 = new Cliente(23234344, "Jose", "Manzano", 230000, agente, null,null,asesorDivisas,null);
@@ -89,7 +93,15 @@ public class Main {
         cliente4.mostrarDivisasCompradas();
         //verifico que si vuelvo a comprar me lo sume 
         cliente4.consultarPrecioCompraDivisas();
-        cliente4.mostrarDivisasCompradas();
+        cliente4.mostrarDivisasCompradas(); */
 
+        //METODO POLIMORFICO CLIENTE EMPLEADO
+        //creo cliente
+        Gerente gerente = new Gerente(null,"Martin", "Gonzalez", 1441, 120000, 132445566, "mail");
+        Map<String,Empleado> map = new HashMap<>();
+        map.put("gerente",gerente);
+        Cliente cliente = new Cliente(23234344, "Jose", "Manzano", 230000,null, map);
+        cliente.solicitarPrestamo(cliente, 30);
+        
     }
 }

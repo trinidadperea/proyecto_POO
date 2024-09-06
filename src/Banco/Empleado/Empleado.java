@@ -1,4 +1,5 @@
 package Banco.Empleado;
+import Banco.Cliente.Cliente;
 
 public abstract class Empleado {
     protected String nombre;
@@ -17,6 +18,9 @@ public abstract class Empleado {
         this.nroTelefono = nroTelefono;
         this.email = email;
     }
+    //metodo abstacto
+    public void atenderCliente(Cliente cliente);
+   
 
     //getters y setters
 

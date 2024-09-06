@@ -8,6 +8,12 @@ import Banco.Cliente.Cliente;
 public class AsesorDivisas extends Empleado{
     private Scanner sc;
 
+    //meotodo atender cliente
+    @Override
+    public void atenderCliente(Cliente cliente){
+        System.out.println("El cliente "+cliente.getNombre()+" es atendido por el Asesor de divisas "+get.nombre());
+    }
+
     //metodos asesor de divisas
     public void valorDivisasCompra(Cliente cliente){
         //instancio el diccionario con los valores de las monedas para comprarlas
