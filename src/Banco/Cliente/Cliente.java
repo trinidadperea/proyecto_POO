@@ -3,10 +3,7 @@ package Banco.Cliente;
 import Banco.Cliente.Inversiones.*;
 import Banco.AgenteDeBolsa;
 import Banco.Empleado.*;
-import java.util.Scanner;
-import java.util.Map;
-import java.util.HashMap;
-
+import java.util.*;
 
 public class Cliente {
     private int dni;
@@ -15,13 +12,38 @@ public class Cliente {
     private double saldo;
     private Map<String,Double> divisasCompradas;
     private Empleado empleado;
-    //private Map<String,Empleado> empleados;
-   
-    /* 
-    private AgenteDeBolsa agente;
-    private Cajero cajero;
-    private Gerente gerente;
-    private AsesorDivisas asesorDivisas; */
+    private AgenteDeBolsa agentedeBolsa;
+
+    //metodos que se encarga el agente de bolsa
+    public void comprarActivo(double monto){
+        System.out.println("Seleccione el tipo de inversion que desea realizar: ");
+        System.out.println("1. Fondo de inversion");
+        System.out.println("2. Acciones");
+        System.out.println("3. Propiedades");
+        System.out.println("4. Criptomonedas");
+        Scanner sc = new Scanner(System.in);
+        int tipoInversion = sc.nextInt();
+
+        if (this.saldo >= monto) {
+            agentedeBolsa.realizarInversion(tipoInversion, monto, this);
+            this.saldo -= monto;
+        } else {
+            System.out.println("Saldo insuficiente para realizar la inversión.");
+        }
+        sc.close();
+    }
+
+    public void venderActivo(Inversion inversion){
+        this.saldo += agentedeBolsa.venderActivo(inversion);
+        System.out.println("El saldo actual es: " + this.saldo);
+        return;
+    }
+
+    public void consultarActivos(){
+        System.out.println(agentedeBolsa.mostrarInversiones());
+        return;
+    }
+    //metodos que se encarga el cajero
     public void solicitarTransferencia(double dineroTransferir, Cliente clienteDestino){
         if (empleado instanceof Cajero){
             boolean solicitud = ((Cajero) empleado).realizarTransferencia(dineroTransferir, this, clienteDestino);
@@ -33,68 +55,31 @@ public class Cliente {
         }
     }
 
-/* 
-    public void comprarActivo(double monto){
-        System.out.println("Seleccione el tipo de inversion que desea realizar: ");
-        System.out.println("1. Fondo de inversion");
-        System.out.println("2. Acciones");
-        System.out.println("3. Propiedades");
-        System.out.println("4. Criptomonedas");
-        Scanner sc = new Scanner(System.in);
-        int tipoInversion = sc.nextInt();
-
-        if (this.saldo >= monto) {
-            agente.realizarInversion(tipoInversion, monto, this);
-            this.saldo -= monto;
-        } else {
-            System.out.println("Saldo insuficiente para realizar la inversión.");
-        }
-        sc.close();
-    }
-
-    public void venderActivo(Inversion inversion){
-        this.saldo += agente.venderActivo(inversion);
-        System.out.println("El saldo actual es: " + this.saldo);
-        return;
-    }
-
-    public void consultarActivos(){
-        System.out.println(agente.mostrarInversiones());
-        return;
-    }
-
-
     public void solicitarRetiro(double dineroRetirar){    // Solicita un retiro
-        boolean solicitud = empleado.realizarRetiro(dineroRetirar,this);
-        if (solicitud){
-            System.out.println("Retiro realizado con exito");
-        } else{
-            System.out.println("El retiro no se pudo realizar");
+        if (empleado instanceof Cajero){
+            boolean solicitud = ((Cajero) empleado).realizarRetiro(dineroRetirar,this);
+            if (solicitud){
+                System.out.println("Retiro realizado con exito");
+            } else{
+                System.out.println("El retiro no se pudo realizar");
+            }
         }
     }
     
     public void solicitarDeposito(double dineroDepositar){
-        boolean solicitud = cajero.realizarDeposito(dineroDepositar, this);
-        if (solicitud){
-            System.out.println("El dinero se deposito con exito");
-        } else{
-            //deberiamos ver cuando no se puede depositar, si hay algun tope max
-            //si quiere depositar mas de x plata, deberia decir de donde la saca, sino es lavado de dinero
-            System.out.println("El deposito no pudo realizarse");
-            System.out.println("Mostrar de donde viene la plata");
+        if (empleado instanceof Cajero){
+            boolean solicitud = ((Cajero) empleado).realizarDeposito(dineroDepositar, this);
+            if (solicitud){
+                System.out.println("El dinero se deposito con exito");
+            } else{
+                //deberiamos ver cuando no se puede depositar, si hay algun tope max
+                //si quiere depositar mas de x plata, deberia decir de donde la saca, sino es lavado de dinero
+                System.out.println("El deposito no pudo realizarse");
+                System.out.println("Mostrar de donde viene la plata");
+            }
         }
     }
-
-    public void solicitarTransferencia(double dineroTransferir, Cliente clienteDestino){
-        // Solicita una transferencia
-        boolean solicitud = cajero.realizarTransferencia(dineroTransferir, this, clienteDestino);
-        if (solicitud){
-            System.out.println("La transferencia se realizo con exito");
-        } else{
-            System.out.println("Transferencia cancelada");
-        }
-    }
-        
+    
     public void solicitarPrestamo(Cliente cliente, double dineroPrestamo){
         // Solicita permiso de un prestamo al gerente
         String deuda; 
@@ -103,29 +88,30 @@ public class Cliente {
         System.out.println("Sr/Sra.  "+cliente.getNombre()+" tiene usted alguna deuda? (S/N)");
         deuda = sc.nextLine().trim().toUpperCase(); //paso a mayuscula
         } while (!deuda.equals("N") && !deuda.equals("S"));
-
-        boolean solicitud = empleado.atenderCliente(this, dineroPrestamo);
-        if (solicitud){
-            //si el gerente lo aprueba lo realiza el cajero
-            System.out.println("Hecho");
-            //empleado.realizarPrestamoCliente(this, dineroPrestamo);
-        } else {
-            System.out.println("Prestamo cancelado");
+        if (empleado instanceof Cajero){
+            boolean solicitud =((Cajero) empleado).realizarPrestamoCliente(cliente, dineroPrestamo); 
+            if (solicitud){
+                //si el gerente lo aprueba lo realiza el cajero
+                System.out.println("Hecho");
+                //empleado.realizarPrestamoCliente(this, dineroPrestamo);
+            } else {
+                System.out.println("Prestamo cancelado");
+            }
         }
         sc.close();
     }
     public void venderDivisas(String monedaVender, double montoVender){
         //le vendo al banco las monedas y le sumo el precio en pesos al saldo
     }
-/* 
+ 
     public void consultarPrecioCompraDivisas(){
         //llamo a la clase AsesorDivisas, que ahi es donde se actualizan
         //me muestra los precios y si quiero comprar
-        asesorDivisas.valorDivisasCompra(this);
+        ((AsesorDivisas) empleado).valorDivisasCompra(this);
     }
 
     public void consultarPrecioVentaDivisas(){
-        asesorDivisas.valorDivisasVenta(this);
+        ((AsesorDivisas) empleado).valorDivisasVenta(this);
 
     }
 
@@ -149,34 +135,16 @@ public class Cliente {
             System.out.println("Divisa: " + entry.getKey() + " - Valor: $" + entry.getValue());
         }
     }
-    */
-    public Cliente(int dni, String nombre,String apellido, double saldo, Map<String,Double> divisasCompradas, Empleado empleado) {
-        //AgenteDeBolsa agente, Cajero cajero, Gerente gerente, AsesorDivisas asesorDivisas,
+
+    public Cliente(int dni, String nombre,String apellido, double saldo, Map<String,Double> divisasCompradas, AgenteDeBolsa agenteDeBolsa, Empleado empleado) {
         this.dni = dni;
         this.nombre = nombre;
         this.apellido = apellido;
         this.saldo = saldo;
         this.empleado = empleado;
-        /* 
-        this.empleados = new HashMap<>();
-        this.empleados.put("gerente",empleados.get("gerente"));
-        this.empleados.put("cajero",empleados.get("cajero"));
-        /*
-        this.agente = agente;
-        this.cajero = cajero;
-        this.gerente = gerente;
-        this.asesorDivisas = asesorDivisas; */
         this.divisasCompradas = new HashMap<>();
-  
     }
-    
-    /* 
-    public void setAsesorDivisas(AsesorDivisas asesorDivisas){
-        this.asesorDivisas = asesorDivisas;
-    }
-    public void setGerente(Gerente gerente){
-        this.gerente = gerente;
-    } */
+
     public int getDni() {
         return dni;
     }
@@ -201,18 +169,10 @@ public class Cliente {
 	public void setApellido(String apellido) {
 		this.apellido = apellido;
 	}
-    /* 
-    public void setCajero(Cajero cajero){
-        this.cajero = cajero;
-    } */
-/* 
+
     @Override
     public String toString(){
-        return "Cliente: "+get.nombre()+" "+get.apellido()+"\nDNI: "+get.dni()+"\nSaldo: "+get.saldo();
+        return "Cliente: "+nombre+" "+apellido+"\nDNI: "+dni+"\nSaldo: "+saldo;
     }
 
-    public void solicitarAtencion(){
-        empleados.atenderCliente(this); //metodo polimorfico
-    }
-        */
 }

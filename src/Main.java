@@ -101,8 +101,8 @@ public class Main {
         Cajero cajero = new Cajero("juan","des",123,12444,345,"trrh");
         //Map<String,Empleado> map = new HashMap<>();
         //map.put("gerente",gerente);
-        Cliente cliente = new Cliente(23234344, "Jose", "Manzano", 230000,null, cajero);
-        Cliente cliente2 = new Cliente(34, "Adrian", "Perea", 200, null,cajero);
+        Cliente cliente = new Cliente(23234344, "Jose", "Manzano", 230000,null, null,cajero);
+        Cliente cliente2 = new Cliente(34, "Adrian", "Perea", 200, null,null,cajero);
         cliente.solicitarTransferencia(30,cliente2);
         
     }

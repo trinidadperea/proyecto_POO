@@ -8,19 +8,19 @@ import Banco.Cliente.Cliente;
 public class AsesorDivisas extends Empleado{
     private Scanner sc;
 
-
     //metodos asesor de divisas
     public void valorDivisasCompra(Cliente cliente){
         //instancio el diccionario con los valores de las monedas para comprarlas
         Map<String,Double> divisasComprar = new HashMap<>();
-        divisasComprar.put("Dolar",1340.0);
-        divisasComprar.put("Euro",1580.0);
-        divisasComprar.put("Real",255.0);
-        divisasComprar.put("Chile",1.53);
+        divisasComprar.put("Dolar",936.5);
+        divisasComprar.put("Euro",1036.0);
+        divisasComprar.put("Real",168.0);
+        divisasComprar.put("Chile",0.98);
 
         Map<String,Double> monedas = new HashMap<>(divisasComprar);
         int index = 0;
         System.out.println("Precio compra");
+        //muestro las monedas con sus valores al usuario
         String[] monedasArray = monedas.keySet().toArray(new String[0]);
         for (String moneda : monedasArray){
             System.out.println(index + 1 + ". "+ moneda + " = $" + monedas.get(moneda));
@@ -49,7 +49,6 @@ public class AsesorDivisas extends Empleado{
                 //divisas.put(monedaElegida , valorMoneda);
                 System.out.println("La compra fue realizada con exito: "+precioFinal);
                 cliente.registrarDivisas(monedaElegida, precioFinal);
-
             } else {
                 System.out.println("Numero no valido");
             }
@@ -70,7 +69,7 @@ public class AsesorDivisas extends Empleado{
         //metodo que me duevuelve el cambio de x pesos en la moneda solicitada
         return 0;
     }
-    public boolean realizarCambio(String monedaCambio, double montoCambiar){
+    public boolean realizarCambio(double monedaCambio, double montoCambiar){    
         return true;
     }
 

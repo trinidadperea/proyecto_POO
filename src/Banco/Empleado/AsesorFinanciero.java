@@ -11,6 +11,4 @@ public class AsesorFinanciero extends Empleado{
         //devuelvo un consejo
         return "Hola " + cliente.getNombre() + " te recomiendo que ahorres un poco mas";
     }
-
-
 }

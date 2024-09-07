@@ -37,13 +37,13 @@ public class Cajero extends Empleado{
             return true;
         }
     }
-    /* 
+    
     public boolean realizarDeposito(double dineroDepositar, Cliente cliente){
         //le sumo el deposito al saldo del cliente
         cliente.setSaldo(cliente.getSaldo() + dineroDepositar);
         return true;
     }
-    public void realizarPrestamoCliente(Cliente cliente,double dineroPrestamo){
+    public boolean realizarPrestamoCliente(Cliente cliente,double dineroPrestamo){
         //le depositamos el dinero solicitado a su cuenta
         cliente.setSaldo(cliente.getSaldo() + dineroPrestamo);
         //valor de las cuotas a pagar 
@@ -58,6 +58,7 @@ public class Cajero extends Empleado{
         //le sumo el prestamo al saldo del cliente
         cliente.setSaldo(cliente.getSaldo() + dineroPrestamo);
         System.out.println( "El prestamo se ha estructurado en "+cuotas+" cuotas con un valor de $"+precioCuotas+" mensuales");
+        return true;
     }
-        */
+      
 }
