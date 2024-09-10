@@ -19,7 +19,6 @@ public abstract class Empleado {
         this.email = email;
     }
     //metodo abstacto
-    public void atenderCliente(Cliente cliente);
    
 
     //getters y setters

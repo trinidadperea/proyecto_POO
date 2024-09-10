@@ -97,13 +97,28 @@ public class Main {
 
         //METODO POLIMORFICO CLIENTE EMPLEADO
         //creo cliente
-        Gerente gerente = new Gerente(null,"Martin", "Gonzalez", 1441, 120000, 132445566, "mail");
+        /*Gerente gerente = new Gerente(null,"Martin", "Gonzalez", 1441, 120000, 132445566, "mail");
         Cajero cajero = new Cajero("juan","des",123,12444,345,"trrh");
         //Map<String,Empleado> map = new HashMap<>();
         //map.put("gerente",gerente);
         Cliente cliente = new Cliente(23234344, "Jose", "Manzano", 230000,null, null,cajero);
         Cliente cliente2 = new Cliente(34, "Adrian", "Perea", 200, null,null,cajero);
         cliente.solicitarTransferencia(30,cliente2);
+        */
         
+        AgenteDeBolsa agente = new AgenteDeBolsa("Raul");
+        Cliente trini = new Cliente(45448520,"Trinidad","Perea", 0, agente);
+        
+        Empleado cajero = new Cajero("juan","des",123,12444,345,"trrh");
+
+        trini.solicitarDeposito(100000, cajero);
+
+        trini.comprarActivo(2000000);
+
+        trini.consultarActivos();
+
+        trini.consultarPrecios();
+
+
     }
 }

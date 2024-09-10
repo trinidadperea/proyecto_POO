@@ -1,11 +1,10 @@
 package Banco.Cliente;
 
-import Banco.Cliente.Inversiones.*;
 import Banco.AgenteDeBolsa;
 import Banco.Empleado.*;
 import java.util.*;
 
-public class Cliente {
+public class Cliente implements CompraVentaActivos, CompraVentaDivisas{
     private int dni;
     private String nombre;
     private String apellido;
@@ -14,13 +13,22 @@ public class Cliente {
     private Empleado empleado;
     private AgenteDeBolsa agentedeBolsa;
 
+    public Cliente(int dni, String nombre,String apellido, double saldo, AgenteDeBolsa agenteDeBolsa) {
+        this.dni = dni;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.saldo = saldo;
+        this.divisasCompradas = new HashMap<>();
+        this.agentedeBolsa = agenteDeBolsa;
+        this.empleado = null;
+    }
+
     //metodos que se encarga el agente de bolsa
     public void comprarActivo(double monto){
         System.out.println("Seleccione el tipo de inversion que desea realizar: ");
-        System.out.println("1. Fondo de inversion");
+        System.out.println("1. Plazo Fijo");
         System.out.println("2. Acciones");
-        System.out.println("3. Propiedades");
-        System.out.println("4. Criptomonedas");
+        System.out.println("3. Criptomonedas");
         Scanner sc = new Scanner(System.in);
         int tipoInversion = sc.nextInt();
 
@@ -30,21 +38,27 @@ public class Cliente {
         } else {
             System.out.println("Saldo insuficiente para realizar la inversión.");
         }
-        sc.close();
     }
 
-    public void venderActivo(Inversion inversion){
-        this.saldo += agentedeBolsa.venderActivo(inversion);
+    public void venderActivo(int tipoInversion){
+        this.saldo += agentedeBolsa.venderActivo(tipoInversion,this);
         System.out.println("El saldo actual es: " + this.saldo);
         return;
     }
 
     public void consultarActivos(){
-        System.out.println(agentedeBolsa.mostrarInversiones());
+        System.out.println(agentedeBolsa.mostrarInversiones(this));
         return;
     }
+
+    public void consultarPrecios(){
+        System.out.println(agentedeBolsa.consultaPrecios());
+        return;
+    }
+
     //metodos que se encarga el cajero
-    public void solicitarTransferencia(double dineroTransferir, Cliente clienteDestino){
+    public void solicitarTransferencia(double dineroTransferir, Cliente clienteDestino, Empleado empleado){    // Solicita una transferencia
+        this.empleado = empleado;
         if (empleado instanceof Cajero){
             boolean solicitud = ((Cajero) empleado).realizarTransferencia(dineroTransferir, this, clienteDestino);
             if (solicitud){
@@ -55,7 +69,8 @@ public class Cliente {
         }
     }
 
-    public void solicitarRetiro(double dineroRetirar){    // Solicita un retiro
+    public void solicitarRetiro(double dineroRetirar, Empleado empleado){    // Solicita un retiro
+        this.empleado = empleado;
         if (empleado instanceof Cajero){
             boolean solicitud = ((Cajero) empleado).realizarRetiro(dineroRetirar,this);
             if (solicitud){
@@ -66,7 +81,8 @@ public class Cliente {
         }
     }
     
-    public void solicitarDeposito(double dineroDepositar){
+    public void solicitarDeposito(double dineroDepositar, Empleado empleado){    // Solicita un deposito
+        this.empleado = empleado;
         if (empleado instanceof Cajero){
             boolean solicitud = ((Cajero) empleado).realizarDeposito(dineroDepositar, this);
             if (solicitud){
@@ -80,7 +96,8 @@ public class Cliente {
         }
     }
     
-    public void solicitarPrestamo(Cliente cliente, double dineroPrestamo){
+    public void solicitarPrestamo(Cliente cliente, double dineroPrestamo, Empleado empleado){
+        this.empleado = empleado;
         // Solicita permiso de un prestamo al gerente
         String deuda; 
         Scanner sc = new Scanner(System.in);
@@ -100,20 +117,31 @@ public class Cliente {
         }
         sc.close();
     }
+
+    //metodos que se encarga el asesor de divisas
     public void venderDivisas(String monedaVender, double montoVender){
         //le vendo al banco las monedas y le sumo el precio en pesos al saldo
     }
+
+    public void comprarDivisas(String monedaVender, double montoVender){
+        //le compro al banco las monedas y le resto el precio en pesos al saldo
+    }
  
-    public void consultarPrecioCompraDivisas(){
+    public void solicitarPrecioDivisas(){
         //llamo a la clase AsesorDivisas, que ahi es donde se actualizan
         //me muestra los precios y si quiero comprar
         ((AsesorDivisas) empleado).valorDivisasCompra(this);
     }
 
-    public void consultarPrecioVentaDivisas(){
-        ((AsesorDivisas) empleado).valorDivisasVenta(this);
-
+    public void mostrarDivisasCompradas(){
+        System.out.println("Divisas compradas de la/el Sr/Sra: "+ this.getNombre());
+        System.out.println(" ");
+        for (Map.Entry<String, Double> entry : divisasCompradas.entrySet()) {
+            System.out.println("Divisa: " + entry.getKey() + " - Valor: $" + entry.getValue());
+        }
     }
+
+    //metodos del cliente
 
     public void pagarCuotaPrestamo(){
         // Paga una cuota de un prestamo
@@ -126,23 +154,6 @@ public class Cliente {
     }
     public void registrarDivisas(String nombreDivisa, double valor){
         divisasCompradas.put(nombreDivisa, divisasCompradas.getOrDefault(nombreDivisa, 0.0) + valor);
-    }
-
-    public void mostrarDivisasCompradas(){
-        System.out.println("Divisas compradas de la/el Sr/Sra: "+ this.getNombre());
-        System.out.println(" ");
-        for (Map.Entry<String, Double> entry : divisasCompradas.entrySet()) {
-            System.out.println("Divisa: " + entry.getKey() + " - Valor: $" + entry.getValue());
-        }
-    }
-
-    public Cliente(int dni, String nombre,String apellido, double saldo, Map<String,Double> divisasCompradas, AgenteDeBolsa agenteDeBolsa, Empleado empleado) {
-        this.dni = dni;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.saldo = saldo;
-        this.empleado = empleado;
-        this.divisasCompradas = new HashMap<>();
     }
 
     public int getDni() {

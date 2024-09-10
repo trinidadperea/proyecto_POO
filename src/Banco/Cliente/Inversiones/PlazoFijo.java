@@ -1,36 +1,67 @@
 package Banco.Cliente.Inversiones;
-
+import java.time.LocalDate;
 import Banco.Cliente.Cliente;
 
 public class PlazoFijo extends Inversion {
-    private double tasaInteresAnual;
-    private int plazoDias;
+    private float tasaInteres;
+    private String estado;
+    private LocalDate fechaVencimiento;
+    private int duracion;  // en días
 
-    public PlazoFijo(double tasaInteresAnual, int plazoDias, double monto, Cliente cliente){
-        super(monto, cliente);
-        this.tasaInteresAnual = tasaInteresAnual;
-
-        this.plazoDias = plazoDias;
+    // Constructor
+    public PlazoFijo(Cliente cliente, double monto,float tasaInteres, String estado, LocalDate fechaVencimiento, int duracion) {
+        super(monto, cliente, "Plazo Fijo", "Plazo Fijo");
+        this.tasaInteres = tasaInteres;
+        this.estado = estado;
+        this.fechaVencimiento = fechaVencimiento;
+        this.duracion = duracion;
     }
 
     public double calcularRendimientos(){
-        return 0;
+        return monto * tasaInteres * duracion;
     }
 
-    public double getTasaInteres() {
-        return tasaInteresAnual;
+    public float getTasaInteres() {
+        return tasaInteres;
     }
 
-    public void setTasaInteres(double tasaInteres) {
-        this.tasaInteresAnual = tasaInteres;
+    public void setTasaInteres(float tasaInteres) {
+        this.tasaInteres = tasaInteres;
     }
 
-    public int getPlazoDias() {
-        return plazoDias;
+    public String getEstado() {
+        return estado;
     }
 
-    public void setPlazoDias(int plazoDias) {
-        this.plazoDias = plazoDias;
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
-    
+
+    public LocalDate getFechaVencimiento() {
+        return fechaVencimiento;
+    }
+
+    public void setFechaVencimiento(LocalDate fechaVencimiento) {
+        this.fechaVencimiento = fechaVencimiento;
+    }
+
+    public int getDuracion() {
+        return duracion;
+    }
+
+    public void setDuracion(int duracion) {
+        this.duracion = duracion;
+    }
+
+
+    // Método toString para mostrar los detalles del PlazoFijo
+    @Override
+    public String toString() {
+        return "PlazoFijo{" +
+                "tasaInteres=" + tasaInteres +
+                ", estado='" + estado + '\'' +
+                ", fechaVencimiento=" + fechaVencimiento +
+                ", duracion=" + duracion +
+                '}';
+    }
 }

@@ -4,10 +4,30 @@ import Banco.Cliente.Cliente;
 public  abstract class Inversion implements AccionInversion {
     protected double monto;
     protected Cliente cliente;
+    protected String tipoInversion;
+    protected String nombre;
 
-    public Inversion(double monto, Cliente cliente){
+    public Inversion(double monto, Cliente cliente, String nombre, String tipoInversion) {
         this.monto = monto;
         this.cliente = cliente;
+        this.nombre = nombre;
+        this.tipoInversion = tipoInversion;
+    }
+
+    public String getTipoInversion() {
+        return tipoInversion;
+    }
+
+    public void setTipoInversion(String tipoInversion) {
+        this.tipoInversion = tipoInversion;
+    }
+
+    public String getNombre() {
+        return this.nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public double getMonto() {

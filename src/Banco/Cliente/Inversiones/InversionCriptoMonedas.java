@@ -2,14 +2,13 @@ package Banco.Cliente.Inversiones;
 import Banco.Cliente.Cliente;
 
 public class InversionCriptoMonedas extends Inversion {
-    private String nombre;
     private double cantidad;
     private double volatilidad;
     private double precioCompra;
     private double precioActual;
 
     public InversionCriptoMonedas(String nombre, double cantidad, double volatilidad, double precioCompra, double precioActual, double monto, Cliente cliente) {
-        super(monto, cliente);
+        super(monto, cliente, nombre, "Criptomoneda");
         this.nombre = nombre;
         this.cantidad = cantidad;
         this.volatilidad = volatilidad;
@@ -19,14 +18,6 @@ public class InversionCriptoMonedas extends Inversion {
 
     public double calcularRendimientos(){
         return (precioActual - precioCompra) * cantidad;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
     }
 
     public double getCantidad() {

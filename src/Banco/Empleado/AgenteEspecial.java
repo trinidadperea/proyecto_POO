@@ -1,5 +1,7 @@
 package Banco.Empleado;
 
+import Banco.Cliente.Cliente;
+
 public class AgenteEspecial extends Empleado{
     //constructor
     public AgenteEspecial(String nombre, String apellido, int legajo,

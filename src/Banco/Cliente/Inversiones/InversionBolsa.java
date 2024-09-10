@@ -7,13 +7,14 @@ public class InversionBolsa extends Inversion {
     private double precioCompra;
     private double precioActual;
 
-    public InversionBolsa(String accion, float cantidadAcciones, double precioCompra, double precioActual, double monto, Cliente cliente) {
-        super(monto, cliente);
+    public InversionBolsa(String accion, float cantidadAcciones, double precioCompra, double precioActual, double monto, Cliente cliente, String nombre) {
+        super(monto, cliente, nombre, "Bolsa");
         this.accion = accion;
         this.cantidadAcciones = cantidadAcciones;
         this.precioCompra = precioCompra;
         this.precioActual = precioActual;
     }
+
 
     public double calcularRendimientos(){
         return (precioActual - precioCompra) * cantidadAcciones;
