@@ -105,20 +105,18 @@ public class Main {
         Cliente cliente2 = new Cliente(34, "Adrian", "Perea", 200, null,null,cajero);
         cliente.solicitarTransferencia(30,cliente2);
         */
-        
+
         AgenteDeBolsa agente = new AgenteDeBolsa("Raul");
         Cliente trini = new Cliente(45448520,"Trinidad","Perea", 0, agente);
         
+        AsesorDivisas asesorDivisas = new AsesorDivisas("Martina", "Gonzalez", 1440, 120000, 132445566, "mail");
+
         Empleado cajero = new Cajero("juan","des",123,12444,345,"trrh");
 
         trini.solicitarDeposito(100000, cajero);
 
-        trini.comprarActivo(2000000);
-
-        trini.consultarActivos();
-
         trini.consultarPrecios();
-
-
+        agente.actualizarValorDeAccionesYCriptos();
+        trini.consultarPrecios();
     }
 }

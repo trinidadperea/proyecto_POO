@@ -7,74 +7,118 @@ import Banco.Cliente.Cliente;
 
 public class AsesorDivisas extends Empleado{
     private Scanner sc;
-
-    //metodos asesor de divisas
-    public void valorDivisasCompra(Cliente cliente){
-        //instancio el diccionario con los valores de las monedas para comprarlas
-        Map<String,Double> divisasComprar = new HashMap<>();
-        divisasComprar.put("Dolar",936.5);
-        divisasComprar.put("Euro",1036.0);
-        divisasComprar.put("Real",168.0);
-        divisasComprar.put("Chile",0.98);
-
-        Map<String,Double> monedas = new HashMap<>(divisasComprar);
-        int index = 0;
-        System.out.println("Precio compra");
-        //muestro las monedas con sus valores al usuario
-        String[] monedasArray = monedas.keySet().toArray(new String[0]);
-        for (String moneda : monedasArray){
-            System.out.println(index + 1 + ". "+ moneda + " = $" + monedas.get(moneda));
-            index++;
-        }
-        
-        String comprar; 
-        System.out.println("Desea comprar? (S/N)");
-        comprar = sc.nextLine().trim().toUpperCase();
+    private HashMap<String,Double> divisas = new HashMap<>();
 
 
-        if (comprar.equals("S")){
-            System.out.println("Coloque el numero de la divisa a comprar");
-            int nroMoneda = sc.nextInt() - 1;
-            sc.nextLine();
-            //verifico que sea correcto
-            if (nroMoneda >= 0 && nroMoneda < monedasArray.length){
-                System.out.println("Coloque en pesos cuanto desea comprar");
-                double valorComprar = sc.nextDouble();
-                sc.nextLine();
-
-                String monedaElegida = monedasArray[nroMoneda];
-                //le agrego al cliente la moneda
-                double valorMoneda = monedas.get(monedaElegida);
-                double precioFinal = valorComprar / valorMoneda ;
-                //divisas.put(monedaElegida , valorMoneda);
-                System.out.println("La compra fue realizada con exito: "+precioFinal);
-                cliente.registrarDivisas(monedaElegida, precioFinal);
-            } else {
-                System.out.println("Numero no valido");
-            }
-        }
-
+    public AsesorDivisas(String nombre, String apellido, int legajo, double salario, int nroTelefono, String email) {
+        super(nombre, apellido, legajo, salario, nroTelefono, email);
+        sc = new Scanner(System.in);
+        divisas.put("Dolar", 1300.0);
+        divisas.put("Euro", 1400.0);
+        divisas.put("Real", 200.0);
+        divisas.put("Peso Chileno", 0.1);
     }
 
-    public void valorDivisasVenta(Cliente cliente){
-        Map<String,Double> divisasVenta = new HashMap<>();
-        divisasVenta.put("Dolar",1300.0);
-        divisasVenta.put("Euro",1460.0);
-        divisasVenta.put("Real",225.0);
-        divisasVenta.put("Chile",1.43);
-        //antes de vender debo verificar si tiene
+    //metodos asesor de divisas
+    public void consultaPrecios(){
+
+        System.out.println("Precio compra");
+        //muestro las monedas con sus valores al usuario
+        
+        int index = 1;
+        String[] divisasArray = divisas.keySet().toArray(new String[0]);
+        for (String moneda : divisasArray) {
+            System.out.println(index + ". " + moneda + " - $" + divisas.get(moneda));
+            index++;
+        }
+        return;
+    }
+
+    public void compraDivisas(double monto, Cliente cliente){
+        System.out.println("Seleccione la moneda que desea comprar: ");
+        consultaPrecios();
+        int opcion = sc.nextInt();
+        
+        Map<String,Double> divisasCliente = cliente.getDivisasCompradas();
+
+        switch (opcion) {
+            case 1: // Dolar
+                double montoCambiadoDolar = monto / divisas.get("Dolar");
+                montoCambiadoDolar = (long) (montoCambiadoDolar * 100) / 100.0;
+                if (divisasCliente.containsKey("Dolar")) {
+                    montoCambiadoDolar += divisasCliente.get("Dolar");
+                    divisasCliente.remove("Dolar");
+                }
+                divisasCliente.put("Dolar", montoCambiadoDolar);
+                cliente.setDivisasCompradas(divisasCliente);
+                break;
+        
+            case 2: // Euro
+                double montoCambiadoEuro = monto / divisas.get("Euro");
+                montoCambiadoEuro = (long) (montoCambiadoEuro * 100) / 100.0;
+                if (divisasCliente.containsKey("Euro")) {
+                    montoCambiadoEuro += divisasCliente.get("Euro");
+                    divisasCliente.remove("Euro");
+                }
+                divisasCliente.put("Euro", montoCambiadoEuro);
+                cliente.setDivisasCompradas(divisasCliente);
+                break;
+        
+            case 3: // Real
+                double montoCambiadoReal = monto / divisas.get("Real");
+                montoCambiadoReal = (long) (montoCambiadoReal * 100) / 100.0;
+                if (divisasCliente.containsKey("Real")) {
+                    montoCambiadoReal += divisasCliente.get("Real");
+                    divisasCliente.remove("Real");
+                }
+                divisasCliente.put("Real", montoCambiadoReal);
+                cliente.setDivisasCompradas(divisasCliente);
+                break;
+        
+            case 4: // Peso Chileno
+                double montoCambiadoPesoChileno = monto / divisas.get("Peso Chileno");
+                montoCambiadoPesoChileno = (long) (montoCambiadoPesoChileno * 100) / 100.0;
+                if (divisasCliente.containsKey("Peso Chileno")) {
+                    montoCambiadoPesoChileno += divisasCliente.get("Peso Chileno");
+                    divisasCliente.remove("Peso Chileno");
+                }
+                divisasCliente.put("Peso Chileno", montoCambiadoPesoChileno);
+                cliente.setDivisasCompradas(divisasCliente);
+                break;
+        
+            default:
+                System.out.println("Opción no válida.");
+                break;
+        }
+        
     }
 
     public double calcularMontoDestino(String monedaDestino, double valorEnPesos){
-        //metodo que me duevuelve el cambio de x pesos en la moneda solicitada
-        return 0;
+        double montoDestino = valorEnPesos / divisas.get(monedaDestino);
+        return montoDestino;
     }
+    
     public boolean realizarCambio(double monedaCambio, double montoCambiar){    
         return true;
     }
 
-    public AsesorDivisas(String nombre, String apellido, int legajo, double salario, int nroTelefono, String email, Scanner sc) {
-        super(nombre, apellido, legajo, salario, nroTelefono, email);
-        this.sc = sc;
+    public void venderDivisas(String monedaVender, double montoVender, Cliente cliente){
+        Map<String,Double> divisasCliente = cliente.getDivisasCompradas();
+        if (divisasCliente.containsKey(monedaVender) && divisasCliente.get(monedaVender) >= montoVender){
+            double montoPesos = montoVender * divisas.get(monedaVender);
+            cliente.setSaldo(cliente.getSaldo() + montoPesos);
+            if (divisasCliente.get(monedaVender) == montoVender) {
+                divisasCliente.remove(monedaVender);
+            }else{
+                double montoFinal = divisasCliente.get(monedaVender) - montoVender;
+                montoFinal = (long) (montoFinal * 100) / 100.0;
+                divisasCliente.put(monedaVender, montoFinal);
+            }
+            
+            cliente.setDivisasCompradas(divisasCliente);
+        } else {
+            System.out.println("No posee suficiente cantidad de la divisa para realizar la venta.");
+        }
     }
+    
 }

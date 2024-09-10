@@ -246,13 +246,11 @@ public class AgenteDeBolsa {
         return 0.0;
     }
     
-
     public String consultaPrecios() {
         String toReturn = "";
         System.out.println("¿Desea ver los precios de:\n1. Empresas\n2. Criptomonedas");
         
-        int opcion = sc.nextInt();//no sé que pasa acá
-
+        int opcion = sc.nextInt();
         
 
         switch (opcion) {
@@ -281,10 +279,25 @@ public class AgenteDeBolsa {
         return toReturn;
     }
 
-    //A HACER
-    public void actualizarValorDeAccion(String empresa, double nuevoValor) {
-        companies.put(empresa, nuevoValor);
+    public void actualizarValorDeAccionesYCriptos() {
+        for (Map.Entry<String, Double> entryCo : companies.entrySet()) {
+            double randomValue = 0.95 + (Math.random() * (1.05 - 0.95));
+    
+            double nuevoValor = entryCo.getValue() * randomValue;
+            nuevoValor = (long) (nuevoValor * 100) / 100.0;
+
+            entryCo.setValue(nuevoValor);
+        }
+        for (Map.Entry<String, Double> entryCr : criptos.entrySet()) {
+            double randomValue = 0.95 + (Math.random() * (1.05 - 0.95));
+    
+            double nuevoValor = entryCr.getValue() * randomValue;
+            nuevoValor = (long) (nuevoValor * 100) / 100.0;
+
+            entryCr.setValue(nuevoValor);
+        }
     }
+    
 
     public String mostrarInversiones(Cliente cliente) {
         List<Inversion> inversiones = inversionesPorCliente.get(cliente);

@@ -119,18 +119,51 @@ public class Cliente implements CompraVentaActivos, CompraVentaDivisas{
     }
 
     //metodos que se encarga el asesor de divisas
-    public void venderDivisas(String monedaVender, double montoVender){
-        //le vendo al banco las monedas y le sumo el precio en pesos al saldo
+    public void venderDivisas(String monedaVender, double montoVender, Empleado empleado){
+        this.empleado = empleado;
+        if (empleado instanceof AsesorDivisas){
+            if (divisasCompradas.containsKey(monedaVender) && divisasCompradas.get(monedaVender) >= montoVender){
+                ((AsesorDivisas) empleado).venderDivisas(monedaVender, montoVender, this);
+                this.saldo += montoVender;
+            } else {
+                System.out.println("No posee suficiente cantidad de la divisa para realizar la venta.");
+            }
+        }else{
+            System.out.println("Este empleado no puede realizar esta operación");
+        }
+        
     }
 
-    public void comprarDivisas(String monedaVender, double montoVender){
-        //le compro al banco las monedas y le resto el precio en pesos al saldo
+    public void comprarDivisas(double montoComprar, Empleado empleado){
+        this.empleado = empleado;
+        if (empleado instanceof AsesorDivisas){
+            if (this.saldo >= montoComprar) {
+                ((AsesorDivisas) empleado).compraDivisas(montoComprar,this);
+                this.saldo -= montoComprar;
+            } else {
+                System.out.println("Saldo insuficiente para realizar la conversión.");
+            }
+        }else{
+            System.out.println("Este empleado no puede realizar esta operación");
+        }
+        
     }
  
-    public void solicitarPrecioDivisas(){
-        //llamo a la clase AsesorDivisas, que ahi es donde se actualizan
-        //me muestra los precios y si quiero comprar
-        ((AsesorDivisas) empleado).valorDivisasCompra(this);
+    public void solicitarPrecioDivisas(Empleado empleado){
+        this.empleado = empleado;
+        if (empleado instanceof AsesorDivisas){
+            ((AsesorDivisas) empleado).consultaPrecios();
+        }else{
+            System.out.println("Este empleado no puede realizar esta operación");
+        }
+    }
+
+    public void simularCompra(double monto, String monedaDestino, Empleado empleado){
+        if (empleado instanceof AsesorDivisas){
+            System.out.println(((AsesorDivisas) empleado).calcularMontoDestino(monedaDestino,monto));
+        }else{
+            System.out.println("Este empleado no puede realizar esta operación");
+        }
     }
 
     public void mostrarDivisasCompradas(){
@@ -180,7 +213,12 @@ public class Cliente implements CompraVentaActivos, CompraVentaDivisas{
 	public void setApellido(String apellido) {
 		this.apellido = apellido;
 	}
-
+    public Map<String, Double> getDivisasCompradas() {
+        return divisasCompradas;
+    }
+    public void setDivisasCompradas(Map<String, Double> divisasCompradas) {
+        this.divisasCompradas = divisasCompradas;
+    }
     @Override
     public String toString(){
         return "Cliente: "+nombre+" "+apellido+"\nDNI: "+dni+"\nSaldo: "+saldo;
