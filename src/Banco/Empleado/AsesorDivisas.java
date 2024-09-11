@@ -14,8 +14,8 @@ public class AsesorDivisas extends Empleado{
         super(nombre, apellido, legajo, salario, nroTelefono, email);
         sc = new Scanner(System.in);
         divisas.put("Dolar", 1300.0);
-        divisas.put("Euro", 1400.0);
         divisas.put("Real", 200.0);
+        divisas.put("Euro", 1400.0);
         divisas.put("Peso Chileno", 0.1);
     }
 
@@ -102,8 +102,9 @@ public class AsesorDivisas extends Empleado{
         return true;
     }
 
-    public void venderDivisas(String monedaVender, double montoVender, Cliente cliente){
+    public void venderDivisas(String monedaVender, double monto, Cliente cliente){
         Map<String,Double> divisasCliente = cliente.getDivisasCompradas();
+        double montoVender = monto / divisas.get(monedaVender);
         if (divisasCliente.containsKey(monedaVender) && divisasCliente.get(monedaVender) >= montoVender){
             double montoPesos = montoVender * divisas.get(monedaVender);
             cliente.setSaldo(cliente.getSaldo() + montoPesos);
