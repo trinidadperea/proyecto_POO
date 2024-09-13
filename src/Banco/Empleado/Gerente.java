@@ -36,14 +36,10 @@ public class Gerente extends Empleado{
     //metodo clase gerente, pedidos por el cliente
     public boolean aprobarTransaccionCliente(Cliente cliente,double dinero){
         if (!dineroNoRegistrado.containsKey(cliente)){
-            System.out.println("armo el primer cliente");
             dineroNoRegistrado.put(cliente,dinero);
-            //mostrarDineroNoRegistrado();
         } else {
-            System.out.println("Agrega dinero no registrado");
             double dineroNoRegCliente = dineroNoRegistrado.get(cliente);
             dineroNoRegistrado.put(cliente, dineroNoRegCliente + dinero);
-            //mostrarDineroNoRegistrado();
         }
         return true;
     }
