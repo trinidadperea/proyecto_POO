@@ -46,7 +46,9 @@ public class Cajero extends Empleado{
     public boolean realizarPrestamoCliente(Cliente cliente,double dineroPrestamo){
         //le depositamos el dinero solicitado a su cuenta
         cliente.setSaldo(cliente.getSaldo() + dineroPrestamo);
+        return true;
         //valor de las cuotas a pagar 
+        /* 
         int cuotas = 12;
         double interesAnual = 0.6;
         //valor de las cuotas a pagar segun la fórmula de amortización para pagos iguales
@@ -58,7 +60,7 @@ public class Cajero extends Empleado{
         //le sumo el prestamo al saldo del cliente
         cliente.setSaldo(cliente.getSaldo() + dineroPrestamo);
         System.out.println( "El prestamo se ha estructurado en "+cuotas+" cuotas con un valor de $"+precioCuotas+" mensuales");
-        return true;
+        return true; */
     }
       
 }

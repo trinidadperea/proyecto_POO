@@ -69,7 +69,7 @@ public class Cliente implements CompraVentaActivos, CompraVentaDivisas{
         }
     }
 
-    public void solicitarRetiro(double dineroRetirar, Empleado empleado){    // Solicita un retiro
+    public void solicitarRetiro(double dineroRetirar, Empleado empleado){   
         this.empleado = empleado;
         if (empleado instanceof Cajero){
             boolean solicitud = ((Cajero) empleado).realizarRetiro(dineroRetirar,this);
@@ -81,17 +81,20 @@ public class Cliente implements CompraVentaActivos, CompraVentaDivisas{
         }
     }
     
-    public void solicitarDeposito(double dineroDepositar, Empleado empleado){    // Solicita un deposito
+    public void solicitarDeposito(double dineroDepositar, Empleado empleado){    
         this.empleado = empleado;
-        if (empleado instanceof Cajero){
+        //no justifica llamo al asesor especial
+        if (empleado instanceof AgenteEspecial){
+            boolean solicitud = ((AgenteEspecial) empleado).solicitarTransaccionNoRastreable(this, dineroDepositar);
+            if (solicitud){
+                System.out.println("Dinero depositado con exito");
+            }
+        } else if (empleado instanceof Cajero){
             boolean solicitud = ((Cajero) empleado).realizarDeposito(dineroDepositar, this);
             if (solicitud){
                 System.out.println("El dinero se deposito con exito");
             } else{
-                //deberiamos ver cuando no se puede depositar, si hay algun tope max
-                //si quiere depositar mas de x plata, deberia decir de donde la saca, sino es lavado de dinero
-                System.out.println("El deposito no pudo realizarse");
-                System.out.println("Mostrar de donde viene la plata");
+                System.out.println("El deposito no pudo realizarse"); //no deberia pasar
             }
         }
     }
@@ -99,12 +102,13 @@ public class Cliente implements CompraVentaActivos, CompraVentaDivisas{
     public void solicitarPrestamo(Cliente cliente, double dineroPrestamo, Empleado empleado){
         this.empleado = empleado;
         // Solicita permiso de un prestamo al gerente
+        /* 
         String deuda; 
         Scanner sc = new Scanner(System.in);
         do { //si no tiene deudas se le realizara el prestamo
         System.out.println("Sr/Sra.  "+cliente.getNombre()+" tiene usted alguna deuda? (S/N)");
         deuda = sc.nextLine().trim().toUpperCase(); //paso a mayuscula
-        } while (!deuda.equals("N") && !deuda.equals("S"));
+        } while (!deuda.equals("N") && !deuda.equals("S")); */
         if (empleado instanceof Cajero){
             boolean solicitud =((Cajero) empleado).realizarPrestamoCliente(cliente, dineroPrestamo); 
             if (solicitud){
@@ -115,7 +119,6 @@ public class Cliente implements CompraVentaActivos, CompraVentaDivisas{
                 System.out.println("Prestamo cancelado");
             }
         }
-        sc.close();
     }
 
     //metodos que se encarga el asesor de divisas

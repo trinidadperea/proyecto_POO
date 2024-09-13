@@ -1,23 +1,42 @@
-import Banco.Empleado.AsesorFinanciero;
-import Banco.Empleado.Empleado;
 import Banco.AgenteDeBolsa;
 import Banco.Cliente.Cliente;
 import Banco.Empleado.*;
 import Banco.Banco;
+ 
+
 
 import java.util.*;
 
 
 public class Main {
-    
-    //falta ver el tema de donde creamos y llamamos a cada empleado
-
+    /* 
+    public static void main(String[] args){
+        //falta ver el tema de donde creamos y llamamos a cada empleado
+        AgenteDeBolsa agente = new AgenteDeBolsa("Raul");
+        Cliente cliente = new Cliente(123, "Juan", "Loncharich",10000,agente);
+        Cajero cajero = new Cajero("trini","des",123,12444,345,"trrh");
+        Gerente gerente = new Gerente("gerente","des",123,12444,345,"trrh");
+        AgenteEspecial agenteE = new AgenteEspecial("marti","manzano", 12, 0, 14566,"@email",gerente);
+        cliente.solicitarDeposito(10,agenteE);
+        cliente.solicitarDeposito(1000,agenteE);
+        //gerente.mostrarDineroNoRegistrado();
+        //Cliente cliente2 = new Cliente(123, "jose", "Loncharich",10000,agente);
+        //cliente2.solicitarDeposito(30,agenteE);
+        gerente.mostrarDineroNoRegistrado();
+    } 
+} */
+     
     public static void main(String[] args){
 
         HashMap<Integer,String> contraseñas = new HashMap<Integer,String>();
         HashMap<Integer,Cliente> clientes = new HashMap<Integer,Cliente>();
 
         boolean keep = true;
+        //creo al gerente
+        final int dniGerente = 9090;
+        final String passGerente = "9090";
+        //Gerente gerente = new Gerente("Martin", "Gonzales", 0, 0,31234,"martingonzales@gmail.com");
+
 
         while (keep == true) {
             System.out.println("Bienvenido al banco la familia");
@@ -33,7 +52,6 @@ public class Main {
                     System.out.println("Ingrese su contraseña");
                     String pass = sc.nextLine();
                     pass = sc.nextLine();
-
                     if (contraseñas.containsKey(dni)) {
                         if (contraseñas.get(dni).equals(pass)) {
                             System.out.println("Bienvenido");
@@ -42,13 +60,16 @@ public class Main {
                         } else {
                             System.out.println("Contraseña incorrecta");
                         }
+                    } else if(dni == dniGerente && pass.equals(passGerente)){
+                            //es el gerente, por lo tanto se abre otro menu
+                            System.out.println("Bienvenido Gerente");
+                            menuGerente();
                     } else {
                         System.out.println("Usuario no registrado");
                     }
-
                     break;
                 case 2:
-                    crearCliente(contraseñas, clientes);                    
+                    crearCliente(contraseñas, clientes);                 
                     break;
                 case 3:
                     keep = false;
@@ -56,11 +77,146 @@ public class Main {
                 default:
                     break;
             }
+           // Gerente gerente = new Gerente("Martin", "Sabez", 5675, 100000, 261345438, "matrinSabez@gmail.com");
+           // gerente.mostrarDineroNoRegistrado();
         }
-            
+    } 
+    //ingresa un cajero
+    public static void menuGerente(){
 
 
-        /**
+    }
+
+    public static void menuCliente(Cliente cliente, HashMap<Integer,Cliente> clientes){
+        while (true) {
+            Scanner sc = new Scanner(System.in);
+            System.out.println("1. Realizar transferencia");
+            System.out.println("2. Realizar retiro");
+            System.out.println("3. Realizar deposito");
+            System.out.println("4. Solicitar prestamo");
+            System.out.println("5. Consultar sobre divisas");
+            System.out.println("6. Consultar sobre acciones, criptomonedas y plazos fijos");
+            System.out.println("7. Consultar Saldo");
+            System.out.println("8. Cerrar sesión");
+            int opcion = sc.nextInt();
+            if(opcion == 8){
+                break;
+            }
+            //instancio el cajero para probar, pero no quedará asi
+            Cajero cajero = new Cajero("juan","des",123,12444,345,"trrh");
+            //instancio el asesor de divisas para probar, pero no quedará asi
+            AsesorDivisas asesorDivisas = new AsesorDivisas("Martina", "Gonzalez", 1440, 120000, 132445566, "mail");
+            Gerente gerente = new Gerente("gerente","des",123,12444,345,"trrh");
+            AgenteEspecial agenteE = new AgenteEspecial("marti","manzano", 12, 0, 14566,"@email",gerente);
+            switch (opcion) {
+                case 1:
+                    System.out.println("Ingrese el monto a transferir");
+                    double monto = sc.nextDouble();
+                    System.out.println("Ingrese el dni del cliente destino");
+                    int dniDestino = sc.nextInt();
+                    cliente.solicitarTransferencia(monto, clientes.get(dniDestino), cajero);
+                    break;
+                case 2:
+                    System.out.println("Ingrese el monto a retirar");
+                    double montoRetirar = sc.nextDouble();
+                    cliente.solicitarRetiro(montoRetirar, cajero);
+                    break;
+                case 3:
+                    System.out.println("Cliente "+cliente.getNombre()+" justifique de donde viene el dinero");
+                    sc.nextLine();
+                    String respCliente = sc.nextLine();
+                    System.out.println("Ingrese el monto a depositar");
+                    double montoDepositar = sc.nextDouble();
+                    if (respCliente.equals("")){ //si no conesta nada es plata sucia, lo maneja el agente especial
+                        cliente.solicitarDeposito(montoDepositar, agenteE);
+                    } else {
+                        cliente.solicitarDeposito(montoDepositar, cajero);
+                    }
+                    gerente.mostrarDineroNoRegistrado();
+                    break;
+                case 4:
+                    System.out.println("Ingrese el monto a solicitar");
+                    double montoSolicitar = sc.nextDouble();
+                    cliente.solicitarPrestamo(cliente, montoSolicitar, cajero);
+                    break;
+                case 5:
+                    System.out.println("1. Consultar precios de divisas");
+                    System.out.println("2. Comprar divisas");
+                    System.out.println("3. Vender divisas");
+                    int opcionDivisas = sc.nextInt();
+                    switch (opcionDivisas) {
+                        case 1:
+                            cliente.solicitarPrecioDivisas(asesorDivisas);
+                            break;
+                        case 2:
+                            System.out.println("Ingrese el monto a comprar");
+                            double montoComprar = sc.nextDouble();
+                            cliente.comprarDivisas(montoComprar, asesorDivisas);
+                            break;
+                        case 3:
+                            System.out.println("Ingrese el monto a vender");
+                            double montoVender = sc.nextDouble();
+                            System.out.println("Ingrese la moneda a vender, usted posee: ");
+                            cliente.mostrarDivisasCompradas();
+                            String moneda = sc.nextLine();
+                            moneda = sc.nextLine();
+                            cliente.venderDivisas(moneda, montoVender, asesorDivisas);
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                case 6:
+                    //vender divisas
+                    break;
+                case 7:
+                    //mostrar saldo
+                    //System.out.println("Sr/Sra. su saldo actual es de: $"+ cliente.getSaldo());
+                    gerente.mostrarDineroNoRegistrado();
+                    break;
+                case 8:
+                    //consultar precios de acciones y criptomonedas
+                    break;
+                case 9:
+                    //cerrar sesión
+                    break;
+                default:
+                    break;
+
+            }
+
+        }
+        
+    }
+    public static void crearCliente(HashMap<Integer,String> contraseñas, HashMap<Integer,Cliente> clientes){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Ingrese su nombre");
+        String nombre = sc.nextLine();
+        System.out.println("Ingrese su apellido");
+        String apellido = sc.nextLine();
+        System.out.println("Ingrese su dni");
+        int dni = sc.nextInt();
+        System.out.println("Ingrese su contraseña");
+        String pass = sc.nextLine();
+        pass = sc.nextLine();
+
+        Cliente cliente = new Cliente(dni, nombre, apellido, 0, null);
+
+        contraseñas.put(dni, pass);
+        clientes.put(dni, cliente);
+        return;
+    }
+}
+
+/* 
+    
+
+    
+
+}
+*/
+/*
+  /**
         AgenteDeBolsa agente = new AgenteDeBolsa("Raul");
         Cliente cliente = new Cliente(45448520,"Trinidad","Perea", 10000, agente,null,null,null,null);
         Cajero cajero = new Cajero("juan","des",123,12444,345,"trrh");
@@ -166,114 +322,4 @@ public class Main {
         trini.consultarPrecios();
         agente.actualizarValorDeAccionesYCriptos();
         trini.consultarPrecios();**/
-    }
-
-    public static void menuCliente(Cliente cliente, HashMap<Integer,Cliente> clientes){
-        while (true) {
-            Scanner sc = new Scanner(System.in);
-            System.out.println("1. Realizar transferencia");
-            System.out.println("2. Realizar retiro");
-            System.out.println("3. Realizar deposito");
-            System.out.println("4. Solicitar prestamo");
-            System.out.println("5. Consultar sobre divisas");
-            System.out.println("6. Consultar sobre acciones, criptomonedas y plazos fijos");
-            System.out.println("7. Cerrar sesión");
-            int opcion = sc.nextInt();
-            if(opcion == 7){
-                break;
-            }
-            //instancio el cajero para probar, pero no quedará asi
-            Cajero cajero = new Cajero("juan","des",123,12444,345,"trrh");
-            //instancio el asesor de divisas para probar, pero no quedará asi
-            AsesorDivisas asesorDivisas = new AsesorDivisas("Martina", "Gonzalez", 1440, 120000, 132445566, "mail");
-
-            switch (opcion) {
-                case 1:
-                    System.out.println("Ingrese el monto a transferir");
-                    double monto = sc.nextDouble();
-                    System.out.println("Ingrese el dni del cliente destino");
-                    int dniDestino = sc.nextInt();
-                    cliente.solicitarTransferencia(monto, clientes.get(dniDestino), cajero);
-                    break;
-                case 2:
-                    System.out.println("Ingrese el monto a retirar");
-                    double montoRetirar = sc.nextDouble();
-                    cliente.solicitarRetiro(montoRetirar, cajero);
-                    break;
-                case 3:
-                    System.out.println("Ingrese el monto a depositar");
-                    double montoDepositar = sc.nextDouble();
-                    cliente.solicitarDeposito(montoDepositar, cajero);
-                    break;
-                case 4:
-                    System.out.println("Ingrese el monto a solicitar");
-                    double montoSolicitar = sc.nextDouble();
-                    cliente.solicitarPrestamo(cliente, montoSolicitar, cajero);
-                    break;
-                case 5:
-                    System.out.println("1. Consultar precios de divisas");
-                    System.out.println("2. Comprar divisas");
-                    System.out.println("3. Vender divisas");
-                    int opcionDivisas = sc.nextInt();
-                    switch (opcionDivisas) {
-                        case 1:
-                            cliente.solicitarPrecioDivisas(asesorDivisas);
-                            break;
-                        case 2:
-                            System.out.println("Ingrese el monto a comprar");
-                            double montoComprar = sc.nextDouble();
-                            cliente.comprarDivisas(montoComprar, asesorDivisas);
-                            break;
-                        case 3:
-                            System.out.println("Ingrese el monto a vender");
-                            double montoVender = sc.nextDouble();
-                            System.out.println("Ingrese la moneda a vender, usted posee: ");
-                            cliente.mostrarDivisasCompradas();
-                            String moneda = sc.nextLine();
-                            moneda = sc.nextLine();
-                            cliente.venderDivisas(moneda, montoVender, asesorDivisas);
-                            break;
-                        default:
-                            break;
-                    }
-                    break;
-                case 6:
-                    //vender divisas
-                    break;
-                case 7:
-                    //consultar precios de divisas
-                    break;
-                case 8:
-                    //consultar precios de acciones y criptomonedas
-                    break;
-                case 9:
-                    //cerrar sesión
-                    break;
-                default:
-                    break;
-            }
-            
-        }
-        
-    }
-
-    public static void crearCliente(HashMap<Integer,String> contraseñas, HashMap<Integer,Cliente> clientes){
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Ingrese su nombre");
-        String nombre = sc.nextLine();
-        System.out.println("Ingrese su apellido");
-        String apellido = sc.nextLine();
-        System.out.println("Ingrese su dni");
-        int dni = sc.nextInt();
-        System.out.println("Ingrese su contraseña");
-        String pass = sc.nextLine();
-        pass = sc.nextLine();
-
-        Cliente cliente = new Cliente(dni, nombre, apellido, 0, null);
-
-        contraseñas.put(dni, pass);
-        clientes.put(dni, cliente);
-        return;
-    }
-
-}
+ 
