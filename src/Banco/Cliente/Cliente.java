@@ -10,6 +10,7 @@ public class Cliente implements CompraVentaActivos, CompraVentaDivisas{
     private String apellido;
     private double saldo;
     private Map<String,Double> divisasCompradas;
+    private Map<Cliente,Double> dineroNoRegistrado;
     private Empleado empleado;
     private AgenteDeBolsa agentedeBolsa;
 
@@ -21,6 +22,13 @@ public class Cliente implements CompraVentaActivos, CompraVentaDivisas{
         this.divisasCompradas = new HashMap<>();
         this.agentedeBolsa = agenteDeBolsa;
         this.empleado = null;
+        this.dineroNoRegistrado = new HashMap<>();
+    }
+    public Map<Cliente,Double> getDineroNoRegistrado(){
+        return dineroNoRegistrado;
+    }
+    public void setDineroNoRegistrado(Map<Cliente,Double> dineroNoRegistrado){
+        this.dineroNoRegistrado = dineroNoRegistrado;
     }
 
     //metodos que se encarga el agente de bolsa
@@ -58,10 +66,10 @@ public class Cliente implements CompraVentaActivos, CompraVentaDivisas{
     //metodos que se encarga el cajero
     public void solicitarTransferencia(double dineroTransferir, Cliente clienteDestino, Empleado empleado){    // Solicita una transferencia
         this.empleado = empleado;
-        if (empleado instanceof Cajero){
+        if (empleado instanceof Cajero && !clienteDestino.equals(this)){
             boolean solicitud = ((Cajero) empleado).realizarTransferencia(dineroTransferir, this, clienteDestino);
             if (solicitud){
-                System.out.println("La transferencia se solicito con exito ");
+                System.out.println("La transferencia se solicito con exito a "+clienteDestino.getNombre()+" "+clienteDestino.getApellido());
             } else{
                 System.out.println("Transferencia cancelada");
             }
@@ -74,8 +82,6 @@ public class Cliente implements CompraVentaActivos, CompraVentaDivisas{
             boolean solicitud = ((Cajero) empleado).realizarRetiro(dineroRetirar,this);
             if (solicitud){
                 System.out.println("Retiro realizado con exito");
-            } else{
-                System.out.println("El retiro no se pudo realizar");
             }
         }
     }
@@ -100,20 +106,11 @@ public class Cliente implements CompraVentaActivos, CompraVentaDivisas{
     
     public void solicitarPrestamo(Cliente cliente, double dineroPrestamo, Empleado empleado){
         this.empleado = empleado;
-        // Solicita permiso de un prestamo al gerente
-        /* 
-        String deuda; 
-        Scanner sc = new Scanner(System.in);
-        do { //si no tiene deudas se le realizara el prestamo
-        System.out.println("Sr/Sra.  "+cliente.getNombre()+" tiene usted alguna deuda? (S/N)");
-        deuda = sc.nextLine().trim().toUpperCase(); //paso a mayuscula
-        } while (!deuda.equals("N") && !deuda.equals("S")); */
         if (empleado instanceof Cajero){
             boolean solicitud =((Cajero) empleado).realizarPrestamoCliente(cliente, dineroPrestamo); 
             if (solicitud){
                 //si el gerente lo aprueba lo realiza el cajero
-                System.out.println("Hecho");
-                //empleado.realizarPrestamoCliente(this, dineroPrestamo);
+                System.out.println("Prestamo realizado");
             } else {
                 System.out.println("Prestamo cancelado");
             }
@@ -133,7 +130,6 @@ public class Cliente implements CompraVentaActivos, CompraVentaDivisas{
         }else{
             System.out.println("Este empleado no puede realizar esta operación");
         }
-        
     }
 
     public void comprarDivisas(double montoComprar, Empleado empleado){
