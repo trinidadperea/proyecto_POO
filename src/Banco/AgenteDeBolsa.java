@@ -42,6 +42,9 @@ public class AgenteDeBolsa {
     public void realizarInversion(int tipoInversion, double monto, Cliente cliente) {
         switch (tipoInversion) {
             case 1:
+                if(inversionesPorCliente.containsKey(cliente) == false){
+                    inversionesPorCliente.put(cliente, new ArrayList<>());
+                }
                 for (int i = 0; i < inversionesPorCliente.get(cliente).size(); i++) {
                     if (inversionesPorCliente.get(cliente).get(i).getTipoInversion() == "Plazo Fijo") {
                         System.out.println("El cliente ya tiene un plazo fijo activo, no puede tener mas de uno");
@@ -49,12 +52,14 @@ public class AgenteDeBolsa {
                     }
                 }
                 // Plazo Fijo
-                System.out.println("Ingrese la cantidad de días para el plazo fijo: ");
-                int dias = sc.nextInt();
+                System.out.println("Ingrese la cantidad de meses para el plazo fijo: ");
+                int meses = sc.nextInt();
 
-                LocalDate fechaVencimiento = LocalDate.now().plusDays(dias);
+                float interes = meses * 1.15f;
 
-                PlazoFijo plazoFijo = new PlazoFijo(cliente, monto, (float) 5.0, "activo", fechaVencimiento, dias);
+                LocalDate fechaVencimiento = LocalDate.now().plusMonths(meses);
+
+                PlazoFijo plazoFijo = new PlazoFijo(cliente, monto, interes, "activo", fechaVencimiento, meses);
 
                 // Agregar la inversión al cliente
                 agregarInversion(cliente, plazoFijo);
@@ -162,7 +167,7 @@ public class AgenteDeBolsa {
                 }
     
                 // Mostrar las acciones que el cliente puede vender
-                System.out.println("Seleccione la acción que desea vender:");
+                System.out.println("Seleccione la acción que desea vender: (elija el respectivo numero de la acción)");
                 int index = 0;
                 for (InversionBolsa accion : acciones) {
                     System.out.println(index + 1 + ". " + accion.getNombre() + " - Cantidad: " + accion.getCantidadAcciones());
@@ -337,6 +342,14 @@ public class AgenteDeBolsa {
             inversionesPorCliente.put(cliente, new ArrayList<>());
         }
         inversionesPorCliente.get(cliente).add(inversion);
+    }
+
+    public Map<Cliente, List<Inversion>> getInversionesPorCliente() {
+        return inversionesPorCliente;
+    }
+
+    public void setInversionesPorCliente(Map<Cliente, List<Inversion>> inversionesPorCliente) {
+        this.inversionesPorCliente = inversionesPorCliente;
     }
 }
 

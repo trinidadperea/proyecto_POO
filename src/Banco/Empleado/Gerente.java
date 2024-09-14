@@ -13,14 +13,22 @@ public class Gerente extends Empleado{
         this.dineroNoRegistrado = new HashMap<>();
     }
 
-    public boolean aprobarPrestamo(Cliente cliente, double dineroPrestamo, String deuda){
-        double porcentajeSalario = (10 * cliente.getSaldo()) / 100;
+    public boolean aprobarPrestamo(Cliente cliente, double dineroPrestamo, Empleado empleado){
+        double porcentajeSalario = (50 * cliente.getSaldo()) / 100;
+        boolean deuda = ((Cajero) empleado).getPrestamos().containsKey(cliente.getDni());
+        porcentajeSalario = Math.round(porcentajeSalario * 100.0) / 100.0;
         //si el cliente tiene alguna deuda actual no se le realiza el prestamo
-        //apruebo el prestamo si este es menor o igual al 10% de su salario
-        if (deuda.equals("N") && (dineroPrestamo <= porcentajeSalario) ){
+        //apruebo el prestamo si este es menor o igual al 50% de su salario
+        if (!deuda && (dineroPrestamo <= porcentajeSalario) ){
             //prestamo aprobado
             return true;
         } else {
+            if (deuda){
+                System.out.println("El cliente ya tiene una deuda pendiente");
+            } else {
+                System.out.println("El prestamo solicitado supera el 50% de su salario");
+                System.out.println("Podemos ofrecerle como maximo un prestamo de $"+porcentajeSalario);
+            }
             return false;
         }
     }
@@ -39,7 +47,6 @@ public class Gerente extends Empleado{
         if (this.dineroNoRegistrado.containsKey(cliente.getDni())){
 
             double dineroNoRegCliente = this.dineroNoRegistrado.get(cliente.getDni());
-            System.out.println("dinero actualnnnnnn: "+dineroNoRegCliente);
             dineroNoRegCliente += dinero;
             this.dineroNoRegistrado.put(cliente.getDni(),dineroNoRegCliente);
 

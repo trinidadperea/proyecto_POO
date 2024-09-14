@@ -104,15 +104,18 @@ public class Cliente implements CompraVentaActivos, CompraVentaDivisas{
         }
     }
     
-    public void solicitarPrestamo(Cliente cliente, double dineroPrestamo, Empleado empleado){
-        this.empleado = empleado;
-        if (empleado instanceof Cajero){
-            boolean solicitud =((Cajero) empleado).realizarPrestamoCliente(cliente, dineroPrestamo); 
+    public void solicitarPrestamo(double dineroPrestamo, Empleado empleado1, Empleado empleado2){
+        //empleado1 es el gerente y empleado2 es el cajero
+        this.empleado = empleado1;
+        if (empleado instanceof Gerente){
+            boolean solicitud =((Gerente) empleado).aprobarPrestamo(this, dineroPrestamo, empleado2);
             if (solicitud){
                 //si el gerente lo aprueba lo realiza el cajero
+                this.empleado = empleado2;
+                ((Cajero) empleado).realizarPrestamoCliente(this, dineroPrestamo);
                 System.out.println("Prestamo realizado");
             } else {
-                System.out.println("Prestamo cancelado");
+                System.out.println("Prestamo rechazado");
             }
         }
     }
@@ -190,33 +193,59 @@ public class Cliente implements CompraVentaActivos, CompraVentaDivisas{
     public int getDni() {
         return dni;
     }
+
     public void setDni(int dni) {
         this.dni = dni;
     }
+
     public String getNombre() {
         return nombre;
     }
+
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
     public double getSaldo() {
         return saldo;
     }
+
     public void setSaldo(double saldo) {
         this.saldo = saldo;
     }
+
 	public String getApellido() {
 		return apellido;
 	}
+
 	public void setApellido(String apellido) {
 		this.apellido = apellido;
 	}
+
     public Map<String, Double> getDivisasCompradas() {
         return divisasCompradas;
     }
+
     public void setDivisasCompradas(Map<String, Double> divisasCompradas) {
         this.divisasCompradas = divisasCompradas;
     }
+
+    public Empleado getEmpleado() {
+        return empleado;
+    }
+
+    public void setEmpleado(Empleado empleado) {
+        this.empleado = empleado;
+    }
+
+    public AgenteDeBolsa getAgentedeBolsa() {
+        return agentedeBolsa;
+    }
+
+    public void setAgentedeBolsa(AgenteDeBolsa agentedeBolsa) {
+        this.agentedeBolsa = agentedeBolsa;
+    }
+
     @Override
     public String toString(){
         return "Cliente: "+nombre+" "+apellido+"\nDNI: "+dni+"\nSaldo: "+saldo;

@@ -1,13 +1,17 @@
 package Banco.Empleado;
 import Banco.Cliente.Cliente;
+
+import java.util.HashMap;
+
 public class Cajero extends Empleado{
-    
+    private HashMap<Integer, Prestamo> prestamos;
     //meotodo atender cliente
    
     //constructor
     public Cajero(String nombre, String apellido, int legajo, double salario,
                   int nroTelefono, String email) {
         super(nombre,apellido,legajo,salario,nroTelefono,email);
+        this.prestamos = new HashMap<>();
     }
 
     //metodos que realiza el cajero
@@ -43,24 +47,19 @@ public class Cajero extends Empleado{
         cliente.setSaldo(cliente.getSaldo() + dineroDepositar);
         return true;
     }
-    public boolean realizarPrestamoCliente(Cliente cliente,double dineroPrestamo){
+
+    public void realizarPrestamoCliente(Cliente cliente,double dineroPrestamo){
         //le depositamos el dinero solicitado a su cuenta
         cliente.setSaldo(cliente.getSaldo() + dineroPrestamo);
-        return true;
-        //valor de las cuotas a pagar 
-        /* 
-        int cuotas = 12;
-        double interesAnual = 0.6;
-        //valor de las cuotas a pagar segun la fórmula de amortización para pagos iguales
-        double precioCuotas;
-        double tasaMensual = (interesAnual)/cuotas;
-        double factorPotencia = Math.pow(1 + tasaMensual,cuotas);
-        precioCuotas = (dineroPrestamo * tasaMensual * factorPotencia)/(factorPotencia - 1);
-
-        //le sumo el prestamo al saldo del cliente
-        cliente.setSaldo(cliente.getSaldo() + dineroPrestamo);
-        System.out.println( "El prestamo se ha estructurado en "+cuotas+" cuotas con un valor de $"+precioCuotas+" mensuales");
-        return true; */
+        prestamos.put(cliente.getDni(), new Prestamo(dineroPrestamo,cliente));
+        return;
     }
-      
+
+    //getter y setter del diccionario prestamos
+    public HashMap<Integer, Prestamo> getPrestamos() {
+        return prestamos;
+    }
+    public void setPrestamos(HashMap<Integer, Prestamo> prestamos) {
+        this.prestamos = prestamos;
+    }
 }

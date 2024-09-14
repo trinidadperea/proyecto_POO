@@ -6,7 +6,6 @@ public class PlazoFijo extends Inversion {
     private float tasaInteres;
     private String estado;
     private LocalDate fechaVencimiento;
-    private int duracion;  // en días
 
     // Constructor
     public PlazoFijo(Cliente cliente, double monto,float tasaInteres, String estado, LocalDate fechaVencimiento, int duracion) {
@@ -14,7 +13,6 @@ public class PlazoFijo extends Inversion {
         this.tasaInteres = tasaInteres;
         this.estado = estado;
         this.fechaVencimiento = fechaVencimiento;
-        this.duracion = duracion;
     }
 
     public double calcularRendimientos(int diasTranscurridos){
@@ -45,14 +43,6 @@ public class PlazoFijo extends Inversion {
         this.fechaVencimiento = fechaVencimiento;
     }
 
-    public int getDuracion() {
-        return duracion;
-    }
-
-    public void setDuracion(int duracion) {
-        this.duracion = duracion;
-    }
-
 
     // Método toString para mostrar los detalles del PlazoFijo
     @Override
@@ -61,7 +51,6 @@ public class PlazoFijo extends Inversion {
                 "tasaInteres=" + tasaInteres +
                 ", estado='" + estado + '\'' +
                 ", fechaVencimiento=" + fechaVencimiento +
-                ", duracion=" + duracion +
                 '}';
     }
 }

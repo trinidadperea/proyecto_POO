@@ -2,25 +2,41 @@ import Banco.AgenteDeBolsa;
 import Banco.Cliente.Cliente;
 import Banco.Empleado.*;
 import Banco.Banco;
- 
+import Banco.Cliente.Inversiones.*;
 
 
+import java.time.LocalDate;
 import java.util.*;
+import java.time.temporal.ChronoUnit;
 
 
 public class Main {
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
 
-        HashMap<Integer,String> contraseñas = new HashMap<Integer,String>();
-        HashMap<Integer,Cliente> clientes = new HashMap<Integer,Cliente>();
+        HashMap<Integer, String> contraseñas = new HashMap<Integer, String>();
+        HashMap<Integer, Cliente> clientes = new HashMap<Integer, Cliente>();
+        HashMap<String, Empleado> empleados = new HashMap<String, Empleado>();
+
+        LocalDate fechaActual = LocalDate.now();
 
         boolean keep = true;
         //creo al gerente
         final int dniGerente = 9090;
         final String passGerente = "9090";
-        Gerente gerente = new Gerente("Martin", "Gonzales", 0, 0,31234,"martingonzales@gmail.com");
 
+        Cajero cajero = new Cajero("juan", "des", 123, 12444, 345, "trrh");
+        AsesorDivisas asesorDivisas = new AsesorDivisas("Martina", "Gonzalez", 1440, 120000, 132445566, "mail");
+        Gerente gerente = new Gerente("gerente", "des", 123, 12444, 345, "trrh");
+        AgenteEspecial agenteE = new AgenteEspecial("marti", "manzano", 12, 0, 14566, "@email", gerente);
+        AgenteDeBolsa agenteBolsa = new AgenteDeBolsa("martin");
+
+        empleados.put("cajero", cajero);
+        empleados.put("asesorDivisas", asesorDivisas);
+        empleados.put("gerente", gerente);
+        empleados.put("agenteE", agenteE);
+
+        int contador = 0;
 
         while (keep) {
             System.out.println("Bienvenido al banco la familia");
@@ -40,20 +56,27 @@ public class Main {
                         if (contraseñas.get(dni).equals(pass)) {
                             System.out.println("Bienvenido");
                             Cliente cliente = clientes.get(dni);
-                            menuCliente(cliente, clientes);
+                            menuCliente(cliente, clientes, empleados, agenteBolsa, fechaActual);
+                            if (contador == 2) {
+                                fechaActual = fechaActual.plusMonths(1);
+                                contador = 0;
+                                System.out.println("Se ha actualizado la fecha");
+                            } else {
+                                contador++;
+                            }
                         } else {
                             System.out.println("Contraseña incorrecta");
                         }
-                    } else if(dni == dniGerente && pass.equals(passGerente)){
-                            //es el gerente, por lo tanto se abre otro menu
-                            System.out.println("Bienvenido Gerente");
-                            menuGerente();
+                    } else if (dni == dniGerente && pass.equals(passGerente)) {
+                        //es el gerente, por lo tanto se abre otro menu
+                        System.out.println("Bienvenido Gerente");
+                        menuGerente();
                     } else {
                         System.out.println("Usuario no registrado");
                     }
                     break;
                 case 2:
-                    crearCliente(contraseñas, clientes);                 
+                    crearCliente(contraseñas, clientes);
                     break;
                 case 3:
                     keep = false;
@@ -62,23 +85,81 @@ public class Main {
                     System.out.println("Opción incorrecta");
                     break;
             }
-           // Gerente gerente = new Gerente("Martin", "Sabez", 5675, 100000, 261345438, "matrinSabez@gmail.com");
-           // gerente.mostrarDineroNoRegistrado();
+            // Gerente gerente = new Gerente("Martin", "Sabez", 5675, 100000, 261345438, "matrinSabez@gmail.com");
+            // gerente.mostrarDineroNoRegistrado();
         }
-    } 
+    }
+
     //ingresa un cajero
-    public static void menuGerente(){
+    public static void menuGerente() {
 
     }
 
-    public static void menuCliente(Cliente cliente, HashMap<Integer,Cliente> clientes){
-        Cajero cajero = new Cajero("juan","des",123,12444,345,"trrh");
-        //instancio el asesor de divisas para probar, pero no quedará asi
-        AsesorDivisas asesorDivisas = new AsesorDivisas("Martina", "Gonzalez", 1440, 120000, 132445566, "mail");
-        Gerente gerente = new Gerente("gerente","des",123,12444,345,"trrh");
-        AgenteEspecial agenteE = new AgenteEspecial("marti","manzano", 12, 0, 14566,"@email",gerente);
+    public static void menuCliente(Cliente cliente, HashMap<Integer, Cliente> clientes, HashMap<String, Empleado> empleados, AgenteDeBolsa agenteBolsa, LocalDate fechaActual) {
+        Cajero cajero = (Cajero) empleados.get("cajero");
+        AsesorDivisas asesorDivisas = (AsesorDivisas) empleados.get("asesorDivisas");
+        Gerente gerente = (Gerente) empleados.get("gerente");
+        AgenteEspecial agenteE = (AgenteEspecial) empleados.get("agenteE");
         Scanner sc = new Scanner(System.in);
 
+
+        if (cajero.getPrestamos().containsKey(cliente.getDni()) && cajero.getPrestamos().get(cliente.getDni()).getUltimaFechaPago().isBefore(fechaActual)) {
+            Prestamo prestamo = cajero.getPrestamos().get(cliente.getDni());
+            LocalDate ultimaFechaPago = prestamo.getUltimaFechaPago();
+
+            long diferenciaMeses = ChronoUnit.MONTHS.between(ultimaFechaPago, fechaActual);
+
+            System.out.println("diferenciaMeses" + diferenciaMeses);
+            System.out.println("ultimoPago" + ultimaFechaPago);
+            System.out.println(prestamo.getCuotasAtrasadas());
+            if (diferenciaMeses == prestamo.getCuotasAtrasadas() + 1) {
+
+                System.out.println("Usted tiene un préstamo pendiente de: $" + prestamo.getMontoPorPagar());
+                double cuotaConAtraso = prestamo.getValorCuotas() * (prestamo.getCuotasAtrasadas() + 1);
+                System.out.println("Debe pagar una cuota de: $" + cuotaConAtraso);
+
+                if (prestamo.getCuotasAtrasadas() > 0) {
+                    System.out.println("Ya que usted tiene " + prestamo.getCuotasAtrasadas() + " cuotas atrasadas.");
+                }
+
+                System.out.println("¿Desea pagar la cuota? (S/N)");
+                String respuesta = sc.nextLine().toUpperCase();
+
+                if (respuesta.equals("S") && cliente.getSaldo() >= cuotaConAtraso) {
+                    cliente.setSaldo(cliente.getSaldo() - cuotaConAtraso); // pagar con la cuota atrasada
+                    prestamo.setMontoPorPagar(prestamo.getMontoPorPagar() - cuotaConAtraso); // reducir monto por pagar
+                    prestamo.setCuotasPagadas(prestamo.getCuotasPagadas() + 1); // sumar a las cuotas pagadas
+                    prestamo.setUltimaFechaPago(fechaActual); // actualizar la fecha del último pago
+                    prestamo.setCuotasAtrasadas(0); // reiniciar las cuotas atrasadas
+
+                    if (prestamo.getMontoPorPagar() <= 0) {
+                        System.out.println("Usted ha pagado completamente el préstamo.");
+                        cajero.getPrestamos().remove(cliente.getDni()); // eliminar el préstamo una vez pagado
+                    } else {
+                        System.out.println("Usted ha pagado la cuota correspondiente.");
+                    }
+                } else if (respuesta.equals("S") && cliente.getSaldo() < cuotaConAtraso) {
+                    System.out.println("Saldo insuficiente.");
+                } else {
+                    prestamo.setCuotasAtrasadas(prestamo.getCuotasAtrasadas() + 1);
+                    System.out.println("Se ha aumentado el número de cuotas atrasadas.");
+                }
+            }
+        }
+
+        if (agenteBolsa.getInversionesPorCliente().containsKey(cliente)) {
+            for (int i = 0; i < agenteBolsa.getInversionesPorCliente().get(cliente).size(); i++) {
+                if (agenteBolsa.getInversionesPorCliente().get(cliente).get(i).getTipoInversion().equals("Plazo Fijo")) {
+                    PlazoFijo plazoFijo = (PlazoFijo) agenteBolsa.getInversionesPorCliente().get(cliente).get(i);
+                    if (plazoFijo.getFechaVencimiento().isBefore(fechaActual)) {
+                        double ganancia = plazoFijo.getMonto() * plazoFijo.getTasaInteres();
+                        cliente.setSaldo(cliente.getSaldo() + ganancia);
+                        System.out.println("Su plazo fijo ha vencido, se le ha depositado la ganancia de: $" + ganancia);
+                        agenteBolsa.getInversionesPorCliente().get(cliente).remove(i);
+                    }
+                }
+            }
+        }
         while (true) {
             System.out.println("1. Realizar transferencia");
             System.out.println("2. Realizar retiro");
@@ -89,7 +170,7 @@ public class Main {
             System.out.println("7. Consultar Saldo");
             System.out.println("8. Cerrar sesión");
             int opcion = sc.nextInt();
-            if(opcion == 8){
+            if (opcion == 8) {
                 break;
             }
             switch (opcion) {
@@ -108,23 +189,22 @@ public class Main {
                     break;
 
                 case 3:
-                    System.out.println("Cliente "+cliente.getNombre()+" justifique de donde viene el dinero");
+                    System.out.println("Cliente " + cliente.getNombre() + " justifique de donde viene el dinero");
                     sc.nextLine();
                     String respCliente = sc.nextLine();
                     System.out.println("Ingrese el monto a depositar");
                     double montoDepositar = sc.nextDouble();
-                    if (respCliente.equals("")){ //si no conesta nada es plata sucia, lo maneja el agente especial
+                    if (respCliente.equals("")) { //si no conesta nada es plata sucia, lo maneja el agente especial
                         cliente.solicitarDeposito(montoDepositar, agenteE);
                     } else {
                         cliente.solicitarDeposito(montoDepositar, cajero);
                     }
-                    gerente.mostrarDineroNoRegistrado(cliente);
                     break;
 
                 case 4:
-                    System.out.println("Ingrese el monto a solicitar");
+                    System.out.println("Ingrese el monto que le gustaría recibir");
                     double montoSolicitar = sc.nextDouble();
-                    cliente.solicitarPrestamo(cliente, montoSolicitar, cajero);
+                    cliente.solicitarPrestamo(montoSolicitar, gerente, cajero);
                     break;
 
                 case 5:
@@ -163,6 +243,9 @@ public class Main {
                     break;
 
                 case 6:
+                    if (cliente.getAgentedeBolsa() == null) {
+                        cliente.setAgentedeBolsa(agenteBolsa);
+                    }
                     System.out.println("1. Consultar sobre acciones");
                     System.out.println("2. Consultar sobre criptomonedas");
                     System.out.println("3. Consultar sobre plazos fijos");
@@ -177,7 +260,7 @@ public class Main {
                                 case 1:
                                     System.out.println("Cuanto dinero desea invertir?");
                                     double montoAcciones = sc.nextDouble();
-                                    cliente.comprarActivo(montoAcciones,2);
+                                    cliente.comprarActivo(montoAcciones, 2);
                                     break;
                                 case 2:
                                     cliente.venderActivo(1);
@@ -195,7 +278,7 @@ public class Main {
                                 case 1:
                                     System.out.println("Cuanto dinero desea invertir?");
                                     double montoCripto = sc.nextDouble();
-                                    cliente.comprarActivo(montoCripto,3);
+                                    cliente.comprarActivo(montoCripto, 3);
                                     break;
                                 case 2:
                                     cliente.venderActivo(2);
@@ -212,7 +295,7 @@ public class Main {
                                 case 1:
                                     System.out.println("Cuanto dinero desea invertir?");
                                     double montoPlazoFijo = sc.nextDouble();
-                                    cliente.comprarActivo(montoPlazoFijo,1);
+                                    cliente.comprarActivo(montoPlazoFijo, 1);
                                     break;
                                 case 2:
                                     cliente.consultarGananciasPlazoFijo();
@@ -235,7 +318,7 @@ public class Main {
                     break;
                 case 7:
                     //mostrar saldo
-                    System.out.println("Sr/Sra. su saldo actual es de: $"+ cliente.getSaldo());
+                    System.out.println("Sr/Sra. su saldo actual es de: $" + cliente.getSaldo());
                     //gerente.mostrarDineroNoRegistrado(cliente);
                     break;
                 default:
@@ -244,9 +327,11 @@ public class Main {
             }
 
         }
-        
-    }
-    public static void crearCliente(HashMap<Integer,String> contraseñas, HashMap<Integer,Cliente> clientes){
+
+        }
+
+
+    public static void crearCliente(HashMap<Integer, String> contraseñas, HashMap<Integer, Cliente> clientes) {
         Scanner sc = new Scanner(System.in);
         System.out.println("Ingrese su nombre");
         String nombre = sc.nextLine();
@@ -264,5 +349,7 @@ public class Main {
         clientes.put(dni, cliente);
         return;
     }
-
 }
+
+
+
