@@ -4,7 +4,7 @@ import java.util.*;
 import Banco.Cliente.Cliente;
 
 public class Gerente extends Empleado{
-    private Map<Cliente, Double> dineroNoRegistrado;
+    private Map<Integer, Double> dineroNoRegistrado;
 
     //constructor
     public Gerente(String nombre, String apellido, int legajo, double salario,
@@ -26,35 +26,36 @@ public class Gerente extends Empleado{
     }
 
     //getter y setter del diccionario dinero no registrado
-    public Map<Cliente, Double> getDineroNoRegistrado() {
+    public Map<Integer, Double> getDineroNoRegistrado() {
         return dineroNoRegistrado;
     }
-    public void setDineroNoRegistrado(Map<Cliente, Double> dineroNoRegistrado) {
+    public void setDineroNoRegistrado(Map<Integer, Double> dineroNoRegistrado) {
         this.dineroNoRegistrado = dineroNoRegistrado;
     }
     
     //metodo clase gerente, pedidos por el cliente
     public boolean aprobarTransaccionCliente(Cliente cliente,double dinero){
-        if (!dineroNoRegistrado.containsKey(cliente)){
-            System.out.println("armo el primer cliente");
-            dineroNoRegistrado.put(cliente,dinero);
-            //mostrarDineroNoRegistrado();
+        System.out.println(dineroNoRegistrado.keySet());
+        if (this.dineroNoRegistrado.containsKey(cliente.getDni())){
+
+            double dineroNoRegCliente = this.dineroNoRegistrado.get(cliente.getDni());
+            System.out.println("dinero actualnnnnnn: "+dineroNoRegCliente);
+            dineroNoRegCliente += dinero;
+            this.dineroNoRegistrado.put(cliente.getDni(),dineroNoRegCliente);
+
         } else {
-            System.out.println("Agrega dinero no registrado");
-            double dineroNoRegCliente = dineroNoRegistrado.get(cliente);
-            dineroNoRegistrado.put(cliente, dineroNoRegCliente + dinero);
-            //mostrarDineroNoRegistrado();
+            System.out.println("armo el primer cliente");
+            this.dineroNoRegistrado.put(cliente.getDni(),dinero);
         }
         return true;
     }
     //metodo que solo el gerente puede solicitar
-    public void mostrarDineroNoRegistrado(){
+    public void mostrarDineroNoRegistrado(Cliente cliente){
         if (dineroNoRegistrado.isEmpty()){
             System.out.println("No hay dinero no registrado");
         } else {
-            for (Map.Entry<Cliente,Double> entryCliente: dineroNoRegistrado.entrySet()){
-                System.out.println("Cliente "+entryCliente.getKey().getNombre()+" posee $"+entryCliente.getValue()+" de dinero no registrado");
-            }
+            System.out.println("Dinero no registrado: ");
+            System.out.println("Cliente "+cliente.getNombre()+" posee $"+dineroNoRegistrado.get(cliente.getDni())+" de dinero no registrado");
         }
     }
 

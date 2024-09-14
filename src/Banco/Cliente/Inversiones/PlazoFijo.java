@@ -17,8 +17,8 @@ public class PlazoFijo extends Inversion {
         this.duracion = duracion;
     }
 
-    public double calcularRendimientos(){
-        return monto * tasaInteres * duracion;
+    public double calcularRendimientos(int diasTranscurridos){
+        return monto * tasaInteres * diasTranscurridos;
     }
 
     public float getTasaInteres() {

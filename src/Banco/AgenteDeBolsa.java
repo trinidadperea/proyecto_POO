@@ -42,6 +42,12 @@ public class AgenteDeBolsa {
     public void realizarInversion(int tipoInversion, double monto, Cliente cliente) {
         switch (tipoInversion) {
             case 1:
+                for (int i = 0; i < inversionesPorCliente.get(cliente).size(); i++) {
+                    if (inversionesPorCliente.get(cliente).get(i).getTipoInversion() == "Plazo Fijo") {
+                        System.out.println("El cliente ya tiene un plazo fijo activo, no puede tener mas de uno");
+                        return;
+                    }
+                }
                 // Plazo Fijo
                 System.out.println("Ingrese la cantidad de días para el plazo fijo: ");
                 int dias = sc.nextInt();
@@ -277,6 +283,17 @@ public class AgenteDeBolsa {
                 break;
         }
         return toReturn;
+    }
+
+    public double consultarRendimientosPlazoFijo(Cliente cliente){
+        for (int i = 0; i < inversionesPorCliente.get(cliente).size(); i++) {
+            if (inversionesPorCliente.get(cliente).get(i).getTipoInversion() == "Plazo Fijo") {
+                PlazoFijo plazoFijo = (PlazoFijo) inversionesPorCliente.get(cliente).get(i);
+                return plazoFijo.calcularRendimientos();
+            }
+        }
+        System.out.println("El cliente no tiene plazos fijos activos.");
+        return 0;
     }
 
     public void actualizarValorDeAccionesYCriptos() {

@@ -8,6 +8,7 @@ public class AgenteEspecial extends Empleado{
     //constructor
     public AgenteEspecial(String nombre, String apellido, int legajo,
                             double salario, int nroTelefono, String email, Gerente gerente) {
+                                
         super(nombre,apellido,legajo,salario,nroTelefono,email);
         this.gerente = gerente;
     }

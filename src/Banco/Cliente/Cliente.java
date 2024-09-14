@@ -24,13 +24,7 @@ public class Cliente implements CompraVentaActivos, CompraVentaDivisas{
     }
 
     //metodos que se encarga el agente de bolsa
-    public void comprarActivo(double monto){
-        System.out.println("Seleccione el tipo de inversion que desea realizar: ");
-        System.out.println("1. Plazo Fijo");
-        System.out.println("2. Acciones");
-        System.out.println("3. Criptomonedas");
-        Scanner sc = new Scanner(System.in);
-        int tipoInversion = sc.nextInt();
+    public void comprarActivo(double monto, int tipoInversion){
 
         if (this.saldo >= monto) {
             agentedeBolsa.realizarInversion(tipoInversion, monto, this);
@@ -53,6 +47,11 @@ public class Cliente implements CompraVentaActivos, CompraVentaDivisas{
 
     public void consultarPrecios(){
         System.out.println(agentedeBolsa.consultaPrecios());
+        return;
+    }
+
+    public void consultarGananciasPlazoFijo(){
+        System.out.println("Usted ha generado: "+agentedeBolsa.consultarRendimientosPlazoFijo(this));
         return;
     }
 

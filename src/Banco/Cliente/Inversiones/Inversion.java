@@ -14,6 +14,11 @@ public  abstract class Inversion implements AccionInversion {
         this.tipoInversion = tipoInversion;
     }
 
+    @Override
+    public double calcularRendimientos() {
+        return 0;
+    }
+
     public String getTipoInversion() {
         return tipoInversion;
     }

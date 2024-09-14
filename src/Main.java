@@ -9,23 +9,7 @@ import java.util.*;
 
 
 public class Main {
-    /* 
-    public static void main(String[] args){
-        //falta ver el tema de donde creamos y llamamos a cada empleado
-        AgenteDeBolsa agente = new AgenteDeBolsa("Raul");
-        Cliente cliente = new Cliente(123, "Juan", "Loncharich",10000,agente);
-        Cajero cajero = new Cajero("trini","des",123,12444,345,"trrh");
-        Gerente gerente = new Gerente("gerente","des",123,12444,345,"trrh");
-        AgenteEspecial agenteE = new AgenteEspecial("marti","manzano", 12, 0, 14566,"@email",gerente);
-        cliente.solicitarDeposito(10,agenteE);
-        cliente.solicitarDeposito(1000,agenteE);
-        //gerente.mostrarDineroNoRegistrado();
-        //Cliente cliente2 = new Cliente(123, "jose", "Loncharich",10000,agente);
-        //cliente2.solicitarDeposito(30,agenteE);
-        gerente.mostrarDineroNoRegistrado();
-    } 
-} */
-     
+
     public static void main(String[] args){
 
         HashMap<Integer,String> contraseñas = new HashMap<Integer,String>();
@@ -35,10 +19,10 @@ public class Main {
         //creo al gerente
         final int dniGerente = 9090;
         final String passGerente = "9090";
-        //Gerente gerente = new Gerente("Martin", "Gonzales", 0, 0,31234,"martingonzales@gmail.com");
+        Gerente gerente = new Gerente("Martin", "Gonzales", 0, 0,31234,"martingonzales@gmail.com");
 
 
-        while (keep == true) {
+        while (keep) {
             System.out.println("Bienvenido al banco la familia");
             System.out.println("1. Ingresar");
             System.out.println("2. Registrarse");
@@ -75,6 +59,7 @@ public class Main {
                     keep = false;
                     break;
                 default:
+                    System.out.println("Opción incorrecta");
                     break;
             }
            // Gerente gerente = new Gerente("Martin", "Sabez", 5675, 100000, 261345438, "matrinSabez@gmail.com");
@@ -84,12 +69,17 @@ public class Main {
     //ingresa un cajero
     public static void menuGerente(){
 
-
     }
 
     public static void menuCliente(Cliente cliente, HashMap<Integer,Cliente> clientes){
+        Cajero cajero = new Cajero("juan","des",123,12444,345,"trrh");
+        //instancio el asesor de divisas para probar, pero no quedará asi
+        AsesorDivisas asesorDivisas = new AsesorDivisas("Martina", "Gonzalez", 1440, 120000, 132445566, "mail");
+        Gerente gerente = new Gerente("gerente","des",123,12444,345,"trrh");
+        AgenteEspecial agenteE = new AgenteEspecial("marti","manzano", 12, 0, 14566,"@email",gerente);
+        Scanner sc = new Scanner(System.in);
+
         while (true) {
-            Scanner sc = new Scanner(System.in);
             System.out.println("1. Realizar transferencia");
             System.out.println("2. Realizar retiro");
             System.out.println("3. Realizar deposito");
@@ -102,12 +92,6 @@ public class Main {
             if(opcion == 8){
                 break;
             }
-            //instancio el cajero para probar, pero no quedará asi
-            Cajero cajero = new Cajero("juan","des",123,12444,345,"trrh");
-            //instancio el asesor de divisas para probar, pero no quedará asi
-            AsesorDivisas asesorDivisas = new AsesorDivisas("Martina", "Gonzalez", 1440, 120000, 132445566, "mail");
-            Gerente gerente = new Gerente("gerente","des",123,12444,345,"trrh");
-            AgenteEspecial agenteE = new AgenteEspecial("marti","manzano", 12, 0, 14566,"@email",gerente);
             switch (opcion) {
                 case 1:
                     System.out.println("Ingrese el monto a transferir");
@@ -116,11 +100,13 @@ public class Main {
                     int dniDestino = sc.nextInt();
                     cliente.solicitarTransferencia(monto, clientes.get(dniDestino), cajero);
                     break;
+
                 case 2:
                     System.out.println("Ingrese el monto a retirar");
                     double montoRetirar = sc.nextDouble();
                     cliente.solicitarRetiro(montoRetirar, cajero);
                     break;
+
                 case 3:
                     System.out.println("Cliente "+cliente.getNombre()+" justifique de donde viene el dinero");
                     sc.nextLine();
@@ -132,27 +118,32 @@ public class Main {
                     } else {
                         cliente.solicitarDeposito(montoDepositar, cajero);
                     }
-                    gerente.mostrarDineroNoRegistrado();
+                    gerente.mostrarDineroNoRegistrado(cliente);
                     break;
+
                 case 4:
                     System.out.println("Ingrese el monto a solicitar");
                     double montoSolicitar = sc.nextDouble();
                     cliente.solicitarPrestamo(cliente, montoSolicitar, cajero);
                     break;
+
                 case 5:
                     System.out.println("1. Consultar precios de divisas");
                     System.out.println("2. Comprar divisas");
                     System.out.println("3. Vender divisas");
+                    System.out.println("4. Consultar divisas compradas");
                     int opcionDivisas = sc.nextInt();
                     switch (opcionDivisas) {
                         case 1:
                             cliente.solicitarPrecioDivisas(asesorDivisas);
                             break;
+
                         case 2:
                             System.out.println("Ingrese el monto a comprar");
                             double montoComprar = sc.nextDouble();
                             cliente.comprarDivisas(montoComprar, asesorDivisas);
                             break;
+
                         case 3:
                             System.out.println("Ingrese el monto a vender");
                             double montoVender = sc.nextDouble();
@@ -162,23 +153,90 @@ public class Main {
                             moneda = sc.nextLine();
                             cliente.venderDivisas(moneda, montoVender, asesorDivisas);
                             break;
+                        case 4:
+                            cliente.mostrarDivisasCompradas();
+                            break;
                         default:
+                            System.out.println("Opción incorrecta");
                             break;
                     }
                     break;
+
                 case 6:
-                    //vender divisas
+                    System.out.println("1. Consultar sobre acciones");
+                    System.out.println("2. Consultar sobre criptomonedas");
+                    System.out.println("3. Consultar sobre plazos fijos");
+                    System.out.println("4. Consultar precios de diferentes activos");
+                    System.out.println("5. Consultar sobre mis activos");
+                    switch (sc.nextInt()) {
+                        case 1:
+                            System.out.println("1. Comprar acciones");
+                            System.out.println("2. Vender acciones");
+                            int opcionAcciones = sc.nextInt();
+                            switch (opcionAcciones) {
+                                case 1:
+                                    System.out.println("Cuanto dinero desea invertir?");
+                                    double montoAcciones = sc.nextDouble();
+                                    cliente.comprarActivo(montoAcciones,2);
+                                    break;
+                                case 2:
+                                    cliente.venderActivo(1);
+                                    break;
+                                default:
+                                    System.out.println("Opción incorrecta");
+                                    break;
+                            }
+                            break;
+                        case 2:
+                            System.out.println("1. Comprar criptomonedas");
+                            System.out.println("2. Vender criptomonedas");
+                            int opcionCripto = sc.nextInt();
+                            switch (opcionCripto) {
+                                case 1:
+                                    System.out.println("Cuanto dinero desea invertir?");
+                                    double montoCripto = sc.nextDouble();
+                                    cliente.comprarActivo(montoCripto,3);
+                                    break;
+                                case 2:
+                                    cliente.venderActivo(2);
+                                    break;
+                                default:
+                                    break;
+                            }
+                            break;
+                        case 3:
+                            System.out.println("1. Realizar plazo fijo");
+                            System.out.println("2. Consulta rendimiento de plazo fijo");
+                            int opcionPlazoFijo = sc.nextInt();
+                            switch (opcionPlazoFijo) {
+                                case 1:
+                                    System.out.println("Cuanto dinero desea invertir?");
+                                    double montoPlazoFijo = sc.nextDouble();
+                                    cliente.comprarActivo(montoPlazoFijo,1);
+                                    break;
+                                case 2:
+                                    cliente.consultarGananciasPlazoFijo();
+                                    break;
+                                default:
+                                    System.out.println("Opción incorrecta");
+                                    break;
+                            }
+                            break;
+                        case 4:
+                            cliente.consultarPrecios();
+                            break;
+                        case 5:
+                            cliente.consultarActivos();
+                            break;
+                        default:
+                            System.out.println("Opción incorrecta");
+                            break;
+                    }
                     break;
                 case 7:
                     //mostrar saldo
-                    //System.out.println("Sr/Sra. su saldo actual es de: $"+ cliente.getSaldo());
-                    gerente.mostrarDineroNoRegistrado();
-                    break;
-                case 8:
-                    //consultar precios de acciones y criptomonedas
-                    break;
-                case 9:
-                    //cerrar sesión
+                    System.out.println("Sr/Sra. su saldo actual es de: $"+ cliente.getSaldo());
+                    //gerente.mostrarDineroNoRegistrado(cliente);
                     break;
                 default:
                     break;
@@ -206,120 +264,5 @@ public class Main {
         clientes.put(dni, cliente);
         return;
     }
-}
-
-/* 
-    
-
-    
 
 }
-*/
-/*
-  /**
-        AgenteDeBolsa agente = new AgenteDeBolsa("Raul");
-        Cliente cliente = new Cliente(45448520,"Trinidad","Perea", 10000, agente,null,null,null,null);
-        Cajero cajero = new Cajero("juan","des",123,12444,345,"trrh");
-        //pruebo el asesor financiero
-        AsesorFinanciero empleado = new AsesorFinanciero("Juan","Perez",122 , 120000
-        , 6175138,"TRin@");
-
-        //pido consejo
-        String consejo;
-        consejo = empleado.consejoFinanciero(cliente);
-        System.out.println(consejo);
-        System.out.println("");
-
-        //pruebo realizar un retiro
-        cliente.setCajero(cajero);
-        double dineroRetirar;
-        dineroRetirar = 10;
-        cliente.solicitarRetiro(dineroRetirar);
-        //verifico si me resto del saldo
-        double saldo;
-        saldo = cliente.getSaldo();
-        System.out.println(saldo);
-        
-        System.out.println("");
-        
-        //pruebo depositar dinero
-        double deposito;
-        deposito = 20;
-        cliente.solicitarDeposito(deposito);
-        saldo = cliente.getSaldo();
-        System.out.println(saldo);
-
-        System.out.println("");
-
-        //pruebo transferir dinero
-        //creo otro cliente
-        System.out.println("El dinero del cliente 1 es: "+cliente.getSaldo());
-        Cliente cliente2 = new Cliente(34, "Adrian", "Perea", 200, agente, cajero,null,null,null);
-        cliente.solicitarTransferencia(300, cliente2);
-        double saldo2;
-        saldo2 = cliente2.getSaldo();
-        double saldo1;
-        saldo1 = cliente.getSaldo();
-        System.out.println("EL saldo del cliente 2 es: "+saldo2);
-        System.out.println("EL saldo del cliente 1 es: "+saldo1);
-        System.out.println("");
-
-        //solicito prestamo 
-        //creo un cliente nuevo 
-        /*  Cliente cliente3 = new Cliente(23234344, "Jose", "Manzano", 230000, agente, null,null,null);
-        cliente3.setCajero(cajero);
-        Gerente gerente = new Gerente(null,"Martin", "Gonzalez", 1441, 120000, 132445566, "mail");
-        cliente3.setGerente(gerente);
-        //le voy a colocar que no tiene deudas
-        cliente3.solicitarPrestamo(cliente3, 23000);
-        //verifico si se me suma el prestamo
-        double saldo3 = cliente3.getSaldo();
-        System.out.println(saldo3); 
-
-        /* 
-        System.out.println(" "); 
-        /* 
-        //pido copia de seguridad del cliente 3
-        Banco banco = new Banco(30,30);
-        banco.realizarCopiaDeSeguridad(cliente3);
-        banco.realizarCopiaDeSeguridad(cliente); 
-
-        //pruebo inversiones(aun no terminadas)
-        //cliente.comprarActivo(5000);
-
-        //cliente solicita el valor de las monedas de cambio
-        //creo el objeto asesor
-        /* 
-        Scanner sc = new Scanner(System.in);
-        AsesorDivisas asesorDivisas = new AsesorDivisas("Martina", "Gonzalez", 1440, 120000, 132445566, "mail",sc);
-        Cliente cliente4 = new Cliente(23234344, "Jose", "Manzano", 230000, agente, null,null,asesorDivisas,null);
-        cliente4.consultarPrecioCompraDivisas();
-        cliente4.mostrarDivisasCompradas();
-        //verifico que si vuelvo a comprar me lo sume 
-        cliente4.consultarPrecioCompraDivisas();
-        cliente4.mostrarDivisasCompradas(); 
-
-        //METODO POLIMORFICO CLIENTE EMPLEADO
-        //creo cliente
-        /*Gerente gerente = new Gerente(null,"Martin", "Gonzalez", 1441, 120000, 132445566, "mail");
-        Cajero cajero = new Cajero("juan","des",123,12444,345,"trrh");
-        //Map<String,Empleado> map = new HashMap<>();
-        //map.put("gerente",gerente);
-        Cliente cliente = new Cliente(23234344, "Jose", "Manzano", 230000,null, null,cajero);
-        Cliente cliente2 = new Cliente(34, "Adrian", "Perea", 200, null,null,cajero);
-        cliente.solicitarTransferencia(30,cliente2);
-        
-        /* 
-        AgenteDeBolsa agente = new AgenteDeBolsa("Raul");
-        Cliente trini = new Cliente(45448520,"Trinidad","Perea", 0, agente);
-        
-        AsesorDivisas asesorDivisas = new AsesorDivisas("Martina", "Gonzalez", 1440, 120000, 132445566, "mail");
-
-        Empleado cajero = new Cajero("juan","des",123,12444,345,"trrh");
-
-        trini.solicitarDeposito(100000, cajero);
-
-        trini.consultarPrecios();
-        agente.actualizarValorDeAccionesYCriptos();
-        trini.consultarPrecios();**/
- 
