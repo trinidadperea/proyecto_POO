@@ -1,7 +1,6 @@
 import Banco.AgenteDeBolsa;
 import Banco.Cliente.Cliente;
 import Banco.Empleado.*;
-import Banco.Banco;
 import Banco.Cliente.Inversiones.*;
 
 
@@ -26,7 +25,7 @@ public class Main {
         final String passGerente = "9090";
 
         Cajero cajero = new Cajero("juan", "des", 123, 12444, 345, "trrh");
-        AsesorDivisas asesorDivisas = new AsesorDivisas("Martina", "Gonzalez", 1440, 120000, 132445566, "mail");
+        AsesorDivisas asesorDivisas = new AsesorDivisas("Martina", "des", 123, 12444, 345, "trrh");
         Gerente gerente = new Gerente("gerente", "des", 123, 12444, 345, "trrh");
         AgenteEspecial agenteE = new AgenteEspecial("marti", "manzano", 12, 0, 14566, "@email", gerente);
         AgenteDeBolsa agenteBolsa = new AgenteDeBolsa("martin");
@@ -61,6 +60,8 @@ public class Main {
                             menuCliente(cliente, clientes, empleados, agenteBolsa, fechaActual);
                             if (contador == 2) {
                                 fechaActual = fechaActual.plusMonths(1);
+                                agenteBolsa.actualizarPrecios();
+                                asesorDivisas.actualizarDivisas();
                                 contador = 0;
                                 System.out.println("Se ha actualizado la fecha");
                             } else {
@@ -102,6 +103,7 @@ public class Main {
         Gerente gerente = (Gerente) empleados.get("gerente");
         AgenteEspecial agenteE = (AgenteEspecial) empleados.get("agenteE");
         Scanner sc = new Scanner(System.in);
+
         if (cajero.getPrestamos().containsKey(cliente.getDni()) && cajero.getPrestamos().get(cliente.getDni()).getUltimaFechaPago().isBefore(fechaActual)) {
             Prestamo prestamo = cajero.getPrestamos().get(cliente.getDni());
             LocalDate ultimaFechaPago = prestamo.getUltimaFechaPago();

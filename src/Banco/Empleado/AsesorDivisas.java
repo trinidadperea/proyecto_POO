@@ -7,7 +7,7 @@ import Banco.Cliente.Cliente;
 
 public class AsesorDivisas extends Empleado{
     private Scanner sc;
-    private HashMap<String,Double> divisas = new HashMap<>();
+    private Map<String,Double> divisas = new HashMap<>();
 
 
     public AsesorDivisas(String nombre, String apellido, int legajo, double salario, int nroTelefono, String email) {
@@ -98,8 +98,15 @@ public class AsesorDivisas extends Empleado{
         return montoDestino;
     }
     
-    public boolean realizarCambio(double monedaCambio, double montoCambiar){    
-        return true;
+    public void actualizarDivisas(){
+        for (Map.Entry<String, Double> entry : divisas.entrySet()) {
+            double randomValue = 0.95 + (Math.random() * (1.05 - 0.95));
+
+            double nuevoValor = entry.getValue() * randomValue;
+            nuevoValor = (long) (nuevoValor * 100) / 100.0;
+
+            entry.setValue(nuevoValor);
+        }
     }
 
     public void venderDivisas(String monedaVender, double monto, Cliente cliente){

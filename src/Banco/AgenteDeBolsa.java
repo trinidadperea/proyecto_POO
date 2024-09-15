@@ -301,7 +301,7 @@ public class AgenteDeBolsa {
         return 0;
     }
 
-    public void actualizarValorDeAccionesYCriptos() {
+    public void actualizarPrecios() {
         for (Map.Entry<String, Double> entryCo : companies.entrySet()) {
             double randomValue = 0.95 + (Math.random() * (1.05 - 0.95));
     

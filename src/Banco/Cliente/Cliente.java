@@ -1,6 +1,7 @@
 package Banco.Cliente;
 
 import Banco.AgenteDeBolsa;
+import Banco.Empleado.AsesorDivisas;
 import Banco.Empleado.*;
 import java.util.*;
 
