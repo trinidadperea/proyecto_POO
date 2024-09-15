@@ -38,6 +38,8 @@ public class Main {
 
         int contador = 0;
 
+        inicializarCliente(contraseñas,clientes);
+
         while (keep) {
             System.out.println("Bienvenido al banco la familia");
             System.out.println("1. Ingresar");
@@ -90,7 +92,6 @@ public class Main {
         }
     }
 
-    //ingresa un cajero
     public static void menuGerente() {
 
     }
@@ -101,17 +102,12 @@ public class Main {
         Gerente gerente = (Gerente) empleados.get("gerente");
         AgenteEspecial agenteE = (AgenteEspecial) empleados.get("agenteE");
         Scanner sc = new Scanner(System.in);
-
-
         if (cajero.getPrestamos().containsKey(cliente.getDni()) && cajero.getPrestamos().get(cliente.getDni()).getUltimaFechaPago().isBefore(fechaActual)) {
             Prestamo prestamo = cajero.getPrestamos().get(cliente.getDni());
             LocalDate ultimaFechaPago = prestamo.getUltimaFechaPago();
 
             long diferenciaMeses = ChronoUnit.MONTHS.between(ultimaFechaPago, fechaActual);
 
-            System.out.println("diferenciaMeses" + diferenciaMeses);
-            System.out.println("ultimoPago" + ultimaFechaPago);
-            System.out.println(prestamo.getCuotasAtrasadas());
             if (diferenciaMeses == prestamo.getCuotasAtrasadas() + 1) {
 
                 System.out.println("Usted tiene un préstamo pendiente de: $" + prestamo.getMontoPorPagar());
@@ -160,6 +156,7 @@ public class Main {
                 }
             }
         }
+
         while (true) {
             System.out.println("1. Realizar transferencia");
             System.out.println("2. Realizar retiro");
@@ -325,11 +322,25 @@ public class Main {
                     break;
 
             }
-
         }
+    }
 
-        }
-
+    public static void inicializarCliente(HashMap<Integer,String> contraseñas,HashMap<Integer,Cliente> clientes){
+        AgenteDeBolsa agenteDeBolsa = new AgenteDeBolsa("Maria");
+        Cliente cliente1 = new Cliente(12345, "Juan", "Loncharich", 120000, agenteDeBolsa);
+        Cliente cliente2 = new Cliente(123123,"Trinidad","Perea",80000, agenteDeBolsa);
+        Cliente cliente3 = new Cliente(00,"Pablo", "Vidal",1000000,agenteDeBolsa);
+        Cliente cliente4 = new Cliente(11,"Laura","Noussan",2000000,agenteDeBolsa);
+        contraseñas.put(cliente1.getDni(),"12345");
+        clientes.put(cliente1.getDni(),cliente1);
+        contraseñas.put(cliente2.getDni(),"123123");
+        clientes.put(cliente2.getDni(),cliente2);
+        contraseñas.put(cliente3.getDni(),"00");
+        clientes.put(cliente3.getDni(),cliente3);
+        contraseñas.put(cliente4.getDni(),"11");
+        clientes.put(cliente4.getDni(),cliente4);
+        return;
+    }
 
     public static void crearCliente(HashMap<Integer, String> contraseñas, HashMap<Integer, Cliente> clientes) {
         Scanner sc = new Scanner(System.in);
@@ -337,11 +348,16 @@ public class Main {
         String nombre = sc.nextLine();
         System.out.println("Ingrese su apellido");
         String apellido = sc.nextLine();
+
+
         System.out.println("Ingrese su dni");
-        int dni = sc.nextInt();
+        int dni = verificar(sc.nextLine());
+        if (dni == 0) {
+            return;}
+
+
         System.out.println("Ingrese su contraseña");
         String pass = sc.nextLine();
-        pass = sc.nextLine();
 
         Cliente cliente = new Cliente(dni, nombre, apellido, 0, null);
 
@@ -349,7 +365,15 @@ public class Main {
         clientes.put(dni, cliente);
         return;
     }
+
+    public static Integer verificar(String input) {
+        try {
+            int numero = Integer.parseInt(input);
+            return numero;  // Si es un entero válido, retorna el valor convertido
+        } catch (NumberFormatException e) {
+            System.out.println("Debe ingresar un número entero.");
+            return 0;  // Retornamos null para indicar un error
+        }
+    }
+
 }
-
-
-

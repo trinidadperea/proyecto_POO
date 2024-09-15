@@ -1,7 +1,7 @@
 package Banco.Empleado;
-//clases para usar diccionario en java
 import java.util.*;
 import Banco.Cliente.Cliente;
+import Banco.Empleado.Transaccion.Transaccion;
 
 public class Gerente extends Empleado{
     private Map<Integer, Double> dineroNoRegistrado;
@@ -32,6 +32,30 @@ public class Gerente extends Empleado{
             return false;
         }
     }
+
+    public void mostrarTransaccionesCLiente(Cliente cliente, Cajero cajero) {
+        HashMap<Integer, List<Transaccion>> transacciones = cajero.getTransacciones();
+
+        if (!transacciones.containsKey(cliente.getDni())) {
+            System.out.println("No hay transacciones registradas para este cliente.");
+            return;
+        }
+
+        List<Transaccion> listaTransacciones = transacciones.get(cliente.getDni());
+
+        if (listaTransacciones.isEmpty()) {
+            System.out.println("No hay transacciones realizadas.");
+        } else {
+            System.out.println("Transacciones realizadas: ");
+            for (int i = 0; i < listaTransacciones.size(); i++) {
+                Transaccion transaccion = listaTransacciones.get(i);
+                System.out.println("Transacción " + (i + 1) + ": ");
+                System.out.println("Monto: $" + transaccion.getMonto());
+                System.out.println("Tipo de transacción: " + transaccion.getTipoTransaccion());
+            }
+        }
+    }
+
 
     //getter y setter del diccionario dinero no registrado
     public Map<Integer, Double> getDineroNoRegistrado() {

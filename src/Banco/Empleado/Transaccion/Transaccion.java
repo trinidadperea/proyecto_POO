@@ -1,17 +1,18 @@
 package Banco.Empleado.Transaccion;
-import Banco.Empleado.Empleado;
+import Banco.Cliente.Cliente;
 
-public abstract class Transaccion {
-    protected double monto;
-    protected String tipoTransaccion;
-    protected Empleado empleado;
+public class Transaccion {
+    private double monto;
+    private String tipoTransaccion;
+    private Cliente cliente;
 
     //constructor
-    public Transaccion(double monto, String tipoTransaccion, Empleado empleado) {
+    public Transaccion(double monto, String tipoTransaccion, Cliente cliente) {
         this.monto = monto;
         this.tipoTransaccion = tipoTransaccion;
-        this.empleado = empleado;
+        this.cliente = cliente;
     }
+
     //getters y setters
     public double getMonto() {
         return monto;
@@ -29,11 +30,11 @@ public abstract class Transaccion {
         this.tipoTransaccion = tipoTransaccion;
     }
 
-    public Empleado getEmpleado() {
-        return empleado;
+    public Cliente getCliente() {
+        return cliente;
     }
 
-    public void setEmpleado(Empleado empleado) {
-        this.empleado = empleado;
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 }

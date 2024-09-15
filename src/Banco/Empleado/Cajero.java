@@ -1,64 +1,93 @@
 package Banco.Empleado;
+
 import Banco.Cliente.Cliente;
+import Banco.Empleado.Transaccion.Transaccion;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-public class Cajero extends Empleado{
+public class Cajero extends Empleado {
     private HashMap<Integer, Prestamo> prestamos;
-    //meotodo atender cliente
-   
-    //constructor
+    private HashMap<Integer, List<Transaccion>> transacciones;
+
+    // Constructor
     public Cajero(String nombre, String apellido, int legajo, double salario,
                   int nroTelefono, String email) {
-        super(nombre,apellido,legajo,salario,nroTelefono,email);
+        super(nombre, apellido, legajo, salario, nroTelefono, email);
         this.prestamos = new HashMap<>();
+        this.transacciones = new HashMap<>();
     }
 
-    //metodos que realiza el cajero
-    
-    public boolean realizarRetiro(double dineroRetirar, Cliente cliente){
-        if (dineroRetirar > cliente.getSaldo()){
+    // Métodos que realiza el cajero
+
+    public boolean realizarRetiro(double dineroRetirar, Cliente cliente) {
+        if (dineroRetirar > cliente.getSaldo()) {
             System.out.println("Saldo insuficiente");
             return false;
         } else {
-            //le resto el dinero a retirar
             cliente.setSaldo(cliente.getSaldo() - dineroRetirar);
+
+            registrarTransaccion(cliente, dineroRetirar, "Retiro");
+
             return true;
         }
     }
 
-    public boolean realizarTransferencia(double dineroTransferir,Cliente cliente1, Cliente cliente2){
-        //transferencia de cliente 1 a cliente 2
-        //primero verifico si el cliente tiene esa plata para transferir
-        if (cliente1.getSaldo() < dineroTransferir){
-            System.out.println("Sr/Sra "+cliente1.getNombre()+" "+cliente1.getApellido()+" no puede transferir ese monto");
+    public boolean realizarTransferencia(double dineroTransferir, Cliente cliente1, Cliente cliente2) {
+        if (cliente1.getSaldo() < dineroTransferir) {
+            System.out.println("Sr/Sra " + cliente1.getNombre() + " " + cliente1.getApellido() + " no puede transferir ese monto");
             return false;
-        } else{
-            //le aumento ese dinero al cliente 2
+        } else {
             cliente2.setSaldo(cliente2.getSaldo() + dineroTransferir);
-            //le resto al cliente 1
             cliente1.setSaldo(cliente1.getSaldo() - dineroTransferir);
+
+            registrarTransaccion(cliente1, dineroTransferir, "Transferencia salida");
+            registrarTransaccion(cliente2, dineroTransferir, "Transferencia entrada");
+
             return true;
         }
     }
-    
-    public boolean realizarDeposito(double dineroDepositar, Cliente cliente){
-        //le sumo el deposito al saldo del cliente
+
+    public boolean realizarDeposito(double dineroDepositar, Cliente cliente) {
         cliente.setSaldo(cliente.getSaldo() + dineroDepositar);
+
+        registrarTransaccion(cliente, dineroDepositar, "Depósito");
+
         return true;
     }
 
-    public void realizarPrestamoCliente(Cliente cliente,double dineroPrestamo){
-        //le depositamos el dinero solicitado a su cuenta
+    public void realizarPrestamoCliente(Cliente cliente, double dineroPrestamo) {
         cliente.setSaldo(cliente.getSaldo() + dineroPrestamo);
-        prestamos.put(cliente.getDni(), new Prestamo(dineroPrestamo,cliente));
+
+        prestamos.put(cliente.getDni(), new Prestamo(dineroPrestamo, cliente));
+
+        registrarTransaccion(cliente, dineroPrestamo, "Préstamo");
+
         return;
     }
 
-    //getter y setter del diccionario prestamos
+    public HashMap<Integer, List<Transaccion>> getTransacciones() {
+        return transacciones;
+    }
+
+    public void setTransacciones(HashMap<Integer, List<Transaccion>> transacciones) {
+        this.transacciones = transacciones;
+    }
+
+    private void registrarTransaccion(Cliente cliente, double monto, String tipoTransaccion) {
+        if (!transacciones.containsKey(cliente.getDni())) {
+            transacciones.put(cliente.getDni(), new ArrayList<>());
+        }
+
+        List<Transaccion> listaTransacciones = transacciones.get(cliente.getDni());
+        listaTransacciones.add(new Transaccion(monto, tipoTransaccion, cliente));
+    }
+
     public HashMap<Integer, Prestamo> getPrestamos() {
         return prestamos;
     }
+
     public void setPrestamos(HashMap<Integer, Prestamo> prestamos) {
         this.prestamos = prestamos;
     }
