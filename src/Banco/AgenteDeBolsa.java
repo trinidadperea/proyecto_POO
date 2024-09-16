@@ -155,6 +155,112 @@ public class AgenteDeBolsa {
         }
     }
 
+    public void realizarInversionRandom(int tipoInversion, double monto, Cliente cliente) {
+        Random random = new Random();
+        switch (tipoInversion) {
+            case 1:
+                if(inversionesPorCliente.containsKey(cliente) == false){
+                    inversionesPorCliente.put(cliente, new ArrayList<>());
+                }
+                for (int i = 0; i < inversionesPorCliente.get(cliente).size(); i++) {
+                    if (inversionesPorCliente.get(cliente).get(i).getTipoInversion() == "Plazo Fijo") {
+                        System.out.println("El cliente ya tiene un plazo fijo activo, no puede tener mas de uno");
+                        return;
+                    }
+                }
+                // Plazo Fijo
+                int meses = random.nextInt(1,12);
+                System.out.println("La cantidad de meses en la que se realizara el plazo ijo es: "+meses);
+                
+                float interes = meses * 1.15f;
+
+                LocalDate fechaVencimiento = LocalDate.now().plusMonths(meses);
+
+                PlazoFijo plazoFijo = new PlazoFijo(cliente, monto, interes, "activo", fechaVencimiento, meses);
+
+                // Agregar la inversión al cliente
+                agregarInversion(cliente, plazoFijo);
+
+                break;
+            case 2: // Acciones
+                // Mostrar las opciones al usuario
+                int index = 0;
+                String[] companyArray = companies.keySet().toArray(new String[0]);
+                for (String company : companyArray) {
+                    System.out.println(index + 1 + ". " + company + " - $" + companies.get(company));
+                    index++;
+                }
+                
+                //opcion se genera de forma random
+                int opcion = random.nextInt(1,9);
+                System.out.println("La empresa en la que va a invertir es: "+companyArray[opcion]);
+                opcion -= 1;
+
+                // Validar la opción seleccionada
+                if (opcion >= 0 && opcion < companyArray.length) {
+                    String selectedCompany = companyArray[opcion];
+                    double stockValue = companies.get(selectedCompany);
+                    float cantidadAcciones = (float) (monto / stockValue);
+
+                    InversionBolsa inversion = new InversionBolsa(
+                            selectedCompany,
+                            cantidadAcciones,
+                            stockValue,
+                            stockValue,
+                            monto,
+                            cliente,
+                            selectedCompany
+                    );
+
+
+                    // Agregar la inversión al cliente
+                    agregarInversion(cliente, inversion);
+
+                } else {
+                    System.out.println("Opción no válida.");
+                }
+                break;
+
+            case 3: // Criptomonedas                
+                // Mostrar las opciones al usuario
+                int index2 = 0;
+                String[] criptosArray = criptos.keySet().toArray(new String[0]);
+                for (String cripto : criptosArray) {
+                    System.out.println(index2 + 1 + ". " + cripto + " - $" + criptos.get(cripto));
+                    index2++;
+                }
+
+                int opcion2 = random.nextInt(1,4);
+                System.out.println("La criptomoneda que va a comprar es: "+criptosArray[opcion2]);
+                opcion2 -= 1;
+
+                // Validar la opción seleccionada
+                if (opcion2 >= 0 && opcion2 < criptosArray.length) {
+                    String selectedCripto = criptosArray[opcion2];
+                    double stockValueCripto = criptos.get(selectedCripto);
+                    float cantidadCripto = (float) (monto / stockValueCripto);
+
+                    InversionCriptoMonedas inversionCripto = new InversionCriptoMonedas(
+                            selectedCripto,
+                            cantidadCripto,
+                            0.0,
+                            stockValueCripto,
+                            stockValueCripto,
+                            monto,
+                            cliente
+                    );
+
+                    // Agregar la inversión al cliente
+                    agregarInversion(cliente, inversionCripto);
+                } else {
+                    System.out.println("Opción no válida.");
+                }
+                break;
+            default:
+                System.out.println("Tipo de inversión no válido.");
+        }
+    }
+
     public double venderActivo(int tipoInversion, Cliente cliente) {
         // Buscar las inversiones del cliente desde el HashMap
         List<Inversion> inversionesCliente = inversionesPorCliente.get(cliente);
@@ -289,6 +395,41 @@ public class AgenteDeBolsa {
                 }
                 break;
             case 2:
+                toReturn += "Criptomonedas: \n";
+                // Usar Iterator para criptomonedas
+                Iterator<Map.Entry<String, Double>> criptoIterator = criptos.entrySet().iterator();
+                while (criptoIterator.hasNext()) {
+                    Map.Entry<String, Double> entry = criptoIterator.next();
+                    toReturn += entry.getKey() + " - $" + entry.getValue() + "\n";
+                }
+                break;
+            default:
+                toReturn += "Opción no válida.";
+                break;
+        }
+        return toReturn;
+    }
+
+    public String consultaPreciosRandom() {
+        String toReturn = "";
+        Random random = new Random();
+        
+        int opcion = random.nextInt(1,2);
+        
+
+        switch (opcion) {
+            case 1:
+                System.out.println("Precio empresas");
+                toReturn += "Empresas: \n";
+                // Usar Iterator para empresas
+                Iterator<Map.Entry<String, Double>> companyIterator = companies.entrySet().iterator();
+                while (companyIterator.hasNext()) {
+                    Map.Entry<String, Double> entry = companyIterator.next();
+                    toReturn += entry.getKey() + " - $" + entry.getValue() + "\n";
+                }
+                break;
+            case 2:
+                System.out.println("Precio criptomonedas");
                 toReturn += "Criptomonedas: \n";
                 // Usar Iterator para criptomonedas
                 Iterator<Map.Entry<String, Double>> criptoIterator = criptos.entrySet().iterator();

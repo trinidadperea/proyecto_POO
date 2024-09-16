@@ -32,6 +32,8 @@ public class Gerente extends Empleado{
             return false;
         }
     }
+
+
     public void actualizoDineroNoRegCliente(Cliente cliente, double dinero){
         //verifico que el cliente posee donero no registrado
         if (this.dineroNoRegistrado.containsKey(cliente.getDni())){

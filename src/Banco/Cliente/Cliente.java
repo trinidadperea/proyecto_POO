@@ -42,6 +42,16 @@ public class Cliente implements CompraVentaActivos, CompraVentaDivisas{
         }
     }
 
+    public void comprarActivoRandom(double monto, int tipoInversion){
+
+        if (this.saldo >= monto) {
+            agentedeBolsa.realizarInversionRandom(tipoInversion, monto, this);
+            this.saldo -= monto;
+        } else {
+            System.out.println("Saldo insuficiente para realizar la inversión.");
+        }
+    }
+
     public void venderActivo(int tipoInversion){
         this.saldo += agentedeBolsa.venderActivo(tipoInversion,this);
         System.out.println("El saldo actual es: " + this.saldo);
@@ -55,6 +65,11 @@ public class Cliente implements CompraVentaActivos, CompraVentaDivisas{
 
     public void consultarPrecios(){
         System.out.println(agentedeBolsa.consultaPrecios());
+        return;
+    }
+
+    public void consultarPreciosRandom(){
+        System.out.println(agentedeBolsa.consultaPreciosRandom());
         return;
     }
 
@@ -143,6 +158,21 @@ public class Cliente implements CompraVentaActivos, CompraVentaDivisas{
         if (empleado instanceof AsesorDivisas){
             if (this.saldo >= montoComprar) {
                 ((AsesorDivisas) empleado).compraDivisas(montoComprar,this);
+                this.saldo -= montoComprar;
+            } else {
+                System.out.println("Saldo insuficiente para realizar la conversión.");
+            }
+        }else{
+            System.out.println("Este empleado no puede realizar esta operación");
+        }
+        
+    }
+
+    public void comprarDivisasRandom(double montoComprar, Empleado empleado){
+        this.empleado = empleado;
+        if (empleado instanceof AsesorDivisas){
+            if (this.saldo >= montoComprar) {
+                ((AsesorDivisas) empleado).compraDivisasRandom(montoComprar,this);
                 this.saldo -= montoComprar;
             } else {
                 System.out.println("Saldo insuficiente para realizar la conversión.");

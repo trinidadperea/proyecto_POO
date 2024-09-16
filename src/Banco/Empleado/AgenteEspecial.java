@@ -12,12 +12,7 @@ public class AgenteEspecial extends Empleado{
         super(nombre,apellido,legajo,salario,nroTelefono,email);
         this.gerente = gerente;
     }
-    /* no realizamos transferencia aca 
-    public boolean solicitarTransferenciaNoRastreable(Cliente cliente, double dineroSucio,Cliente clienteDestino){
-        return true;
-        //realizar metodo
-    } */
-    //si el cliente quiere realizar un deposito con plata sucia se encarga el cajero 
+    
     public boolean solicitarTransaccionNoRastreable(Cliente cliente, double dineroSucio){
         //le paso el dinero al gerente para que lo agregue al diccionario
         if (gerente.aprobarTransaccionCliente(cliente, dineroSucio)) return true;

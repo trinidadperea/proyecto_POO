@@ -1,9 +1,10 @@
 package Banco.Empleado;
 import java.util.HashMap;
 //import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Scanner;
 import Banco.Cliente.Cliente;
+
 
 public class AsesorDivisas extends Empleado{
     private Scanner sc;
@@ -39,6 +40,67 @@ public class AsesorDivisas extends Empleado{
         consultaPrecios();
 
         int opcion = verificar(4); // Inicializar como valor inválido
+        
+        Map<String,Double> divisasCliente = cliente.getDivisasCompradas();
+
+        switch (opcion) {
+            case 1: // Dolar
+                double montoCambiadoDolar = monto / divisas.get("Dolar");
+                montoCambiadoDolar = (long) (montoCambiadoDolar * 100) / 100.0;
+                if (divisasCliente.containsKey("Dolar")) {
+                    montoCambiadoDolar += divisasCliente.get("Dolar");
+                    divisasCliente.remove("Dolar");
+                }
+                divisasCliente.put("Dolar", montoCambiadoDolar);
+                cliente.setDivisasCompradas(divisasCliente);
+                break;
+        
+            case 2: // Euro
+                double montoCambiadoEuro = monto / divisas.get("Euro");
+                montoCambiadoEuro = (long) (montoCambiadoEuro * 100) / 100.0;
+                if (divisasCliente.containsKey("Euro")) {
+                    montoCambiadoEuro += divisasCliente.get("Euro");
+                    divisasCliente.remove("Euro");
+                }
+                divisasCliente.put("Euro", montoCambiadoEuro);
+                cliente.setDivisasCompradas(divisasCliente);
+                break;
+        
+            case 3: // Real
+                double montoCambiadoReal = monto / divisas.get("Real");
+                montoCambiadoReal = (long) (montoCambiadoReal * 100) / 100.0;
+                if (divisasCliente.containsKey("Real")) {
+                    montoCambiadoReal += divisasCliente.get("Real");
+                    divisasCliente.remove("Real");
+                }
+                divisasCliente.put("Real", montoCambiadoReal);
+                cliente.setDivisasCompradas(divisasCliente);
+                break;
+        
+            case 4: // Peso Chileno
+                double montoCambiadoPesoChileno = monto / divisas.get("Peso Chileno");
+                montoCambiadoPesoChileno = (long) (montoCambiadoPesoChileno * 100) / 100.0;
+                if (divisasCliente.containsKey("Peso Chileno")) {
+                    montoCambiadoPesoChileno += divisasCliente.get("Peso Chileno");
+                    divisasCliente.remove("Peso Chileno");
+                }
+                divisasCliente.put("Peso Chileno", montoCambiadoPesoChileno);
+                cliente.setDivisasCompradas(divisasCliente);
+                break;
+        
+            default:
+                System.out.println("Opción no válida.");
+                break;
+        }
+        
+    }
+
+    public void compraDivisasRandom(double monto, Cliente cliente){
+        Random random = new Random();
+        System.out.println("Seleccione la moneda que desea comprar: ");
+        consultaPrecios();
+
+        int opcion = random.nextInt(1,4); 
         
         Map<String,Double> divisasCliente = cliente.getDivisasCompradas();
 

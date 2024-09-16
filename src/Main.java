@@ -594,28 +594,24 @@ public class Main {
                     break;
                 case "divisas":
                     System.out.println("Seccion divisas");
-                    int opcion = random.nextInt(1,4);
+                    int opcion = random.nextInt(1,3);
                     switch (opcion){
                         case 1:
                             System.out.println("El cliente "+cliente.getNombre()+" consulto el precio de las divisas");
                             cliente.solicitarPrecioDivisas(asesorDivisas);
                             break;
                         case 2: 
-                            System.out.println("El cliente "+cliente.getNombre()+ " quiere comprar: $"+monto);
-                            //comprar divisa
+                            System.out.println("El cliente "+cliente.getNombre()+ " quiere comprar: $"+monto+" en divisas");
+                            cliente.comprarDivisasRandom(monto, asesorDivisas);
                             break;
                         case 3:
-                            System.out.println("El cliente "+cliente.getNombre()+" desea vender: $"+monto+" en divisas");
-                            //vender divisas
-                        case 4:
                             //divisas compradas cliente
                             cliente.mostrarDivisasCompradas();
                             break;
                     }
                 case "solicitarPrestamo":
-                    //habria que ver como agregar que se pague el prestamo
-                    //System.out.println(cliente.getNombre()+" Solicita un prestamo");
-                    //cliente.solicitarPrestamo(monto, gerente, cajero);
+                    System.out.println("Se realizara un prestamo al cliente "+cliente.getNombre()+" de: $"+monto);
+                    cliente.solicitarPrestamo(monto, gerente, cajero);
                     break;
                 case "realizarInversion":
                     int inversion = random.nextInt(1,5);
@@ -625,35 +621,33 @@ public class Main {
                             int accion = random.nextInt(1,2);
                             switch (accion) {
                                 case 1:
-                                    //no funciona porque debo decir que empresa
-                                    //compro accion
-                                    /* 
-                                    gerente.actualizoDineroNoRegCliente(cliente, monto); //le lavo el dinero al cliente
-                                    cliente.comprarActivo(monto, 2);
-                                    System.out.println("Se realizo con exito la inversion");
-                                    */
-                                    break; 
-                                case 2: 
-                                    //vender accion (funciona)
-                                    cliente.venderActivo(1);
-                                    break;
-                                default:
-                                    break;
+                                int opcionAcciones = random.nextInt(1,2);
+                                switch (opcionAcciones) {
+                                    case 1:
+                                        System.out.println("El cliente "+cliente.getNombre()+" va a invertir: $"+monto);
+                                        gerente.actualizoDineroNoRegCliente(cliente, monto); //le lavo el dinero al cliente
+                                        cliente.comprarActivoRandom(monto, 2);
+                                        System.out.println("Se realizo con exito la inversion");
+                                        break;
+                                    case 2:
+                                        //vendo la accion si hay
+                                        cliente.venderActivo(1);
+                                        break;
+                                    default:
+                                        break;
+                                }
                             }
+                            break;
                         case 2:
-                            //accionCripto
-                            int accionCripto = random.nextInt(1,2);
-                            switch (accionCripto){
-                                case 1: 
-                                    //no funciona
-                                    //comprar cripto;
-                                    /* 
+                            int opcionCripto = random.nextInt(1,2);
+                            switch (opcionCripto) {
+                                case 1:
+                                    //comprar cripto
                                     gerente.actualizoDineroNoRegCliente(cliente, monto); //le lavo el dinero al cliente
-                                    cliente.comprarActivo(monto, 3);
-                                    System.out.println("Se realizo con exito la inversion"); */
+                                    cliente.comprarActivoRandom(monto, 3);
+                                    System.out.println("Se realizo con exito la inversion");
                                     break;
-                                case 2: 
-                                    //vender cripto
+                                case 2:
                                     cliente.venderActivo(2);
                                     break;
                                 default:
@@ -661,16 +655,14 @@ public class Main {
                             }
                             break;
                         case 3:
-                            int accionPlazoFijo = random.nextInt(1,2);
-                            switch (accionPlazoFijo){
+                            int opcionPlazoFijo = random.nextInt(1,2);
+                            switch (opcionPlazoFijo) {
                                 case 1:
-                                    //realizar plazo fijo
-                                    /* 
+                                //realizar plazo fijo
                                     gerente.actualizoDineroNoRegCliente(cliente, monto); //le lavo el dinero al cliente
-                                    cliente.comprarActivo(monto, 1); */
+                                    cliente.comprarActivoRandom(monto, 1);
                                     break;
                                 case 2:
-                                    //rendimiento plazo fijo
                                     cliente.consultarGananciasPlazoFijo();
                                     break;
                                 default:
@@ -678,9 +670,8 @@ public class Main {
                             }
                             break;
                         case 4:
-                            //precio activos (No funciona bien porq la funcion recibe algo)
-                            //System.out.println("El cliente "+cliente.getNombre()+" consulto el precio de los activos");
-                            //cliente.consultarPrecios();
+                            System.out.println("El cliente "+cliente.getNombre()+" consulto el precio de los activos");
+                            cliente.consultarPreciosRandom();
                             break;
                         case 5:
                             //consulto activos cliente

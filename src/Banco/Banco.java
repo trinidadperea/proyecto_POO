@@ -38,7 +38,7 @@ public class Banco{
     public void realizarCopiaDeSeguridad(HashMap<Integer, Cliente> clientes) {
         try  {
             for (Map.Entry<Integer, Cliente> entry : clientes.entrySet()) {
-                Cliente cliente = entry.getValue(); // Obtengo el cliente
+                Cliente cliente = entry.getValue(); 
                 System.out.println("Cliente " + cliente.getNombre() + " guardado en archivos.");
             }
         } catch (Exception e) {
