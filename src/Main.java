@@ -501,7 +501,7 @@ public class Main {
                     return opcion;
                 }
             } catch (InputMismatchException e) {
-                System.out.println("Error: Debe ingresar un número entero.");
+                System.out.println("Ingrese un numero entero.");
                 sc.next();
             }
         }
@@ -528,12 +528,12 @@ public class Main {
             try {
                 double monto = sc.nextDouble();
                 if (monto <= 0) {
-                    System.out.println("El monto debe ser positivo. Intente de nuevo.");
+                    System.out.println("El monto debe ser positivo");
                 } else {
                     return monto; 
                 }
             } catch (InputMismatchException e) {
-                System.out.println("Monto inválido. Por favor, ingrese un número válido.");
+                System.out.println("Ingrese un número válido.");
                 sc.next(); 
             }
         }
@@ -548,7 +548,7 @@ public class Main {
         
         Random random = new Random();
 
-        String[] operaciones = {"tranferencia", "retiro", "deposito","divisas","solicitarPrestamo","realizarInversion"};
+        String[] operaciones = {"tranferencia", "retiro", "deposito","divisas","solicitarPrestamo","realizarInversion","consejoFinanciero"};
 
         //50 movimientos
         for (int i = 0; i < 50; i++){
@@ -690,7 +690,14 @@ public class Main {
                         default:
                             break;
                     }
-            }       
+                case "consejoFinanciero":    
+                    String consejo = asesorF.consejoFinanciero(cliente);
+                    System.out.println(consejo);
+                    break;
+                default:
+                    break;    
+            }   
+
         }
     }
 

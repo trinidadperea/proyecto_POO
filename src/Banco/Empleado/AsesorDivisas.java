@@ -37,23 +37,8 @@ public class AsesorDivisas extends Empleado{
     public void compraDivisas(double monto, Cliente cliente){
         System.out.println("Seleccione la moneda que desea comprar: ");
         consultaPrecios();
-        //int opcion = sc.nextInt();
-        int opcion = -1; // Inicializar como valor inválido
-        while (true) {
-            try {
-                // Pedir la opción al usuario
-                System.out.print("Ingrese el número de la moneda: ");
-                opcion = sc.nextInt();
-                if (opcion > 0 && opcion <= 4) { 
-                    break;
-                } else {
-                    System.out.println("Por favor, seleccione un número entre 1 y " + 4);
-                }
-            } catch (Exception e) {
-                System.out.println("Error: Debe ingresar un número entero válido.");
-                sc.next(); // Limpiar el buffer de entrada para evitar un bucle infinito
-            }
-        }
+
+        int opcion = verificar(4); // Inicializar como valor inválido
         
         Map<String,Double> divisasCliente = cliente.getDivisasCompradas();
 
@@ -145,4 +130,21 @@ public class AsesorDivisas extends Empleado{
         }
     }
     
+    public int verificar(int valor){
+        Scanner sc = new Scanner(System.in);
+        int opcion = -1;
+        while (true){
+            try {
+                opcion = sc.nextInt();
+                if (opcion < 1 || opcion > valor) {
+                    System.out.println("Opción no válida");
+                }  else {
+                    return opcion;
+                }
+            } catch (Exception e) {
+                System.out.println("Ingrese un número entero.");
+                sc.next();
+            }
+        }
+    }
 }

@@ -76,8 +76,6 @@ public class Cliente implements CompraVentaActivos, CompraVentaDivisas{
         }
         
     }
-        
-    
 
     public void solicitarRetiro(double dineroRetirar, Empleado empleado){   
         this.empleado = empleado;

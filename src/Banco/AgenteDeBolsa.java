@@ -38,7 +38,6 @@ public class AgenteDeBolsa {
         criptos.put("Litecoin", 90.00);
     }
 
-
     public void realizarInversion(int tipoInversion, double monto, Cliente cliente) {
         switch (tipoInversion) {
             case 1:
@@ -58,14 +57,13 @@ public class AgenteDeBolsa {
                     try {
                         meses = sc.nextInt();
                         if (meses <= 0) {
-                            System.out.println("La cantidad de meses debe ser mayor que cero. Intente nuevamente.");
+                            System.out.println("La cantidad de meses debe ser mayor que cero.");
                         } else {
-                            break; // Salir del bucle si la entrada es válida
+                            break; 
                         }
-        
                     } catch (InputMismatchException e) {
-                        System.out.println("Error: Debe ingresar un número entero válido.");
-                        sc.next(); // Limpiar el buffer de entrada
+                        System.out.println("Ingrese un numero entero.");
+                        sc.next(); 
                     }
                 }
                 float interes = meses * 1.15f;
@@ -191,7 +189,7 @@ public class AgenteDeBolsa {
                 }
     
                 // Seleccionar la acción
-                int opcion = sc.nextInt() - 1;
+                int opcion = verificarOpcion(9);
                 if (opcion >= 0 && opcion < acciones.size()) {
                     InversionBolsa accionSeleccionada = acciones.get(opcion);
     
@@ -241,7 +239,7 @@ public class AgenteDeBolsa {
                 
                 
                 // Seleccionar la criptomoneda
-                int opcion2 = sc.nextInt();
+                int opcion2 = verificarOpcion(4);
                 if (opcion2 >= 0 && opcion2 < criptos.size()) {
                     InversionCriptoMonedas criptoSeleccionada = criptos.get(opcion2);
     
@@ -336,7 +334,6 @@ public class AgenteDeBolsa {
         }
     }
     
-
     public String mostrarInversiones(Cliente cliente) {
         List<Inversion> inversiones = inversionesPorCliente.get(cliente);
         if (inversiones == null || inversiones.isEmpty()) {
@@ -367,12 +364,12 @@ public class AgenteDeBolsa {
     public void setInversionesPorCliente(Map<Cliente, List<Inversion>> inversionesPorCliente) {
         this.inversionesPorCliente = inversionesPorCliente;
     }
-    public static int verificarOpcion(int valor){
+
+    public int verificarOpcion(int valor){
         Scanner sc = new Scanner(System.in);
         int opcion = -1;
         while (true){
             try {
-                System.out.println("Ingrese una opción: ");
                 opcion = sc.nextInt();
                 if (opcion < 1 || opcion > valor) {
                     System.out.println("Opción no válida");
@@ -380,7 +377,7 @@ public class AgenteDeBolsa {
                     return opcion;
                 }
             } catch (InputMismatchException e) {
-                System.out.println("Error: Debe ingresar un número entero.");
+                System.out.println("Ingrese un número entero.");
                 sc.next();
             }
         }
