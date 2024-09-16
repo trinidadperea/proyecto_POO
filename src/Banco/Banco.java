@@ -11,7 +11,6 @@ public class Banco{
 
 
     //contructor
-
     public Banco(int cantEmpleados, int cantClientes) {
         this.cantEmpleados = cantEmpleados;
         this.cantClientes = cantClientes;
@@ -49,6 +48,7 @@ public class Banco{
     public String mostrarCantClientes(){
         return "La cantidad de clientes que tiene el Banco La Familia son: "+cantClientes;
     }
+    
     public String mostrarCantEmpleados(){
         return "La cantidad de clientes que tiene el Banco La Familia son: "+cantEmpleados;
     }

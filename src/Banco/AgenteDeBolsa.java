@@ -192,7 +192,7 @@ public class AgenteDeBolsa {
                 }
                 
                 //opcion se genera de forma random
-                int opcion = random.nextInt(1,9);
+                int opcion = random.nextInt(1,8);
                 System.out.println("La empresa en la que va a invertir es: "+companyArray[opcion]);
                 opcion -= 1;
 

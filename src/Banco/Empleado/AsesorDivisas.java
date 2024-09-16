@@ -9,8 +9,6 @@ import Banco.Cliente.Cliente;
 public class AsesorDivisas extends Empleado{
     private Scanner sc;
     private Map<String,Double> divisas = new HashMap<>();
-
-
     public AsesorDivisas(String nombre, String apellido, int legajo, double salario, int nroTelefono, String email) {
         super(nombre, apellido, legajo, salario, nroTelefono, email);
         sc = new Scanner(System.in);
@@ -34,7 +32,7 @@ public class AsesorDivisas extends Empleado{
         }
         return;
     }
-
+    
     public void compraDivisas(double monto, Cliente cliente){
         System.out.println("Seleccione la moneda que desea comprar: ");
         consultaPrecios();

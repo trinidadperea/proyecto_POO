@@ -343,10 +343,11 @@ public class Main {
                         case 3:
                             System.out.println("Ingrese el monto a vender");
                             double montoVender = verificarMonto();
-                            System.out.println("Ingrese la moneda a vender, usted posee: ");
+                            System.out.println("Ingrese la moneda a vender");
+                            //System.out.println("Usted posee: ");
                             cliente.mostrarDivisasCompradas();
                             String moneda = sc.nextLine();
-                            moneda = sc.nextLine();
+                            //moneda = sc.nextLine();
                             cliente.venderDivisas(moneda, montoVender, asesorDivisas);
                             break;
                         case 4:

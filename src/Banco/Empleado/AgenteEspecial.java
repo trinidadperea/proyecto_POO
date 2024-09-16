@@ -12,6 +12,7 @@ public class AgenteEspecial extends Empleado{
         super(nombre,apellido,legajo,salario,nroTelefono,email);
         this.gerente = gerente;
     }
+
     
     public boolean solicitarTransaccionNoRastreable(Cliente cliente, double dineroSucio){
         //le paso el dinero al gerente para que lo agregue al diccionario

@@ -33,7 +33,6 @@ public class Gerente extends Empleado{
         }
     }
 
-
     public void actualizoDineroNoRegCliente(Cliente cliente, double dinero){
         //verifico que el cliente posee donero no registrado
         if (this.dineroNoRegistrado.containsKey(cliente.getDni())){
@@ -73,15 +72,15 @@ public class Gerente extends Empleado{
         }
     }
 
-
     //getter y setter del diccionario dinero no registrado
     public Map<Integer, Double> getDineroNoRegistrado() {
         return dineroNoRegistrado;
     }
+
     public void setDineroNoRegistrado(Map<Integer, Double> dineroNoRegistrado) {
         this.dineroNoRegistrado = dineroNoRegistrado;
     }
-    
+
     //metodo clase gerente, pedidos por el cliente
     public boolean aprobarTransaccionCliente(Cliente cliente,double dinero){
         //System.out.println(dineroNoRegistrado.keySet());
@@ -111,7 +110,6 @@ public class Gerente extends Empleado{
         }
     }
 
-    
     public boolean verificarTransaccion(Cliente cliente, double dinero){
         //verifica que la trasferencia se va a realizar con plata limpia
         if (!dineroNoRegistrado.isEmpty()){

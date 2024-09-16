@@ -209,16 +209,10 @@ public class Cliente implements CompraVentaActivos, CompraVentaDivisas{
     }
 
     //metodos del cliente
-
-    public void pagarCuotaPrestamo(){
-        // Paga una cuota de un prestamo
-    }
-    public void cancelarPrestamo(){
-        // Cancela un prestamo
-    }
     public double mostrarSaldo(){
         return saldo;
     }
+
     public void registrarDivisas(String nombreDivisa, double valor){
         divisasCompradas.put(nombreDivisa, divisasCompradas.getOrDefault(nombreDivisa, 0.0) + valor);
     }
@@ -277,11 +271,6 @@ public class Cliente implements CompraVentaActivos, CompraVentaDivisas{
 
     public void setAgentedeBolsa(AgenteDeBolsa agentedeBolsa) {
         this.agentedeBolsa = agentedeBolsa;
-    }
-
-    @Override
-    public String toString(){
-        return "Cliente: "+nombre+" "+apellido+"\nDNI: "+dni+"\nSaldo: "+saldo;
     }
 
 }
