@@ -2,7 +2,7 @@ import Banco.AgenteDeBolsa;
 import Banco.Cliente.Cliente;
 import Banco.Empleado.*;
 import Banco.Cliente.Inversiones.*;
-
+import Banco.Banco;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -19,61 +19,75 @@ public class Main {
 
         LocalDate fechaActual = LocalDate.now();
 
-        boolean keep = true;
         //creo al gerente
         final int dniGerente = 9090;
         final String passGerente = "9090";
+        //para usar el simulador
+        final int dniSimular = 100;
+        final String passSimular = "100";
 
         Cajero cajero = new Cajero("juan", "des", 123, 12444, 345, "trrh");
         AsesorDivisas asesorDivisas = new AsesorDivisas("Martina", "des", 123, 12444, 345, "trrh");
         Gerente gerente = new Gerente("gerente", "des", 123, 12444, 345, "trrh");
         AgenteEspecial agenteE = new AgenteEspecial("marti", "manzano", 12, 0, 14566, "@email", gerente);
         AgenteDeBolsa agenteBolsa = new AgenteDeBolsa("martin");
+        AsesorFinanciero asesorF = new AsesorFinanciero("Julieta","Enrico",12300,90000,233,"@");
 
         empleados.put("cajero", cajero);
         empleados.put("asesorDivisas", asesorDivisas);
         empleados.put("gerente", gerente);
         empleados.put("agenteE", agenteE);
-
-        int contador = 0;
+        empleados.put("asesorFinanciero",asesorF);
 
         inicializarCliente(contraseñas,clientes);
 
-        while (keep) {
+        int contador = 0;
+        
+        while (true) {
+            Scanner sc = new Scanner(System.in);
             System.out.println("Bienvenido al banco la familia");
             System.out.println("1. Ingresar");
             System.out.println("2. Registrarse");
             System.out.println("3. Salir");
-            Scanner sc = new Scanner(System.in);
-            int opcion = sc.nextInt();
+
+            int opcion = verificarOpcion(3);
+            
             switch (opcion) {
                 case 1:
                     System.out.println("Ingrese su dni");
-                    int dni = sc.nextInt();
+                    int dni = verificarDNI();
                     System.out.println("Ingrese su contraseña");
                     String pass = sc.nextLine();
-                    pass = sc.nextLine();
+                    
+                    if (dni == dniSimular && pass.equals(passSimular)){
+                        Banco banco = new Banco(clientes.size(),empleados.size());
+                        simulacion(banco,clientes, empleados);
+                        break;
+                    }
                     if (contraseñas.containsKey(dni)) {
                         if (contraseñas.get(dni).equals(pass)) {
-                            System.out.println("Bienvenido");
                             Cliente cliente = clientes.get(dni);
-                            menuCliente(cliente, clientes, empleados, agenteBolsa, fechaActual);
-                            if (contador == 2) {
-                                fechaActual = fechaActual.plusMonths(1);
-                                agenteBolsa.actualizarPrecios();
-                                asesorDivisas.actualizarDivisas();
-                                contador = 0;
-                                System.out.println("Se ha actualizado la fecha");
-                            } else {
-                                contador++;
-                            }
+                            if (cliente != null){
+                                System.out.println("Bienvenido");
+                                menuCliente(cliente, clientes, empleados, agenteBolsa, fechaActual);
+                                if (contador == 2) {
+                                    fechaActual = fechaActual.plusMonths(1);
+                                    agenteBolsa.actualizarPrecios();
+                                    asesorDivisas.actualizarDivisas();
+                                    contador = 0;
+                                    System.out.println("Se ha actualizado la fecha");
+                                } else {
+                                    contador++;
+                                }
                         } else {
                             System.out.println("Contraseña incorrecta");
                         }
+                            }
+                            
                     } else if (dni == dniGerente && pass.equals(passGerente)) {
                         //es el gerente, por lo tanto se abre otro menu
                         System.out.println("Bienvenido Gerente");
-                        menuGerente();
+                        menuGerente(gerente, clientes,empleados);
                     } else {
                         System.out.println("Usuario no registrado");
                     }
@@ -82,19 +96,110 @@ public class Main {
                     crearCliente(contraseñas, clientes);
                     break;
                 case 3:
-                    keep = false;
-                    break;
+                    return;
                 default:
                     System.out.println("Opción incorrecta");
                     break;
             }
-            // Gerente gerente = new Gerente("Martin", "Sabez", 5675, 100000, 261345438, "matrinSabez@gmail.com");
-            // gerente.mostrarDineroNoRegistrado();
+
+        }  }
+
+    public static void menuGerente(Gerente gerente, HashMap<Integer, Cliente> clientes,HashMap<String, Empleado> empleados) {
+        while (true){
+
+            Banco banco = new Banco(empleados.size(), clientes.size());
+            Cajero cajero = (Cajero) empleados.get("cajero");
+            Scanner sc = new Scanner(System.in);
+
+            System.out.println("Gerente que desea hacer: ");
+            System.out.println("1. Ver listado de dinero no registrado en el banco");
+            System.out.println("2. Eliminar un cliente del sistema");
+            System.out.println("3. Ver listado de clientes en el sistema");
+            System.out.println("4. Realizar copia de seguridad");
+            System.out.println("5. Ver cantidad de empleados");
+            System.out.println("6. Ver cantidad de clientes");
+            System.out.println("7. Mostrar transaccion cliente");
+            System.out.println("8. Contratar un empleado");
+            System.out.println("9. Cerrar sesion");
+
+            int opcion = verificarOpcion(9);
+    
+            switch (opcion) {
+                case 1:
+                    gerente.mostrarDineroNoRegistrado(clientes);
+                    break;
+                case 2:
+                    //busco al cliente en el diccioanrio
+                    if (!clientes.isEmpty()){
+                        System.out.println("Ingrese el dni del cliente a eliminar: ");
+                        int dniClienteEliminar = verificarDNI();
+                        if (clientes.containsKey(dniClienteEliminar)){
+                            //elimino al cliente
+                            Cliente clienteEliminado = clientes.remove(dniClienteEliminar);
+                            if (clienteEliminado != null){
+                                System.out.println("El cliente "+clienteEliminado.getNombre()+" ha sido eliminado del sistema");
+                            } else {
+                                System.out.println("No se encontro un cliente con el DNI ingresado");
+                            }
+                        } else {
+                            System.out.println("El dni ingresado no existe en el sistema");
+                        }
+                    } else {
+                        System.out.println("No hay clientes para eliminar");
+                    }
+                    break;
+                case 3:
+                    if (!clientes.isEmpty()){
+                        for (Map.Entry<Integer,Cliente> entry: clientes.entrySet()){
+                            Cliente cliente = entry.getValue();
+                            System.out.println("Cliente "+cliente.getNombre()+" con DNI: "+cliente.getDni());
+                       }
+                    } else {
+                        System.out.println("No hay clientes ingresados en el sistema");
+                    }
+                    break;
+                case 4:
+                    banco.realizarCopiaDeSeguridad(clientes);
+                case 5:
+                    System.out.println("La cantidad de empleados que hay en el banco es: "+banco.getCantEmpleados());
+                    break;
+                case 6:
+                    System.out.println("La cantidad de clientes que hay en el banco es: "+banco.getCantClientes());
+                    break;
+                case 7: 
+                    //mostrar transaccion
+                    System.out.println("Ingrese el dni del cliente: ");
+                    int dniCliente = verificarDNI();
+                    if (clientes.get(dniCliente) != null){
+                        Cliente cliente = clientes.get(dniCliente);
+                        gerente.mostrarTransaccionesCLiente(cliente, cajero);
+                    }
+                case 8: 
+                    //contratar un empleado
+                    System.out.println("Que empleado desde contratar?");
+                    System.out.println("1. Un cajero");
+                    System.out.println("2. Un Asesor Financiero");
+                    System.out.println("3. Un Agente Especial");
+                    System.out.println("4. Un Asesor de divisas");
+                    int opcionEmpleado = verificarOpcion(4);
+                    
+                    //sc.nextLine();
+                    //cualquiera sea el empleado le pido lo mismo 
+                    System.out.println("Nombre del empleado: ");
+                    String nombreE = sc.nextLine();
+                    System.out.println("Apellido del empleado: ");
+                    String apellidoE = sc.nextLine();
+                    System.out.println("Email del empleado: ");
+                    String emailE = sc.nextLine();
+                    System.out.println("El empleado fue contratado!");
+                    break;
+                case 9:
+                    return;
+                default:
+                    break;
+            }
         }
-    }
-
-    public static void menuGerente() {
-
+        
     }
 
     public static void menuCliente(Cliente cliente, HashMap<Integer, Cliente> clientes, HashMap<String, Empleado> empleados, AgenteDeBolsa agenteBolsa, LocalDate fechaActual) {
@@ -102,6 +207,7 @@ public class Main {
         AsesorDivisas asesorDivisas = (AsesorDivisas) empleados.get("asesorDivisas");
         Gerente gerente = (Gerente) empleados.get("gerente");
         AgenteEspecial agenteE = (AgenteEspecial) empleados.get("agenteE");
+        AsesorFinanciero asesorF = (AsesorFinanciero) empleados.get("asesorFinanciero");
         Scanner sc = new Scanner(System.in);
 
         if (cajero.getPrestamos().containsKey(cliente.getDni()) && cajero.getPrestamos().get(cliente.getDni()).getUltimaFechaPago().isBefore(fechaActual)) {
@@ -167,32 +273,41 @@ public class Main {
             System.out.println("5. Consultar sobre divisas");
             System.out.println("6. Consultar sobre acciones, criptomonedas y plazos fijos");
             System.out.println("7. Consultar Saldo");
-            System.out.println("8. Cerrar sesión");
-            int opcion = sc.nextInt();
-            if (opcion == 8) {
-                break;
-            }
+            System.out.println("8. Solicitar un consejo");
+            System.out.println("9. Cerrar sesión");
+
+            int opcion = verificarOpcion(9);
+            
             switch (opcion) {
                 case 1:
                     System.out.println("Ingrese el monto a transferir");
-                    double monto = sc.nextDouble();
-                    System.out.println("Ingrese el dni del cliente destino");
-                    int dniDestino = sc.nextInt();
-                    cliente.solicitarTransferencia(monto, clientes.get(dniDestino), cajero);
+                    double monto = verificarMonto(); 
+                    boolean realizar = gerente.verificarTransaccion(cliente, monto);
+                    if (realizar){
+                        System.out.println("Ingrese el dni del cliente destino");
+                        int dniDestino = verificarDNI();
+                        cliente.solicitarTransferencia(monto, clientes.get(dniDestino), cajero);
+                    } else {
+                        System.out.println("No posee suficiente dinero");
+                    }
                     break;
 
                 case 2:
                     System.out.println("Ingrese el monto a retirar");
-                    double montoRetirar = sc.nextDouble();
-                    cliente.solicitarRetiro(montoRetirar, cajero);
+                    double montoRetirar = verificarMonto();
+                    boolean realizarRetiro = gerente.verificarTransaccion(cliente, montoRetirar);
+                    if (realizarRetiro){
+                        cliente.solicitarRetiro(montoRetirar, cajero);
+                    } else {
+                        System.out.println("No puede retirar ese monto");
+                    }
                     break;
 
                 case 3:
                     System.out.println("Cliente " + cliente.getNombre() + " justifique de donde viene el dinero");
-                    sc.nextLine();
                     String respCliente = sc.nextLine();
                     System.out.println("Ingrese el monto a depositar");
-                    double montoDepositar = sc.nextDouble();
+                    double montoDepositar = verificarMonto();
                     if (respCliente.equals("")) { //si no conesta nada es plata sucia, lo maneja el agente especial
                         cliente.solicitarDeposito(montoDepositar, agenteE);
                     } else {
@@ -202,7 +317,7 @@ public class Main {
 
                 case 4:
                     System.out.println("Ingrese el monto que le gustaría recibir");
-                    double montoSolicitar = sc.nextDouble();
+                    double montoSolicitar = verificarMonto();
                     cliente.solicitarPrestamo(montoSolicitar, gerente, cajero);
                     break;
 
@@ -211,7 +326,9 @@ public class Main {
                     System.out.println("2. Comprar divisas");
                     System.out.println("3. Vender divisas");
                     System.out.println("4. Consultar divisas compradas");
-                    int opcionDivisas = sc.nextInt();
+
+                    int opcionDivisas = verificarOpcion(4);
+
                     switch (opcionDivisas) {
                         case 1:
                             cliente.solicitarPrecioDivisas(asesorDivisas);
@@ -219,13 +336,13 @@ public class Main {
 
                         case 2:
                             System.out.println("Ingrese el monto a comprar");
-                            double montoComprar = sc.nextDouble();
+                            double montoComprar = verificarMonto();
                             cliente.comprarDivisas(montoComprar, asesorDivisas);
                             break;
 
                         case 3:
                             System.out.println("Ingrese el monto a vender");
-                            double montoVender = sc.nextDouble();
+                            double montoVender = verificarMonto();
                             System.out.println("Ingrese la moneda a vender, usted posee: ");
                             cliente.mostrarDivisasCompradas();
                             String moneda = sc.nextLine();
@@ -236,7 +353,6 @@ public class Main {
                             cliente.mostrarDivisasCompradas();
                             break;
                         default:
-                            System.out.println("Opción incorrecta");
                             break;
                     }
                     break;
@@ -250,34 +366,39 @@ public class Main {
                     System.out.println("3. Consultar sobre plazos fijos");
                     System.out.println("4. Consultar precios de diferentes activos");
                     System.out.println("5. Consultar sobre mis activos");
-                    switch (sc.nextInt()) {
+
+                    int opcionBolsa = verificarOpcion(5);
+                    switch (opcionBolsa) {
                         case 1:
                             System.out.println("1. Comprar acciones");
                             System.out.println("2. Vender acciones");
-                            int opcionAcciones = sc.nextInt();
+                            int opcionAcciones = verificarOpcion(2);
                             switch (opcionAcciones) {
                                 case 1:
                                     System.out.println("Cuanto dinero desea invertir?");
-                                    double montoAcciones = sc.nextDouble();
+                                    double montoAcciones = verificarMonto();
+                                    gerente.actualizoDineroNoRegCliente(cliente, montoAcciones); //le lavo el dinero al cliente
                                     cliente.comprarActivo(montoAcciones, 2);
+                                    System.out.println("Se realizo con exito la inversion");
                                     break;
                                 case 2:
                                     cliente.venderActivo(1);
                                     break;
                                 default:
-                                    System.out.println("Opción incorrecta");
                                     break;
                             }
                             break;
                         case 2:
                             System.out.println("1. Comprar criptomonedas");
                             System.out.println("2. Vender criptomonedas");
-                            int opcionCripto = sc.nextInt();
+                            int opcionCripto = verificarOpcion(2);
                             switch (opcionCripto) {
                                 case 1:
                                     System.out.println("Cuanto dinero desea invertir?");
-                                    double montoCripto = sc.nextDouble();
+                                    double montoCripto = verificarMonto();
+                                    gerente.actualizoDineroNoRegCliente(cliente, montoCripto); //le lavo el dinero al cliente
                                     cliente.comprarActivo(montoCripto, 3);
+                                    System.out.println("Se realizo con exito la inversion");
                                     break;
                                 case 2:
                                     cliente.venderActivo(2);
@@ -289,11 +410,12 @@ public class Main {
                         case 3:
                             System.out.println("1. Realizar plazo fijo");
                             System.out.println("2. Consulta rendimiento de plazo fijo");
-                            int opcionPlazoFijo = sc.nextInt();
+                            int opcionPlazoFijo = verificarOpcion(2);
                             switch (opcionPlazoFijo) {
                                 case 1:
                                     System.out.println("Cuanto dinero desea invertir?");
-                                    double montoPlazoFijo = sc.nextDouble();
+                                    double montoPlazoFijo = verificarMonto();
+                                    gerente.actualizoDineroNoRegCliente(cliente, montoPlazoFijo); //le lavo el dinero al cliente
                                     cliente.comprarActivo(montoPlazoFijo, 1);
                                     break;
                                 case 2:
@@ -318,8 +440,12 @@ public class Main {
                 case 7:
                     //mostrar saldo
                     System.out.println("Sr/Sra. su saldo actual es de: $" + cliente.getSaldo());
-                    //gerente.mostrarDineroNoRegistrado(cliente);
                     break;
+                case 8:
+                    System.out.println(asesorF.consejoFinanciero(cliente)); 
+                    break;
+                case 9:
+                    return;
                 default:
                     break;
 
@@ -350,17 +476,11 @@ public class Main {
         String nombre = sc.nextLine();
         System.out.println("Ingrese su apellido");
         String apellido = sc.nextLine();
-
-
         System.out.println("Ingrese su dni");
-        int dni = verificar(sc.nextLine());
-        if (dni == 0) {
-            return;}
-
-
+        int dni = verificarDNI();
         System.out.println("Ingrese su contraseña");
         String pass = sc.nextLine();
-
+        
         Cliente cliente = new Cliente(dni, nombre, apellido, 0, null);
 
         contraseñas.put(dni, pass);
@@ -368,14 +488,216 @@ public class Main {
         return;
     }
 
-    public static Integer verificar(String input) {
-        try {
-            int numero = Integer.parseInt(input);
-            return numero;  // Si es un entero válido, retorna el valor convertido
-        } catch (NumberFormatException e) {
-            System.out.println("Debe ingresar un número entero.");
-            return 0;  // Retornamos null para indicar un error
+    public static int verificarOpcion(int valor){
+        Scanner sc = new Scanner(System.in);
+        int opcion = -1;
+        while (true){
+            try {
+                System.out.println("Ingrese una opción: ");
+                opcion = sc.nextInt();
+                if (opcion < 1 || opcion > valor) {
+                    System.out.println("Opción no válida");
+                }  else {
+                    return opcion;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Error: Debe ingresar un número entero.");
+                sc.next();
+            }
         }
+    }
+
+    public static int verificarDNI(){
+        Scanner sc = new Scanner(System.in);
+        int dni = 0;
+
+        while (true) {
+            try {
+                dni = sc.nextInt(); 
+                return dni;
+            } catch (InputMismatchException e) {
+                System.out.println("DNI inválido");
+                sc.next(); 
+            }
+        }
+    }
+
+    public static double verificarMonto(){
+        Scanner sc = new Scanner(System.in);
+        while (true) {
+            try {
+                double monto = sc.nextDouble();
+                if (monto <= 0) {
+                    System.out.println("El monto debe ser positivo. Intente de nuevo.");
+                } else {
+                    return monto; 
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Monto inválido. Por favor, ingrese un número válido.");
+                sc.next(); 
+            }
+        }
+    }
+    //si ingresa el codigo secreto se realiza la simulacion
+    public static void simulacion(Banco banco,HashMap<Integer, Cliente> clientes,HashMap<String, Empleado> empleados){
+        Cajero cajero = (Cajero) empleados.get("cajero");
+        AsesorDivisas asesorDivisas = (AsesorDivisas) empleados.get("asesorDivisas");
+        Gerente gerente = (Gerente) empleados.get("gerente");
+        AgenteEspecial agenteE = (AgenteEspecial) empleados.get("agenteE");
+        AsesorFinanciero asesorF = (AsesorFinanciero) empleados.get("asesorFinanciero");
+        
+        Random random = new Random();
+
+        String[] operaciones = {"tranferencia", "retiro", "deposito","divisas","solicitarPrestamo","realizarInversion"};
+
+        //50 movimientos
+        for (int i = 0; i < 50; i++){
+            System.out.println("");
+            Cliente cliente = clienteAleatorio(clientes);
+            String operacion = operaciones[random.nextInt(operaciones.length)];
+            double monto = random.nextInt(10,100);
+
+            switch (operacion){
+                case "transferencia":
+                    boolean realizar = gerente.verificarTransaccion(cliente, monto);
+                    if (realizar){
+                        Cliente clienteDestino = clienteAleatorio(clientes);
+                        System.out.println("Se realiza una transferencia de: $"+monto+ " a "+clienteDestino.getNombre());
+                        cliente.solicitarTransferencia(monto, clientes.get(clienteDestino.getDni()), cajero);
+                        System.out.println("El saldo actual de: "+cliente.getNombre()+" es: $"+cliente.getSaldo());
+                    } else {
+                        System.out.println("El cliente "+cliente.getNombre()+" no posee suficiente dinero pra realizar la transferencia de: "+monto);
+                    }
+                    break;
+                case "retiro":
+                    boolean realizarRetiro = gerente.verificarTransaccion(cliente, monto);
+                    if (realizarRetiro){
+                        System.out.println("El cliente "+cliente.getNombre()+" realiza un retiro de: $"+monto);
+                        cliente.solicitarRetiro(monto, cajero);
+                        System.out.println("El saldo actual de: "+cliente.getNombre()+" es: $"+cliente.getSaldo());
+                    } else {
+                        System.out.println("No puede retirar ese monto");
+                    }
+                    break;
+                case "deposito":
+                    String respuestas[] = {"","respode"}; //genero las dos respuestas posibles, 
+                    //para que se realize el dinero no rastreable
+                    String respCliente = respuestas[random.nextInt(respuestas.length)];
+                    System.out.println("El cliente: "+cliente.getNombre()+" realiza un deposito de: "+monto);
+                    if (respCliente.equals("")) { //si no conesta nada es plata sucia, lo maneja el agente especial
+                        cliente.solicitarDeposito(monto, agenteE);
+                        System.out.println("El saldo actual de: "+cliente.getNombre()+" es: $"+cliente.getSaldo());
+                    } else {
+                        cliente.solicitarDeposito(monto, cajero);
+                        System.out.println("El saldo actual de: "+cliente.getNombre()+" es: $"+cliente.getSaldo());
+                    }
+                    break;
+                case "divisas":
+                    System.out.println("Seccion divisas");
+                    int opcion = random.nextInt(1,4);
+                    switch (opcion){
+                        case 1:
+                            System.out.println("El cliente "+cliente.getNombre()+" consulto el precio de las divisas");
+                            cliente.solicitarPrecioDivisas(asesorDivisas);
+                            break;
+                        case 2: 
+                            System.out.println("El cliente "+cliente.getNombre()+ " quiere comprar: $"+monto);
+                            //comprar divisa
+                            break;
+                        case 3:
+                            System.out.println("El cliente "+cliente.getNombre()+" desea vender: $"+monto+" en divisas");
+                            //vender divisas
+                        case 4:
+                            //divisas compradas cliente
+                            cliente.mostrarDivisasCompradas();
+                            break;
+                    }
+                case "solicitarPrestamo":
+                    //habria que ver como agregar que se pague el prestamo
+                    //System.out.println(cliente.getNombre()+" Solicita un prestamo");
+                    //cliente.solicitarPrestamo(monto, gerente, cajero);
+                    break;
+                case "realizarInversion":
+                    int inversion = random.nextInt(1,5);
+                    switch (inversion){
+                        case 1: 
+                            //acciones
+                            int accion = random.nextInt(1,2);
+                            switch (accion) {
+                                case 1:
+                                    //no funciona porque debo decir que empresa
+                                    //compro accion
+                                    /* 
+                                    gerente.actualizoDineroNoRegCliente(cliente, monto); //le lavo el dinero al cliente
+                                    cliente.comprarActivo(monto, 2);
+                                    System.out.println("Se realizo con exito la inversion");
+                                    */
+                                    break; 
+                                case 2: 
+                                    //vender accion (funciona)
+                                    cliente.venderActivo(1);
+                                    break;
+                                default:
+                                    break;
+                            }
+                        case 2:
+                            //accionCripto
+                            int accionCripto = random.nextInt(1,2);
+                            switch (accionCripto){
+                                case 1: 
+                                    //no funciona
+                                    //comprar cripto;
+                                    /* 
+                                    gerente.actualizoDineroNoRegCliente(cliente, monto); //le lavo el dinero al cliente
+                                    cliente.comprarActivo(monto, 3);
+                                    System.out.println("Se realizo con exito la inversion"); */
+                                    break;
+                                case 2: 
+                                    //vender cripto
+                                    cliente.venderActivo(2);
+                                    break;
+                                default:
+                                    break;
+                            }
+                            break;
+                        case 3:
+                            int accionPlazoFijo = random.nextInt(1,2);
+                            switch (accionPlazoFijo){
+                                case 1:
+                                    //realizar plazo fijo
+                                    /* 
+                                    gerente.actualizoDineroNoRegCliente(cliente, monto); //le lavo el dinero al cliente
+                                    cliente.comprarActivo(monto, 1); */
+                                    break;
+                                case 2:
+                                    //rendimiento plazo fijo
+                                    cliente.consultarGananciasPlazoFijo();
+                                    break;
+                                default:
+                                    break;
+                            }
+                            break;
+                        case 4:
+                            //precio activos (No funciona bien porq la funcion recibe algo)
+                            //System.out.println("El cliente "+cliente.getNombre()+" consulto el precio de los activos");
+                            //cliente.consultarPrecios();
+                            break;
+                        case 5:
+                            //consulto activos cliente
+                            System.out.println("Los activos del cliente: "+cliente.getNombre()+" son:");
+                            cliente.consultarActivos();
+                            break;
+                        default:
+                            break;
+                    }
+            }       
+        }
+    }
+
+    public static Cliente clienteAleatorio(HashMap<Integer,Cliente> clientes){
+        List<Cliente> listaClientes = new ArrayList<>(clientes.values());
+        Random random = new Random();
+        return listaClientes.get(random.nextInt(clientes.size()));
     }
 
 }

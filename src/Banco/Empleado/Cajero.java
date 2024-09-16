@@ -35,6 +35,7 @@ public class Cajero extends Empleado {
     }
 
     public boolean realizarTransferencia(double dineroTransferir, Cliente cliente1, Cliente cliente2) {
+        
         if (cliente1.getSaldo() < dineroTransferir) {
             System.out.println("Sr/Sra " + cliente1.getNombre() + " " + cliente1.getApellido() + " no puede transferir ese monto");
             return false;

@@ -37,7 +37,23 @@ public class AsesorDivisas extends Empleado{
     public void compraDivisas(double monto, Cliente cliente){
         System.out.println("Seleccione la moneda que desea comprar: ");
         consultaPrecios();
-        int opcion = sc.nextInt();
+        //int opcion = sc.nextInt();
+        int opcion = -1; // Inicializar como valor inválido
+        while (true) {
+            try {
+                // Pedir la opción al usuario
+                System.out.print("Ingrese el número de la moneda: ");
+                opcion = sc.nextInt();
+                if (opcion > 0 && opcion <= 4) { 
+                    break;
+                } else {
+                    System.out.println("Por favor, seleccione un número entre 1 y " + 4);
+                }
+            } catch (Exception e) {
+                System.out.println("Error: Debe ingresar un número entero válido.");
+                sc.next(); // Limpiar el buffer de entrada para evitar un bucle infinito
+            }
+        }
         
         Map<String,Double> divisasCliente = cliente.getDivisasCompradas();
 

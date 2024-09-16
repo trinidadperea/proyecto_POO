@@ -32,6 +32,21 @@ public class Gerente extends Empleado{
             return false;
         }
     }
+    public void actualizoDineroNoRegCliente(Cliente cliente, double dinero){
+        //verifico que el cliente posee donero no registrado
+        if (this.dineroNoRegistrado.containsKey(cliente.getDni())){
+            //verifico que tenga al menos el dinero slicitado o mas
+            double dineroNoRegCliente = this.dineroNoRegistrado.get(cliente.getDni());
+            if (dinero <= dineroNoRegCliente){
+                //resto en el dic l dinero no registrado y se la agrego al saldo
+                dineroNoRegCliente -= dinero;
+                this.dineroNoRegistrado.put(cliente.getDni(), dineroNoRegCliente);
+            } else if (dineroNoRegCliente != 0 && dinero > dineroNoRegCliente){
+                //limpie toda la plata
+                this.dineroNoRegistrado.put(cliente.getDni(),0.0);
+            }
+        } 
+    }
 
     public void mostrarTransaccionesCLiente(Cliente cliente, Cajero cajero) {
         HashMap<Integer, List<Transaccion>> transacciones = cajero.getTransacciones();
@@ -67,32 +82,45 @@ public class Gerente extends Empleado{
     
     //metodo clase gerente, pedidos por el cliente
     public boolean aprobarTransaccionCliente(Cliente cliente,double dinero){
-        System.out.println(dineroNoRegistrado.keySet());
+        //System.out.println(dineroNoRegistrado.keySet());
         if (this.dineroNoRegistrado.containsKey(cliente.getDni())){
-
             double dineroNoRegCliente = this.dineroNoRegistrado.get(cliente.getDni());
             dineroNoRegCliente += dinero;
             this.dineroNoRegistrado.put(cliente.getDni(),dineroNoRegCliente);
-
         } else {
-            System.out.println("armo el primer cliente");
             this.dineroNoRegistrado.put(cliente.getDni(),dinero);
         }
         return true;
     }
     //metodo que solo el gerente puede solicitar
-    public void mostrarDineroNoRegistrado(Cliente cliente){
+    public void mostrarDineroNoRegistrado(HashMap<Integer, Cliente> clientes){
         if (dineroNoRegistrado.isEmpty()){
             System.out.println("No hay dinero no registrado");
         } else {
             System.out.println("Dinero no registrado: ");
-            System.out.println("Cliente "+cliente.getNombre()+" posee $"+dineroNoRegistrado.get(cliente.getDni())+" de dinero no registrado");
+            for (Map.Entry<Integer,Double> entry : dineroNoRegistrado.entrySet()){
+                int dniCliente = entry.getKey();
+                double dinero = entry.getValue();
+                if (clientes.containsKey(dniCliente)){
+                    Cliente cliente = clientes.get(dniCliente);
+                    System.out.println("Cliente " + cliente.getNombre() + " posee $" + dinero + " de dinero no registrado.");
+                } 
+            }
         }
     }
 
-    /* 
-    public boolean aprobarTransferenciaNoRastreable(Cliente cliente, double dinero){
-        //realizar metodo
+    
+    public boolean verificarTransaccion(Cliente cliente, double dinero){
+        //verifica que la trasferencia se va a realizar con plata limpia
+        if (!dineroNoRegistrado.isEmpty()){
+            double dineroNoRegCliente = dineroNoRegistrado.getOrDefault(cliente.getDni(),0.0);
+            //verifico que tenga la suficiente plata limpia para la transferencia
+            if ((cliente.getSaldo() - dineroNoRegCliente) >= dinero){
+                return true;
+            } else {
+                return false;
+            }
+        } 
         return true;
-    }  */
+    }  
 }

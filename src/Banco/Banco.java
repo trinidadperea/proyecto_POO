@@ -2,13 +2,13 @@ package Banco;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-
 import Banco.Cliente.Cliente;
+import java.util.*;
 
 public class Banco{
     private int cantEmpleados;
     private int cantClientes;
-    private static final String archivoClientes = "clientes.txt";
+
 
     //contructor
 
@@ -35,14 +35,14 @@ public class Banco{
     }
 
     //metodos del banco
-    public void realizarCopiaDeSeguridad(Cliente cliente){
-        //guardo los datos en un archvio de texto
-        try (BufferedWriter guardar = new BufferedWriter(new FileWriter(archivoClientes,true))){
-            guardar.write(cliente.toString());
-            guardar.newLine();
-            System.out.println("Cliente "+cliente.getNombre()+" guardado en archivos");
-        } catch(IOException e){
-            System.out.println("Error al guardar al cliente en archivos "+ e.getMessage());
+    public void realizarCopiaDeSeguridad(HashMap<Integer, Cliente> clientes) {
+        try  {
+            for (Map.Entry<Integer, Cliente> entry : clientes.entrySet()) {
+                Cliente cliente = entry.getValue(); // Obtengo el cliente
+                System.out.println("Cliente " + cliente.getNombre() + " guardado en archivos.");
+            }
+        } catch (Exception e) {
+            System.out.println("Error al guardar los clientes en archivos: " + e.getMessage());
         }
     }
     

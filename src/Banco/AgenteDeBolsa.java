@@ -53,8 +53,21 @@ public class AgenteDeBolsa {
                 }
                 // Plazo Fijo
                 System.out.println("Ingrese la cantidad de meses para el plazo fijo: ");
-                int meses = sc.nextInt();
-
+                int meses = 0;
+                while (true) {
+                    try {
+                        meses = sc.nextInt();
+                        if (meses <= 0) {
+                            System.out.println("La cantidad de meses debe ser mayor que cero. Intente nuevamente.");
+                        } else {
+                            break; // Salir del bucle si la entrada es válida
+                        }
+        
+                    } catch (InputMismatchException e) {
+                        System.out.println("Error: Debe ingresar un número entero válido.");
+                        sc.next(); // Limpiar el buffer de entrada
+                    }
+                }
                 float interes = meses * 1.15f;
 
                 LocalDate fechaVencimiento = LocalDate.now().plusMonths(meses);
@@ -74,8 +87,10 @@ public class AgenteDeBolsa {
                     System.out.println(index + 1 + ". " + company + " - $" + companies.get(company));
                     index++;
                 }
-
-                int opcion = sc.nextInt() - 1;
+                
+                //verifico la opcion ingresada
+                int opcion = verificarOpcion(9);
+                opcion -= 1;
 
                 // Validar la opción seleccionada
                 if (opcion >= 0 && opcion < companyArray.length) {
@@ -112,7 +127,8 @@ public class AgenteDeBolsa {
                     index2++;
                 }
 
-                int opcion2 = sc.nextInt() - 1;
+                int opcion2 = verificarOpcion(4);
+                opcion2 -= 1;
 
                 // Validar la opción seleccionada
                 if (opcion2 >= 0 && opcion2 < criptosArray.length) {
@@ -350,6 +366,24 @@ public class AgenteDeBolsa {
 
     public void setInversionesPorCliente(Map<Cliente, List<Inversion>> inversionesPorCliente) {
         this.inversionesPorCliente = inversionesPorCliente;
+    }
+    public static int verificarOpcion(int valor){
+        Scanner sc = new Scanner(System.in);
+        int opcion = -1;
+        while (true){
+            try {
+                System.out.println("Ingrese una opción: ");
+                opcion = sc.nextInt();
+                if (opcion < 1 || opcion > valor) {
+                    System.out.println("Opción no válida");
+                }  else {
+                    return opcion;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Error: Debe ingresar un número entero.");
+                sc.next();
+            }
+        }
     }
 }
 

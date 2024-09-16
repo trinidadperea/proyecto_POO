@@ -1,7 +1,6 @@
 package Banco.Cliente;
 
 import Banco.AgenteDeBolsa;
-import Banco.Empleado.AsesorDivisas;
 import Banco.Empleado.*;
 import java.util.*;
 
@@ -75,7 +74,10 @@ public class Cliente implements CompraVentaActivos, CompraVentaDivisas{
                 System.out.println("Transferencia cancelada");
             }
         }
+        
     }
+        
+    
 
     public void solicitarRetiro(double dineroRetirar, Empleado empleado){   
         this.empleado = empleado;
@@ -93,6 +95,8 @@ public class Cliente implements CompraVentaActivos, CompraVentaDivisas{
         if (empleado instanceof AgenteEspecial){
             boolean solicitud = ((AgenteEspecial) empleado).solicitarTransaccionNoRastreable(this, dineroDepositar);
             if (solicitud){
+                //se lo sumo al saldo
+                this.setSaldo(this.getSaldo() + dineroDepositar);
                 System.out.println("Dinero depositado con exito");
             }
         } else if (empleado instanceof Cajero){
