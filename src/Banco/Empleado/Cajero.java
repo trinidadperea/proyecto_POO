@@ -20,6 +20,12 @@ public class Cajero extends Empleado {
     }
 
     // Métodos que realiza el cajero
+    /**
+     * Realiza un retiro de dinero de la cuenta de un cliente
+     * @param dineroRetirar Monto a retirar
+     * @param cliente Cliente al que se le realiza el retiro
+     * @return true si se realizó el retiro, false si no se pudo realizar
+     */
 
     public boolean realizarRetiro(double dineroRetirar, Cliente cliente) {
         if (dineroRetirar > cliente.getSaldo()) {
@@ -33,7 +39,13 @@ public class Cajero extends Empleado {
             return true;
         }
     }
-
+    /**
+     * Realiza una transferencia de dinero entre dos clientes
+     * @param dineroTransferir Monto a transferir
+     * @param cliente1 Cliente que realiza la transferencia
+     * @param cliente2 Cliente que recibe la transferencia
+     * @return true si se realizó la transferencia, false si no se pudo realizar
+     */
     public boolean realizarTransferencia(double dineroTransferir, Cliente cliente1, Cliente cliente2) {
         
         if (cliente1.getSaldo() < dineroTransferir) {

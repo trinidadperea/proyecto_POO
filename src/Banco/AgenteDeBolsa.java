@@ -293,9 +293,10 @@ public class AgenteDeBolsa {
                     System.out.println(index + 1 + ". " + accion.getNombre() + " - Cantidad: " + accion.getCantidadAcciones());
                     index++;
                 }
-    
+
                 // Seleccionar la acción
-                int opcion = verificarOpcion(9);
+                int opcion = verificarOpcion(acciones.size());
+                opcion -= 1;
                 if (opcion >= 0 && opcion < acciones.size()) {
                     InversionBolsa accionSeleccionada = acciones.get(opcion);
     
@@ -346,6 +347,7 @@ public class AgenteDeBolsa {
                 
                 // Seleccionar la criptomoneda
                 int opcion2 = verificarOpcion(4);
+                opcion2 -= 1;
                 if (opcion2 >= 0 && opcion2 < criptos.size()) {
                     InversionCriptoMonedas criptoSeleccionada = criptos.get(opcion2);
     
