@@ -62,6 +62,12 @@ public class Cajero extends Empleado {
         }
     }
 
+    /**
+     * Metodo que realiza un deposito a un cliente
+     * @param dineroDepositar monto que desea depositar en el banco
+     * @param cliente cliente que realiza el deposito
+     * @return true si se realizó el deposito, false si no se pudo realizar
+     */
     public boolean realizarDeposito(double dineroDepositar, Cliente cliente) {
         cliente.setSaldo(cliente.getSaldo() + dineroDepositar);
 
@@ -70,6 +76,11 @@ public class Cajero extends Empleado {
         return true;
     }
 
+    /**
+     * Metodo que le realiza al cliente, si no tiene deudas, un prestamo
+     * @param cliente cliente al que se le realiza el prestamo
+     * @param dineroPrestamo monto del prestamo a realizar
+     */
     public void realizarPrestamoCliente(Cliente cliente, double dineroPrestamo) {
         cliente.setSaldo(cliente.getSaldo() + dineroPrestamo);
 
@@ -88,6 +99,12 @@ public class Cajero extends Empleado {
         this.transacciones = transacciones;
     }
 
+    /**
+     * Metodo que agrega las transacciones de un cliente en una lista
+     * @param cliente cliente que realizo la transaccion
+     * @param monto monto de la transaccion
+     * @param tipoTransaccion que transaccion se va realizar
+     */
     private void registrarTransaccion(Cliente cliente, double monto, String tipoTransaccion) {
         if (!transacciones.containsKey(cliente.getDni())) {
             transacciones.put(cliente.getDni(), new ArrayList<>());

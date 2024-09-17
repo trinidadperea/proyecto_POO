@@ -34,6 +34,10 @@ public class Banco{
     }
 
     //metodos del banco
+    /**
+     * Metodo que realiza una copia de seguridad de los clientes que hay en el sistema
+     * @param clientes
+     */
     public void realizarCopiaDeSeguridad(HashMap<Integer, Cliente> clientes) {
         try  {
             for (Map.Entry<Integer, Cliente> entry : clientes.entrySet()) {
@@ -45,10 +49,18 @@ public class Banco{
         }
     }
     
+    /**
+     * Metodo que devuelve el valor de la cantidad de clientes ingresados en el sistema
+     * @return
+     */
     public String mostrarCantClientes(){
         return "La cantidad de clientes que tiene el Banco La Familia son: "+cantClientes;
     }
     
+    /**
+     * Metodo que muestra la cantidad de empleados que posee el banco
+     * @return
+     */
     public String mostrarCantEmpleados(){
         return "La cantidad de clientes que tiene el Banco La Familia son: "+cantEmpleados;
     }

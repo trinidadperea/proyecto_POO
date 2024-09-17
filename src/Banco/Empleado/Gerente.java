@@ -13,6 +13,13 @@ public class Gerente extends Empleado{
         this.dineroNoRegistrado = new HashMap<>();
     }
 
+    /**
+     * Metodo que le aprueba el prestamo solicitado a un cliente si cumple los requisitos necesarios
+     * @param cliente cliente que realiza el pedido del prestamo
+     * @param dineroPrestamo dinero que solicita que le den como prestamo al cliente
+     * @param empleado tipo de empleado encargado de realizar la operacion
+     * @return true si se aprobo el prestamo, false sino
+     */
     public boolean aprobarPrestamo(Cliente cliente, double dineroPrestamo, Empleado empleado){
         double porcentajeSalario = (50 * cliente.getSaldo()) / 100;
         boolean deuda = ((Cajero) empleado).getPrestamos().containsKey(cliente.getDni());
@@ -33,6 +40,11 @@ public class Gerente extends Empleado{
         }
     }
 
+    /**
+     * Metodo que actualiza el diccionario de dinero no registrado de los clientes
+     * @param cliente cliente a actualizar el monto
+     * @param dinero dinero que se le resta al cliente como dinero sucio 
+     */
     public void actualizoDineroNoRegCliente(Cliente cliente, double dinero){
         //verifico que el cliente posee donero no registrado
         if (this.dineroNoRegistrado.containsKey(cliente.getDni())){
@@ -49,6 +61,11 @@ public class Gerente extends Empleado{
         } 
     }
 
+    /**
+     * Metodo que muestra las transacciones de un cliente
+     * @param cliente cliente del cual se van a ver sus transacciones
+     * @param cajero empleado encargado de hacerlo
+     */
     public void mostrarTransaccionesCLiente(Cliente cliente, Cajero cajero) {
         HashMap<Integer, List<Transaccion>> transacciones = cajero.getTransacciones();
 
@@ -82,6 +99,12 @@ public class Gerente extends Empleado{
     }
 
     //metodo clase gerente, pedidos por el cliente
+    /**
+     * Metodo que si aprueba la transaccion pedida, le suma el dinero de la transaccion pedida al diccionario de dinero sucio
+     * @param cliente cliente al que se le suma el dinero
+     * @param dinero monto solicitado en la transaccion
+     * @return true si se aprobo la transaccion, false sino
+     */
     public boolean aprobarTransaccionCliente(Cliente cliente,double dinero){
         //System.out.println(dineroNoRegistrado.keySet());
         if (this.dineroNoRegistrado.containsKey(cliente.getDni())){
@@ -94,6 +117,10 @@ public class Gerente extends Empleado{
         return true;
     }
     //metodo que solo el gerente puede solicitar
+    /**
+     * Metodo que es solo accesible por el gerente, y sirve para ver el diccionario que lleva el registro con el dinero no registrado de los clientes
+     * @param clientes
+     */
     public void mostrarDineroNoRegistrado(HashMap<Integer, Cliente> clientes){
         if (dineroNoRegistrado.isEmpty()){
             System.out.println("No hay dinero no registrado");
@@ -110,6 +137,12 @@ public class Gerente extends Empleado{
         }
     }
 
+    /**
+     * Metodo que verifica que el cliente tenga la suficiente plata en blanco para realizar una transaccion
+     * @param cliente cliente que quiere realizar la transaccion
+     * @param dinero monto a realizar 
+     * @return true si la transaccion es valida, false sino
+     */
     public boolean verificarTransaccion(Cliente cliente, double dinero){
         //verifica que la trasferencia se va a realizar con plata limpia
         if (!dineroNoRegistrado.isEmpty()){

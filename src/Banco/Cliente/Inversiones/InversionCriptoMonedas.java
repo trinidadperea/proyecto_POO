@@ -16,6 +16,10 @@ public class InversionCriptoMonedas extends Inversion {
         this.precioActual = precioActual;
     }
 
+    /**
+     * Metodo que calcula el rendimiento de una inversion realizada de criptomonedas
+     * @return rendimiento de la criptomoneda
+     */
     public double calcularRendimientos(){
         return (precioActual - precioCompra) * cantidad;
     }

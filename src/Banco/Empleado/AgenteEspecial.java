@@ -13,7 +13,13 @@ public class AgenteEspecial extends Empleado{
         this.gerente = gerente;
     }
 
-    
+
+    /**
+     * Metodo solicitado por el cliente, para que el gerente le apruebe su transaccion no justificada
+     * @param cliente cliente que desea meter plata sucia al banco
+     * @param dineroSucio monto de plata sucia
+     * @return true si se aprueba la trasacicon, sino false
+     */
     public boolean solicitarTransaccionNoRastreable(Cliente cliente, double dineroSucio){
         //le paso el dinero al gerente para que lo agregue al diccionario
         if (gerente.aprobarTransaccionCliente(cliente, dineroSucio)) return true;

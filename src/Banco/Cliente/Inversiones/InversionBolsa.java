@@ -16,6 +16,10 @@ public class InversionBolsa extends Inversion {
     }
 
 
+    /**
+     * Metodo que calcula el rendimiento de una accion
+     * @return rendimiento de la accion
+     */
     public double calcularRendimientos(){
         return (precioActual - precioCompra) * cantidadAcciones;
     }

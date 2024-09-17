@@ -15,6 +15,11 @@ public class PlazoFijo extends Inversion {
         this.fechaVencimiento = fechaVencimiento;
     }
 
+    /**
+     * Metodo que calcula el rendimiento de un plazo fijo 
+     * @param diasTranscurridos dias que han pasado desde que se realizo el plazo fijo
+     * @return rendimiento del plazo fijo
+     */
     public double calcularRendimientos(int diasTranscurridos){
         return monto * tasaInteres * diasTranscurridos;
     }
@@ -45,6 +50,9 @@ public class PlazoFijo extends Inversion {
 
 
     // Método toString para mostrar los detalles del PlazoFijo
+    /**
+     * Metodo que muestra los detalles del plazo fijo
+     */
     @Override
     public String toString() {
         return "PlazoFijo{" +

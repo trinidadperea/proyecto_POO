@@ -32,6 +32,12 @@ public class Cliente implements CompraVentaActivos, CompraVentaDivisas{
     }
 
     //metodos que se encarga el agente de bolsa
+    
+    /**
+     * Metodo que realiza la compra de un activo al cliente
+     * @param monto monto a comprar
+     * @param tipoInversion tipo de la inversion que quiere comprar el cliente
+     */
     public void comprarActivo(double monto, int tipoInversion){
 
         if (this.saldo >= monto) {
@@ -42,6 +48,11 @@ public class Cliente implements CompraVentaActivos, CompraVentaDivisas{
         }
     }
 
+    /**
+     * Metodo que compra un activo de manera random, utiliado en la simulacion
+     * @param monto monto random 
+     * @param tipoInversion tipo de activo
+     */
     public void comprarActivoRandom(double monto, int tipoInversion){
 
         if (this.saldo >= monto) {
@@ -52,33 +63,55 @@ public class Cliente implements CompraVentaActivos, CompraVentaDivisas{
         }
     }
 
+    /**
+     * Metodo que vende un activo de un cliente
+     * @param tipoInverison inversion que va a vender
+     */
     public void venderActivo(int tipoInversion){
         this.saldo += agentedeBolsa.venderActivo(tipoInversion,this);
         System.out.println("El saldo actual es: " + this.saldo);
         return;
     }
 
+    /**
+     * Metodo que muestra las inversiones
+     */
     public void consultarActivos(){
         System.out.println(agentedeBolsa.mostrarInversiones(this));
         return;
     }
 
+    /**
+     * Metodo que muestra los precios de las inversiones
+     */
     public void consultarPrecios(){
         System.out.println(agentedeBolsa.consultaPrecios());
         return;
     }
 
+    /**
+     * Metodo que es utiliado en la simulacion, para que muestre los precios de las inversiones
+     */
     public void consultarPreciosRandom(){
         System.out.println(agentedeBolsa.consultaPreciosRandom());
         return;
     }
 
+    /**
+     * Metodo que muestra las ganancias generadas en el plazo fijo
+     */
     public void consultarGananciasPlazoFijo(){
         System.out.println("Usted ha generado: "+agentedeBolsa.consultarRendimientosPlazoFijo(this));
         return;
     }
 
     //metodos que se encarga el cajero
+    /**
+     * Metodo que realiza una transferencia de un cliente a otro
+     * @param dineroTransferir monto que desea transferir el cliente
+     * @param clienteDestino el cliente que recibe la transferencia
+     * @param empleado empleado que realiza la transferencia
+     */
     public void solicitarTransferencia(double dineroTransferir, Cliente clienteDestino, Empleado empleado){    // Solicita una transferencia
         this.empleado = empleado;
         if (empleado instanceof Cajero && !clienteDestino.equals(this)){
@@ -92,6 +125,11 @@ public class Cliente implements CompraVentaActivos, CompraVentaDivisas{
         
     }
 
+    /**
+     * Metodo que realiza un retiro de dinero del banco
+     * @param dineroRetirar monto a retirar
+     * @param empleado empleado que le realiza la operacion
+     */
     public void solicitarRetiro(double dineroRetirar, Empleado empleado){   
         this.empleado = empleado;
         if (empleado instanceof Cajero){
@@ -102,6 +140,11 @@ public class Cliente implements CompraVentaActivos, CompraVentaDivisas{
         }
     }
     
+    /**
+     * Metodo que solicita el cliente para poder hacer un deposito
+     * @param dineroDepositar dinero que quiere depositar el cliente
+     * @param empleado empleado que le va a aprobar o no el deposito
+     */
     public void solicitarDeposito(double dineroDepositar, Empleado empleado){    
         this.empleado = empleado;
         //no justifica llamo al asesor especial
@@ -122,6 +165,12 @@ public class Cliente implements CompraVentaActivos, CompraVentaDivisas{
         }
     }
     
+    /**
+     * Metodo que solicita el cliente para poder hacer un prestamo
+     * @param dineroPrestamo  diero que solicita el cliente
+     * @param empleado1 gerente que le aprueba el prestamo
+     * @param empleado2 cajero que le realiza el prestamo 
+     */
     public void solicitarPrestamo(double dineroPrestamo, Empleado empleado1, Empleado empleado2){
         //empleado1 es el gerente y empleado2 es el cajero
         this.empleado = empleado1;
@@ -139,6 +188,13 @@ public class Cliente implements CompraVentaActivos, CompraVentaDivisas{
     }
 
     //metodos que se encarga el asesor de divisas
+    
+    /**
+     * Metodo que vende la divisa que el cliente tiene y quiere vender
+     * @param monedaVender moneda que va a vender el cliente
+     * @param montoVender cantidad que va a vender en esa moneda
+     * @param empleado empleado encargado de realizar la venta
+     */
     public void venderDivisas(String monedaVender, double montoVender, Empleado empleado){
         this.empleado = empleado;
         if (empleado instanceof AsesorDivisas){
@@ -153,6 +209,11 @@ public class Cliente implements CompraVentaActivos, CompraVentaDivisas{
         }
     }
 
+    /**
+     * Metodo que realiza la compra de una divisa
+     * @param montoComprar monto a comprar por el cliente
+     * @param empleado asesor de divisas que le realiza la compra
+     */
     public void comprarDivisas(double montoComprar, Empleado empleado){
         this.empleado = empleado;
         if (empleado instanceof AsesorDivisas){
@@ -168,6 +229,11 @@ public class Cliente implements CompraVentaActivos, CompraVentaDivisas{
         
     }
 
+    /**
+     * Metodo utilizado en la simulacion para comprar divisas de manera random
+     * @param montoComprar monto a comprar
+     * @param empleado asesor de divisas que le realiza la compra
+     */
     public void comprarDivisasRandom(double montoComprar, Empleado empleado){
         this.empleado = empleado;
         if (empleado instanceof AsesorDivisas){
@@ -183,6 +249,10 @@ public class Cliente implements CompraVentaActivos, CompraVentaDivisas{
         
     }
  
+    /**
+     * Metodo que muestra el precio de las divisas al cliente
+     * @param empleado asesor de divisas encargado de mostrar el precio
+     */
     public void solicitarPrecioDivisas(Empleado empleado){
         this.empleado = empleado;
         if (empleado instanceof AsesorDivisas){
@@ -192,6 +262,12 @@ public class Cliente implements CompraVentaActivos, CompraVentaDivisas{
         }
     }
 
+    /**
+     * Metodo que realiza la compra de una divisa
+     * @param monto monto que se desea comprar
+     * @param monedaDestino moneda de la cual se va a comprar un monto determinado
+     * @param empleado asesor de divisas que le realiza la compra
+     */
     public void simularCompra(double monto, String monedaDestino, Empleado empleado){
         if (empleado instanceof AsesorDivisas){
             System.out.println(((AsesorDivisas) empleado).calcularMontoDestino(monedaDestino,monto));
@@ -200,6 +276,10 @@ public class Cliente implements CompraVentaActivos, CompraVentaDivisas{
         }
     }
 
+    /**
+     * Metodo que muestra las divisas que tiene un cliente
+     * @return
+     */
     public void mostrarDivisasCompradas(){
         System.out.println("Divisas compradas de la/el Sr/Sra: "+ this.getNombre());
         System.out.println(" ");
@@ -209,10 +289,19 @@ public class Cliente implements CompraVentaActivos, CompraVentaDivisas{
     }
 
     //metodos del cliente
+    /**
+     * Metodo que muestra el saldo de un cliente
+     * @return saldo del cliente
+     */
     public double mostrarSaldo(){
         return saldo;
     }
 
+    /**
+     * Metodo que guarda las divisas compadas por un cliente
+     * @param nombreDivisa nombre de la divisa comprada
+     * @param valor valor de la divisa comprada
+     */
     public void registrarDivisas(String nombreDivisa, double valor){
         divisasCompradas.put(nombreDivisa, divisasCompradas.getOrDefault(nombreDivisa, 0.0) + valor);
     }

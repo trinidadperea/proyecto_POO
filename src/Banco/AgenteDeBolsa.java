@@ -38,6 +38,12 @@ public class AgenteDeBolsa {
         criptos.put("Litecoin", 90.00);
     }
 
+    /**
+     * Metodo que realiza una inversion al cliente
+     * @param tipoInversion 1. Plazo fijo, 2. Acciones, 3.Criptomonedas
+     * @param monto monto a realizar
+     * @param cliente cliente que realiza la inversion
+     */
     public void realizarInversion(int tipoInversion, double monto, Cliente cliente) {
         switch (tipoInversion) {
             case 1:
@@ -155,6 +161,12 @@ public class AgenteDeBolsa {
         }
     }
 
+    /**
+     * Metodo que es utiliado en la simulacion para realizar una inversion random
+     * @param tipoInversion 1. Plazo fijo, 2. Acciones, 3.Criptomonedas
+     * @param monto monto a realizar, que es generado de forma random
+     * @param cliente cliente que realiza la inversion, que es generado de forma random
+     */
     public void realizarInversionRandom(int tipoInversion, double monto, Cliente cliente) {
         Random random = new Random();
         switch (tipoInversion) {
@@ -261,6 +273,12 @@ public class AgenteDeBolsa {
         }
     }
 
+    /**
+     * Metodo que si tiene algun activo, te permite venderlo
+     * @param tipoInversion 1. Plazo fijo, 2. Acciones, 3.Criptomonedas
+     * @param cliente cliente a vender su activo
+     * @return 
+     */
     public double venderActivo(int tipoInversion, Cliente cliente) {
         // Buscar las inversiones del cliente desde el HashMap
         List<Inversion> inversionesCliente = inversionesPorCliente.get(cliente);
@@ -379,6 +397,10 @@ public class AgenteDeBolsa {
         return 0.0;
     }
     
+    /**
+     * Metodo que muestra los precios de las empresas a realizar una inversion, o de las criptomonedas
+     * @return precios
+     */
     public String consultaPrecios() {
         String toReturn = "";
         System.out.println("¿Desea ver los precios de:\n1. Empresas\n2. Criptomonedas");
@@ -412,6 +434,10 @@ public class AgenteDeBolsa {
         return toReturn;
     }
 
+    /**
+     * Metodo utilizado en la simulacion para consultar los precios de las inversiones de forma random
+     * @return precios generaods de forma random
+     */
     public String consultaPreciosRandom() {
         String toReturn = "";
         Random random = new Random();
@@ -447,6 +473,11 @@ public class AgenteDeBolsa {
         return toReturn;
     }
 
+    /**
+     * Metodo que muestra el rendimiento del plazo fijo de un cliente
+     * @param cliente cliente que posee el plazo fijo
+     * @return rendimiento
+     */
     public double consultarRendimientosPlazoFijo(Cliente cliente){
         for (int i = 0; i < inversionesPorCliente.get(cliente).size(); i++) {
             if (inversionesPorCliente.get(cliente).get(i).getTipoInversion() == "Plazo Fijo") {
@@ -458,6 +489,9 @@ public class AgenteDeBolsa {
         return 0;
     }
 
+    /**
+     * Metodo que actualiza los valores de las inversiones
+     */
     public void actualizarPrecios() {
         for (Map.Entry<String, Double> entryCo : companies.entrySet()) {
             double randomValue = 0.95 + (Math.random() * (1.05 - 0.95));
@@ -477,6 +511,11 @@ public class AgenteDeBolsa {
         }
     }
     
+    /**
+     * Metodo que muestra las inverisones que ha realizado un cliente
+     * @param cliente cliente que solicita ver sus inversiones
+     * @return inversiones del cliente
+     */
     public String mostrarInversiones(Cliente cliente) {
         List<Inversion> inversiones = inversionesPorCliente.get(cliente);
         if (inversiones == null || inversiones.isEmpty()) {
@@ -492,6 +531,11 @@ public class AgenteDeBolsa {
             return toReturn;
     }
 
+    /**
+     * Metodo que cuando un cliente realiza una inversion, se la agrega al diccionario de inversiones
+     * @param cliente cliente que realiza una inversion
+     * @param inversion el tipo de inversion que realiza
+     */
     private void agregarInversion(Cliente cliente, Inversion inversion) {
         // Agrega la inversión al cliente en el diccionario `inversionesPorCliente`
         if (!inversionesPorCliente.containsKey(cliente)) {
@@ -508,6 +552,11 @@ public class AgenteDeBolsa {
         this.inversionesPorCliente = inversionesPorCliente;
     }
 
+    /**
+     * Metodo que verifica que la entrada solicitada sea la esperada, para evitar errores
+     * @param valor valor maximo que puede tomar la variable
+     * @return opcion
+     */
     public int verificarOpcion(int valor){
         Scanner sc = new Scanner(System.in);
         int opcion = -1;

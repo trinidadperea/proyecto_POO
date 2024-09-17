@@ -1,8 +1,7 @@
 package Banco.Empleado;
-import java.util.HashMap;
 //import java.util.List;
 import java.util.*;
-import java.util.Scanner;
+
 import Banco.Cliente.Cliente;
 
 
@@ -19,6 +18,10 @@ public class AsesorDivisas extends Empleado{
     }
 
     //metodos asesor de divisas
+
+    /**
+     * Metodo que muestra el valor de las divisas
+     */
     public void consultaPrecios(){
 
         System.out.println("Precio compra");
@@ -32,7 +35,12 @@ public class AsesorDivisas extends Empleado{
         }
         return;
     }
-    
+    /**
+     * Metodo que realiza la compra de las divisas
+     * @param monto monto que desea comprar la divisa elegida
+     * @param cliente cliente que realiza la compra
+     * @return
+     */
     public void compraDivisas(double monto, Cliente cliente){
         System.out.println("Seleccione la moneda que desea comprar: ");
         consultaPrecios();
@@ -93,6 +101,12 @@ public class AsesorDivisas extends Empleado{
         
     }
 
+    /**
+     * Metodo que realiza la compra de divisas don una funcion aleatoria, es utilizada en la simulacion
+     * @param monto monto aleatorio generado para comprar una divisa
+     * @param cliente cliente aleatorio que realiza la compra
+     * @return
+     */
     public void compraDivisasRandom(double monto, Cliente cliente){
         Random random = new Random();
         System.out.println("Seleccione la moneda que desea comprar: ");
@@ -154,11 +168,21 @@ public class AsesorDivisas extends Empleado{
         
     }
 
+    /**
+     * Metodo que me calcula el monto en pesos de una divisa
+     * @param monedaDestino moneda que se va a pedir el monto
+     * @param valorEnPesos monto en cuanto quedaria en pesos
+     * @return
+     */
     public double calcularMontoDestino(String monedaDestino, double valorEnPesos){
         double montoDestino = valorEnPesos / divisas.get(monedaDestino);
         return montoDestino;
     }
     
+    /**
+     * Metodo que actualiza el valor de las divisas
+     * @return
+     */
     public void actualizarDivisas(){
         for (Map.Entry<String, Double> entry : divisas.entrySet()) {
             double randomValue = 0.95 + (Math.random() * (1.05 - 0.95));
@@ -170,6 +194,13 @@ public class AsesorDivisas extends Empleado{
         }
     }
 
+    /**
+     * Metodo que si el cliente tiene alguna divisa previamente comprada, puede venderlas
+     * @param monedaVender moneda que desea vender el cliente
+     * @param monto cantidad que desea vender
+     * @param cliente cliente que realiza la operacion
+     * 
+     */
     public void venderDivisas(String monedaVender, double monto, Cliente cliente){
         Map<String,Double> divisasCliente = cliente.getDivisasCompradas();
         double montoVender = monto / divisas.get(monedaVender);
@@ -190,6 +221,10 @@ public class AsesorDivisas extends Empleado{
         }
     }
     
+    /**
+     * Metodo que verifica que la entrada pedida en diferentes metodos, sea la entrada esperada
+     * @param valor valor maximo que puede tomar la vriable
+     */
     public int verificar(int valor){
         Scanner sc = new Scanner(System.in);
         int opcion = -1;
