@@ -1,4 +1,4 @@
-\underline{Algoritmos genéticos y su aplicación a la optimización}
+<u>Algoritmos genéticos y su aplicación a la optimización<u>
 
 **Algoritmos genéticos**
 
