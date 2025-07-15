@@ -54,26 +54,26 @@ Y sus ventajas y desventajas son:
 
 **Conceptos y analogía con la naturaleza**
 
-- [Población]{.underline}: modelo del estado del algoritmo genético.
+- Población: modelo del estado del algoritmo genético.
   Compuesto por individuos (soluciones), en cada iteración se actualiza
   la población.
 
 - Individuo: posible solución al problema, cada individuo se representa
   como una instancia
 
-- [Gen]{.underline}: cada uno de los parámetros que definen una solución
+- Gen: cada uno de los parámetros que definen una solución
 
 - Genotipo: una instancia de la solución, representa a un individuo en
   particular.
 
-- [Fenotipo]{.underline}: "expresión observable" del genotipo (un
+- Fenotipo: "expresión observable" del genotipo (un
   individuo)
 
 - Operadores evolutivos: Se aplican a los individuos de una población
   para generar la siguiente Generación. (mejorar las soluciones
   disponibles)
 
-- [Puede involucrar]{.underline}: un único individuo de la población o
+- Puede involucrar: un único individuo de la población o
   múltiples individuos
 
 ![](media/image1.png){width="4.958333333333333in"
@@ -175,13 +175,13 @@ aumentará generación tras generación.
 **Comparaciones y rendimiento**
 
 Si bien los AG no siempre superan a otros métodos como el hill climbing
-estocástico, su principal ventaja radica en:\
-\
+estocástico, su principal ventaja radica en:
+
 - La búsqueda paralela sobre múltiples regiones del espacio de
-soluciones.\
-- Su capacidad de recombinar bloques útiles gracias al crossover.\
-- La posibilidad de escapar de óptimos locales mediante mutación.\
-\
+soluciones.
+- Su capacidad de recombinar bloques útiles gracias al crossover.
+- La posibilidad de escapar de óptimos locales mediante mutación.
+
 No obstante, su rendimiento puede variar dependiendo de cómo se
 represente la solución, cómo se defina la función de fitness, y qué
 estrategias de selección/crossover se usen. Se requiere una ingeniería
