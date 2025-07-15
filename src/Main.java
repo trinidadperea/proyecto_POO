@@ -12,7 +12,6 @@ import java.time.temporal.ChronoUnit;
 public class Main {
 
     public static void main(String[] args) {
-
         HashMap<Integer, String> contraseñas = new HashMap<Integer, String>();
         HashMap<Integer, Cliente> clientes = new HashMap<Integer, Cliente>();
         HashMap<String, Empleado> empleados = new HashMap<String, Empleado>();
@@ -343,11 +342,10 @@ public class Main {
                         case 3:
                             System.out.println("Ingrese el monto a vender");
                             double montoVender = verificarMonto();
-                            System.out.println("Ingrese la moneda a vender");
-                            //System.out.println("Usted posee: ");
+                            System.out.println("Ingrese la moneda a vender, usted posee: ");
                             cliente.mostrarDivisasCompradas();
                             String moneda = sc.nextLine();
-                            //moneda = sc.nextLine();
+                            moneda = sc.nextLine();
                             cliente.venderDivisas(moneda, montoVender, asesorDivisas);
                             break;
                         case 4:
